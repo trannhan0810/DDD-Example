@@ -13,11 +13,17 @@
       "es2020",
       "dom"
     ],
+    "strict": true,
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {},
-    "esModuleInterop": true
+    "paths": {
+      "@application/*": ["src/application/*"],
+      "@domain/*": ["src/domain/*"],
+      "@infrastructure/*": ["src/preservation/*"],
+      "@presentation/*": ["src/presentation/*"]
+    },
+    "esModuleInterop": true,
   },
   "files": [],
   "include": [],
