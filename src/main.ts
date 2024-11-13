@@ -3,9 +3,9 @@
  * This is only a minimal backend to get started.
  */
 
+import { AppModule } from './app.module';
 import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -16,4 +16,4 @@ async function bootstrap() {
   Logger.log(`🚀 Application is running on: http://localhost:${port}/${globalPrefix}`);
 }
 
-bootstrap();
+void bootstrap();

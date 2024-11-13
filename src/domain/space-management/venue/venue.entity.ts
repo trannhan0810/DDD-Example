@@ -14,6 +14,6 @@ export interface Venue extends BaseEntity {
   amenities: string[];
 }
 
-export interface VenueWithBooking extends Venue {
+export interface VenueWithBookings extends Venue {
   bookings: Booking[];
 }

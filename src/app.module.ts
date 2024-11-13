@@ -1,6 +1,6 @@
+import { InMemoryDatabaseModule } from './infrastructure/preservation/database/in-memory/in-memory-db.module';
 import { Module } from '@nestjs/common';
-import { RestApiModule } from '@presentation/rest/restApi.module';
-import { InMemoryDatabaseModule } from './preservation/database/in-memory/in-memory-db.module';
+import { RestApiModule } from 'src/infrastructure/presentation/rest/restApi.module';
 
 @Module({
   imports: [InMemoryDatabaseModule, RestApiModule],

@@ -1,5 +1,7 @@
-import type { CryptoService } from '@application/third-party-service/cryto';
 import { DomainError } from '@domain/base/base.error';
+import { JwtPayload } from '@application/services/jwt';
+import type { IJwtService } from '@application/services/jwt';
+import type { CryptoService } from '@application/services/cryto';
 import type { User } from '@domain/user-management/user/user.entity';
 import type { UserRepository } from '@domain/user-management/user/user.repository';
 import type { UserSpecificationFactory } from '@domain/user-management/user/user.specification';
@@ -19,6 +21,7 @@ export class LoginUseCase {
     private readonly userSpecFactory: UserSpecificationFactory,
     private readonly userRepository: UserRepository,
     private readonly cryptoService: CryptoService,
+    private readonly jwtService: IJwtService,
   ) {}
 
   async process(input: LoginInput): Promise<LoginResponse> {
@@ -34,7 +37,10 @@ export class LoginUseCase {
     return this.generateToken(user);
   }
 
-  private generateToken(user: User) {
-    return { accessToken: `${user}`, refreshToken: `${user}` };
+  private async generateToken(user: User): Promise<LoginResponse> {
+    const payload = new JwtPayload(`${user.id}`, user.email, user.firstname, user.lastname, []);
+    const accessToken = await this.jwtService.generateToken(payload);
+    const refreshToken = await this.jwtService.generateToken(payload);
+    return { accessToken, refreshToken };
   }
 }

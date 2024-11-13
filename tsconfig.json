@@ -18,10 +18,15 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@application/*": ["src/application/*"],
-      "@domain/*": ["src/domain/*"],
-      "@infrastructure/*": ["src/preservation/*"],
-      "@presentation/*": ["src/presentation/*"]
+      "@application/*": [
+        "src/application/*"
+      ],
+      "@domain/*": [
+        "src/domain/*"
+      ],
+      "@infrastructure/*": [
+        "src/infrastructure/*"
+      ]
     },
     "esModuleInterop": true,
   },

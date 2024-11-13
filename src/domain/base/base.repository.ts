@@ -7,7 +7,7 @@ export interface Factory<T extends BaseEntity> {
 }
 
 export interface BaseRepository<T extends BaseEntity> {
-  findAll(q: string): Promise<T[]>;
+  findAll(): Promise<T[]>;
   findById(id: EntityId): Promise<T | undefined>;
   findAllMatched(spec: ISpecification<T>): Promise<T[]>;
   findOneMatched(spec: ISpecification<T>): Promise<T | undefined>;

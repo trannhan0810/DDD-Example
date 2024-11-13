@@ -4,7 +4,7 @@ import type { VenueType } from './venue-type.entity';
 import type { ISpecification } from '@domain/base/base.specification';
 
 export abstract class VenueTypeRepository implements BaseRepository<VenueType> {
-  abstract findAll(q: string): Promise<VenueType[]>;
+  abstract findAll(): Promise<VenueType[]>;
   abstract findById(id: EntityId): Promise<VenueType>;
   abstract findAllMatched(spec: ISpecification<VenueType>): Promise<VenueType[]>;
   abstract findOneMatched(spec: ISpecification<VenueType>): Promise<VenueType | undefined>;

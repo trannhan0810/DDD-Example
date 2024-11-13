@@ -1,5 +1,8 @@
 {
-    "editor.formatOnSave": true,
-    "editor.tabSize": 2,
-    "editor.guides.bracketPairs": true,
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "explicit"
+  },
+  "editor.tabSize": 2,
+  "editor.guides.bracketPairs": true
 }

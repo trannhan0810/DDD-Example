@@ -1,6 +1,6 @@
-const { FlatCompat } = require("@eslint/eslintrc");
-const js = require("@eslint/js");
-const nxEslintPlugin = require("@nx/eslint-plugin");
+const { FlatCompat } = require('@eslint/eslintrc');
+const js = require('@eslint/js');
+const nxEslintPlugin = require('@nx/eslint-plugin');
 
 const compat = new FlatCompat({
   baseDirectory: __dirname,
@@ -8,25 +8,19 @@ const compat = new FlatCompat({
 });
 
 module.exports = [
-    { plugins: { "@nx": nxEslintPlugin } },
-    ...compat.config({ extends: ["plugin:@nx/typescript"] }).map(config => ({
-        ...config,
-        files: [
-            "**/*.ts",
-            "**/*.tsx"
-        ],
-        rules: {
-            ...config.rules
-        }
-    })),
-    ...compat.config({ extends: ["plugin:@nx/javascript"] }).map(config => ({
-        ...config,
-        files: [
-            "**/*.js",
-            "**/*.jsx"
-        ],
-        rules: {
-            ...config.rules
-        }
-    })),
+  { plugins: { '@nx': nxEslintPlugin } },
+  ...compat.config({ extends: ['plugin:@nx/typescript'] }).map(config => ({
+    ...config,
+    files: ['**/*.ts', '**/*.tsx'],
+    rules: {
+      ...config.rules,
+    },
+  })),
+  ...compat.config({ extends: ['plugin:@nx/javascript'] }).map(config => ({
+    ...config,
+    files: ['**/*.js', '**/*.jsx'],
+    rules: {
+      ...config.rules,
+    },
+  })),
 ];

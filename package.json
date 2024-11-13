@@ -5,7 +5,9 @@
   "scripts": {
     "start": "nx serve",
     "build": "nx build",
-    "test": "nx test"
+    "test": "nx test",
+    "lint": "eslint src -c eslint.config.mjs",
+    "typecheck": "tsc --noEmit"
   },
   "private": true,
   "dependencies": {
