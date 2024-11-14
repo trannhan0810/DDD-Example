@@ -1,6 +1,7 @@
 import { RestUserApiModule } from './users/user.controller';
-import { InMemoryDatabaseModule } from 'src/infrastructure/preservation/database/in-memory/in-memory-db.module';
+
 import { Module } from '@nestjs/common';
+import { InMemoryDatabaseModule } from 'src/infrastructure/preservation/database/in-memory/in-memory-db.module';
 
 @Module({
   imports: [

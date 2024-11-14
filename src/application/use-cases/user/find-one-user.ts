@@ -1,4 +1,5 @@
 import { DomainError } from '@domain/base/base.error';
+
 import type { User } from '@domain/user-management/user/user.entity';
 import type { UserRepository } from '@domain/user-management/user/user.repository';
 

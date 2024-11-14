@@ -6,6 +6,7 @@ export default tseslint.config(
   eslint.configs.recommended,
   ...tseslint.configs.recommended,
   {
+    plugins: { import: importPlugin },
     languageOptions: {
       parserOptions: {
         projectService: true,
@@ -14,28 +15,26 @@ export default tseslint.config(
     },
   },
   {
-    plugins: { import: importPlugin },
     rules: {
+      '@typescript-eslint/consistent-type-imports': 'error',
+      '@typescript-eslint/no-floating-promises': 'error',
       'import/order': [
         'error',
         {
-          groups: [
-            'builtin', // Built-in types are first
-            ['sibling', 'parent'], // Then sibling and parent types. They can be mingled together
-            'index',
-            'object',
-            'internal',
-            'external',
-            'type',
-          ],
+          named: true,
+          alphabetize: { order: 'asc' },
+          ['newlines-between']: 'always',
+          groups: ['builtin', ['sibling', 'parent'], 'index', 'object', 'internal', 'external', 'type'],
         },
       ],
     },
   },
   {
-    rules: {
-      '@typescript-eslint/consistent-type-imports': 'error',
-      '@typescript-eslint/no-floating-promises': 'error',
-    },
+    files: ['src/domain/**/**.ts'],
+    rules: { 'no-restricted-imports': ['error', { patterns: [{ regex: '(@application|@infrastructure)' }] }] },
+  },
+  {
+    files: ['src/application/**/**.ts'],
+    rules: { 'no-restricted-imports': ['error', { patterns: [{ regex: '@infrastructure' }] }] },
   },
 );

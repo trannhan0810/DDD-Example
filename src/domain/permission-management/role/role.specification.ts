@@ -1,7 +1,7 @@
-import type { BaseSpecification } from '@domain/base/base.specification';
-import type { StringMatcher } from '@domain/base/base.matcher';
 import type { Role } from './role.entity';
 import type { EntityId } from '@domain/base/base.entity';
+import type { StringMatcher } from '@domain/base/base.matcher';
+import type { BaseSpecification } from '@domain/base/base.specification';
 
 export abstract class RoleSpecificationFactory {
   abstract isAssignedToUser(userId: EntityId): BaseSpecification<Role>;

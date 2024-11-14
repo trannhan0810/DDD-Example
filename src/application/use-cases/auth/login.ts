@@ -1,7 +1,8 @@
-import { DomainError } from '@domain/base/base.error';
 import { JwtPayload } from '@application/services/jwt';
-import type { IJwtService } from '@application/services/jwt';
+import { DomainError } from '@domain/base/base.error';
+
 import type { CryptoService } from '@application/services/cryto';
+import type { IJwtService } from '@application/services/jwt';
 import type { User } from '@domain/user-management/user/user.entity';
 import type { UserRepository } from '@domain/user-management/user/user.repository';
 import type { UserSpecificationFactory } from '@domain/user-management/user/user.specification';

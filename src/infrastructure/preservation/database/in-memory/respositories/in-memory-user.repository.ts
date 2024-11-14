@@ -1,9 +1,10 @@
 import { InMemoryEditableRespository } from './base.repository';
-import { Injectable } from '@nestjs/common';
+
 import { EntityId, OptionalID } from '@domain/base/base.entity';
 import { User } from '@domain/user-management/user/user.entity';
-import { UserRepository } from '@domain/user-management/user/user.repository';
 import { UserFactory } from '@domain/user-management/user/user.factory';
+import { UserRepository } from '@domain/user-management/user/user.repository';
+import { Injectable } from '@nestjs/common';
 
 const mockUserData = [
   {

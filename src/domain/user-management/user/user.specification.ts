@@ -1,6 +1,6 @@
-import type { BaseSpecification } from '@domain/base/base.specification';
 import type { User } from './user.entity';
 import type { StringMatcher } from '@domain/base/base.matcher';
+import type { BaseSpecification } from '@domain/base/base.specification';
 
 type UserSpecification = BaseSpecification<User>;
 

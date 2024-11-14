@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
+
+import type { VenueLocation } from './venue-location.entity';
 import type { EntityId } from '@domain/base/base.entity';
 import type { BaseRepository } from '@domain/base/base.repository';
-import type { VenueLocation } from './venue-location.entity';
 import type { ISpecification } from '@domain/base/base.specification';
 
 @Injectable()

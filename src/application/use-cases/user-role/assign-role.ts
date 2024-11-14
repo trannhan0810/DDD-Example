@@ -1,6 +1,7 @@
 import { DomainError } from '@domain/base/base.error';
-import type { RoleSpecificationFactory } from '@domain/permission-management/role/role.specification';
+
 import type { RoleRepository } from '@domain/permission-management/role/role.repository';
+import type { RoleSpecificationFactory } from '@domain/permission-management/role/role.specification';
 import type { UserRepository } from '@domain/user-management/user/user.repository';
 
 export interface AssignRoleInput {

@@ -1,8 +1,8 @@
 import { UserFactory } from './user.factory';
-import type { BaseRepository, EditableRepository } from '@domain/base/base.repository';
 
 import type { User } from './user.entity';
 import type { EntityId, OptionalID } from '@domain/base/base.entity';
+import type { BaseRepository, EditableRepository } from '@domain/base/base.repository';
 import type { ISpecification } from '@domain/base/base.specification';
 
 export abstract class UserRepository implements BaseRepository<User>, EditableRepository<User> {

@@ -1,5 +1,6 @@
 import { DomainError } from '@domain/base/base.error';
 import { BookingFactory } from '@domain/booking-management/booking/booking.factory';
+
 import type { EntityId } from '@domain/base/base.entity';
 import type { Booking } from '@domain/booking-management/booking/booking.entity';
 import type { BookingRepository } from '@domain/booking-management/booking/booking.repository';

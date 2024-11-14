@@ -1,7 +1,7 @@
-import type { BaseRepository } from '@domain/base/base.repository';
-import type { EntityId } from '@domain/base/base.entity';
-import type { ISpecification } from '@domain/base/base.specification';
 import type { Booking } from './booking.entity';
+import type { EntityId } from '@domain/base/base.entity';
+import type { BaseRepository } from '@domain/base/base.repository';
+import type { ISpecification } from '@domain/base/base.specification';
 
 export abstract class BookingRepository implements BaseRepository<Booking> {
   abstract findAll(): Promise<Booking[]>;

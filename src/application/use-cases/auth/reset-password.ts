@@ -1,4 +1,5 @@
 import { DomainError } from '@domain/base/base.error';
+
 import type { EmailService, IEmailTemplate } from '@application/services/email';
 import type { UserRepository } from '@domain/user-management/user/user.repository';
 import type { UserSpecificationFactory } from '@domain/user-management/user/user.specification';

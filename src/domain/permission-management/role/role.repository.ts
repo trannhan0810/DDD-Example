@@ -1,7 +1,7 @@
-import type { BaseRepository } from '@domain/base/base.repository';
 import type { Role } from './role.entity';
-import type { EntityId } from '@domain/base/base.entity';
 import type { Privilege } from '../privilege/privilege.value-object';
+import type { EntityId } from '@domain/base/base.entity';
+import type { BaseRepository } from '@domain/base/base.repository';
 import type { ISpecification } from '@domain/base/base.specification';
 
 interface RoleAndPrivileges extends Role {

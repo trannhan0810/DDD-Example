@@ -1,5 +1,5 @@
-import type { OptionalID } from '@domain/base/base.entity';
 import type { User } from './user.entity';
+import type { OptionalID } from '@domain/base/base.entity';
 
 export type CreateUserInput = Pick<User, 'firstname' | 'lastname' | 'email' | 'hashedPassword'> & Partial<User>;
 export type UpdateUserInput = Partial<Omit<User, 'id' | 'email'>>;
