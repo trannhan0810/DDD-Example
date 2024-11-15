@@ -1,8 +1,8 @@
 import { DomainError } from '@domain/base/base.error';
+import { UserEmailMatchedSpec, UserEmailVerifiedSpec } from '@domain/user-management/user/user.specification';
 
-import type { EmailService, IEmailTemplate } from '@application/services/email';
+import type { IEmailService, IEmailTemplate } from '@application/services/email';
 import type { UserRepository } from '@domain/user-management/user/user.repository';
-import type { UserSpecificationFactory } from '@domain/user-management/user/user.specification';
 
 export type ResetPasswordInput = {
   email: string;
@@ -35,15 +35,11 @@ const resetPasswordEmailTemplate: IEmailTemplate<ResetPasswordEmailContent> = {
 };
 
 export class ResetPasswordUseCase {
-  constructor(
-    private readonly userSpecFactory: UserSpecificationFactory,
-    private readonly userRepository: UserRepository,
-    private readonly emailService: EmailService,
-  ) {}
+  constructor(private readonly userRepository: UserRepository, private readonly emailService: IEmailService) {}
 
   async process(input: ResetPasswordInput): Promise<void> {
-    const isEmailMatchedSpec = this.userSpecFactory.isEmailMatched(input.email);
-    const isEmailVerifiedSpec = this.userSpecFactory.isEmailVerified();
+    const isEmailMatchedSpec = new UserEmailMatchedSpec(input.email);
+    const isEmailVerifiedSpec = new UserEmailVerifiedSpec();
 
     const user = await this.userRepository.findOneMatched(isEmailMatchedSpec);
     if (!user) throw new DomainError('User not found!');

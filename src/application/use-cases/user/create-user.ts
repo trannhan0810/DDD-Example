@@ -1,8 +1,8 @@
+import { ICryptoService } from '@application/services/cryto';
 import { DomainError } from '@domain/base/base.error';
-
-import type { CryptoService } from '@application/services/cryto';
-import type { UserRepository } from '@domain/user-management/user/user.repository';
-import type { UserSpecificationFactory } from '@domain/user-management/user/user.specification';
+import { UserRepository } from '@domain/user-management/user/user.repository';
+import { UserEmailMatchedSpec } from '@domain/user-management/user/user.specification';
+import { Injectable } from '@nestjs/common';
 
 export type CreateUserInput = {
   firstname: string;
@@ -11,15 +11,12 @@ export type CreateUserInput = {
   password: string;
 };
 
+@Injectable()
 export class CreateUserUseCase {
-  constructor(
-    private readonly userSpecFactory: UserSpecificationFactory,
-    private readonly userRepository: UserRepository,
-    private readonly cryptoService: CryptoService,
-  ) {}
+  constructor(private readonly userRepository: UserRepository, private readonly cryptoService: ICryptoService) {}
 
   async process(input: CreateUserInput): Promise<void> {
-    const isEmailMatchedSpec = this.userSpecFactory.isEmailMatched(input.email);
+    const isEmailMatchedSpec = new UserEmailMatchedSpec(input.email);
     const existUser = await this.userRepository.findOneMatched(isEmailMatchedSpec);
     if (!existUser) throw new DomainError('Email is used!');
 

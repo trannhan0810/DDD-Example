@@ -1,6 +1,9 @@
-import type { User } from '@domain/user-management/user/user.entity';
-import type { UserRepository } from '@domain/user-management/user/user.repository';
+import { UserRepository } from '@domain/user-management/user/user.repository';
+import { Injectable } from '@nestjs/common';
 
+import type { User } from '@domain/user-management/user/user.entity';
+
+@Injectable()
 export class FindAllUserUseCase {
   constructor(private readonly userRepository: UserRepository) {}
 

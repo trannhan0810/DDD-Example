@@ -14,8 +14,8 @@ export class JwtPayload {
   customClaims?: Record<string, unknown>;
 }
 
-export interface IJwtService {
-  generateToken(payload: JwtPayload, expiresIn?: string | number): Promise<string>;
-  verifyToken(token: string): Promise<JwtPayload>;
-  decodeToken(token: string): JwtPayload | null;
+export abstract class IJwtService {
+  abstract generateToken(payload: JwtPayload, expiresIn?: string | number): Promise<string>;
+  abstract verifyToken(token: string): Promise<JwtPayload>;
+  abstract decodeToken(token: string): JwtPayload | null;
 }

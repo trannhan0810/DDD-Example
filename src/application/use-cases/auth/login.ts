@@ -1,11 +1,11 @@
 import { JwtPayload } from '@application/services/jwt';
 import { DomainError } from '@domain/base/base.error';
+import { UserEmailMatchedSpec, UserPasswordMatchedSpec } from '@domain/user-management/user/user.specification';
 
-import type { CryptoService } from '@application/services/cryto';
+import type { ICryptoService } from '@application/services/cryto';
 import type { IJwtService } from '@application/services/jwt';
 import type { User } from '@domain/user-management/user/user.entity';
 import type { UserRepository } from '@domain/user-management/user/user.repository';
-import type { UserSpecificationFactory } from '@domain/user-management/user/user.specification';
 
 export type LoginInput = {
   email: string;
@@ -19,17 +19,16 @@ export type LoginResponse = {
 
 export class LoginUseCase {
   constructor(
-    private readonly userSpecFactory: UserSpecificationFactory,
     private readonly userRepository: UserRepository,
-    private readonly cryptoService: CryptoService,
+    private readonly cryptoService: ICryptoService,
     private readonly jwtService: IJwtService,
   ) {}
 
   async process(input: LoginInput): Promise<LoginResponse> {
     const hashedPassword = this.cryptoService.hash(input.password);
 
-    const isEmailMatchedSpec = this.userSpecFactory.isEmailMatched(input.email);
-    const isPasswordMatchedSpec = this.userSpecFactory.isPasswordMatched(hashedPassword);
+    const isEmailMatchedSpec = new UserEmailMatchedSpec(input.email);
+    const isPasswordMatchedSpec = new UserPasswordMatchedSpec(hashedPassword);
     const isEmailAndPasswordCorrectSpec = isEmailMatchedSpec.and(isPasswordMatchedSpec);
 
     const user = await this.userRepository.findOneMatched(isEmailAndPasswordCorrectSpec);

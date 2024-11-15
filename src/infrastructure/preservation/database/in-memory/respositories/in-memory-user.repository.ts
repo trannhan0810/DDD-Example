@@ -1,4 +1,4 @@
-import { InMemoryEditableRespository } from './base.repository';
+import { EditableInMemoryRespository } from './base.repository';
 
 import { EntityId, OptionalID } from '@domain/base/base.entity';
 import { User } from '@domain/user-management/user/user.entity';
@@ -45,7 +45,7 @@ const mockUserData = [
 ];
 
 @Injectable()
-export class InMemoryUserRepository extends InMemoryEditableRespository<User> implements UserRepository {
+export class UserInMemoryRepository extends EditableInMemoryRespository<User> implements UserRepository {
   public factory = UserFactory;
   protected _items: User[] = mockUserData.map(UserFactory.create);
   protected _userAndRoleIds: Map<EntityId, EntityId[]> = new Map();

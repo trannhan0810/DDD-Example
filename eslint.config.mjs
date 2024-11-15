@@ -3,6 +3,9 @@ import tseslint from 'typescript-eslint';
 import importPlugin from 'eslint-plugin-import';
 
 export default tseslint.config(
+  {
+    ignores: ['dist/**/*.ts', 'dist/**', 'eslint.config.mjs'],
+  },
   eslint.configs.recommended,
   ...tseslint.configs.recommended,
   {

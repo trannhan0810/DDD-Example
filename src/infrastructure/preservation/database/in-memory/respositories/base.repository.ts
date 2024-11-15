@@ -2,7 +2,7 @@ import type { BaseEntity, EntityId } from '@domain/base/base.entity';
 import type { BaseRepository, EditableRepository } from '@domain/base/base.repository';
 import type { ISpecification } from '@domain/base/base.specification';
 
-export abstract class InMemoryBaseRepository<T extends BaseEntity> implements BaseRepository<T> {
+export abstract class BaseInMemoryRepository<T extends BaseEntity> implements BaseRepository<T> {
   protected abstract _items: T[];
   async findAll() {
     return [...this._items];
@@ -21,8 +21,8 @@ export abstract class InMemoryBaseRepository<T extends BaseEntity> implements Ba
   }
 }
 
-export abstract class InMemoryEditableRespository<T extends BaseEntity>
-  extends InMemoryBaseRepository<T>
+export abstract class EditableInMemoryRespository<T extends BaseEntity>
+  extends BaseInMemoryRepository<T>
   implements EditableRepository<T>
 {
   abstract save(item: NullPartial<T>): Promise<EntityId>;
