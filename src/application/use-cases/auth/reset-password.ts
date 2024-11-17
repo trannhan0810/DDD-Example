@@ -1,8 +1,8 @@
+import { UseCase } from '@application/base/decorator';
+import { IEmailService, IEmailTemplate } from '@application/services/email';
 import { DomainError } from '@domain/base/base.error';
+import { UserRepository } from '@domain/user-management/user/user.repository';
 import { UserEmailMatchedSpec, UserEmailVerifiedSpec } from '@domain/user-management/user/user.specification';
-
-import type { IEmailService, IEmailTemplate } from '@application/services/email';
-import type { UserRepository } from '@domain/user-management/user/user.repository';
 
 export type ResetPasswordInput = {
   email: string;
@@ -34,6 +34,7 @@ const resetPasswordEmailTemplate: IEmailTemplate<ResetPasswordEmailContent> = {
   },
 };
 
+@UseCase()
 export class ResetPasswordUseCase {
   constructor(private readonly userRepository: UserRepository, private readonly emailService: IEmailService) {}
 

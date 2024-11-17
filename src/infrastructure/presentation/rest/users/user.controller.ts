@@ -1,7 +1,10 @@
-import { CreateUserInput, CreateUserUseCase } from '@application/use-cases/user/create-user';
+import { CreateUserDto } from './user.dto';
+
+import { CreateUserUseCase } from '@application/use-cases/user/create-user';
 import { FindAllUserUseCase } from '@application/use-cases/user/find-all-user';
 import { FindOneUserUseCase } from '@application/use-cases/user/find-one-user';
 import { Body, Controller, Get, Module, Param, Post } from '@nestjs/common';
+import { ApiBody } from '@nestjs/swagger';
 
 @Controller('users')
 export class UserController {
@@ -21,8 +24,9 @@ export class UserController {
     return this.findOneUseCase.process(id);
   }
 
+  @ApiBody({ type: CreateUserDto })
   @Post()
-  createUser(@Body('item') item: CreateUserInput) {
+  createUser(@Body('item') item: CreateUserDto) {
     return this.createUserUserCase.process(item);
   }
 }

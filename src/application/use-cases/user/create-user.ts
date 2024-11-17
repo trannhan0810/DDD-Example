@@ -1,17 +1,17 @@
+import { UseCase } from '@application/base/decorator';
 import { ICryptoService } from '@application/services/cryto';
 import { DomainError } from '@domain/base/base.error';
 import { UserRepository } from '@domain/user-management/user/user.repository';
 import { UserEmailMatchedSpec } from '@domain/user-management/user/user.specification';
-import { Injectable } from '@nestjs/common';
 
-export type CreateUserInput = {
+export interface CreateUserInput {
   firstname: string;
   lastname: string;
   email: string;
   password: string;
-};
+}
 
-@Injectable()
+@UseCase()
 export class CreateUserUseCase {
   constructor(private readonly userRepository: UserRepository, private readonly cryptoService: ICryptoService) {}
 

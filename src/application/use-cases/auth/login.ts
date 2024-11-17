@@ -1,11 +1,11 @@
+import { UseCase } from '@application/base/decorator';
+import { ICryptoService } from '@application/services/cryto';
 import { JwtPayload } from '@application/services/jwt';
+import { IJwtService } from '@application/services/jwt';
 import { DomainError } from '@domain/base/base.error';
+import { User } from '@domain/user-management/user/user.entity';
+import { UserRepository } from '@domain/user-management/user/user.repository';
 import { UserEmailMatchedSpec, UserPasswordMatchedSpec } from '@domain/user-management/user/user.specification';
-
-import type { ICryptoService } from '@application/services/cryto';
-import type { IJwtService } from '@application/services/jwt';
-import type { User } from '@domain/user-management/user/user.entity';
-import type { UserRepository } from '@domain/user-management/user/user.repository';
 
 export type LoginInput = {
   email: string;
@@ -17,6 +17,7 @@ export type LoginResponse = {
   refreshToken: string;
 };
 
+@UseCase()
 export class LoginUseCase {
   constructor(
     private readonly userRepository: UserRepository,

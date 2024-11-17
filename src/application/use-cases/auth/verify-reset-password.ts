@@ -1,8 +1,8 @@
+import { UseCase } from '@application/base/decorator';
+import { ICryptoService } from '@application/services/cryto';
 import { DomainError } from '@domain/base/base.error';
+import { UserRepository } from '@domain/user-management/user/user.repository';
 import { ResetCodeValidSpec, UserEmailMatchedSpec } from '@domain/user-management/user/user.specification';
-
-import type { ICryptoService } from '@application/services/cryto';
-import type { UserRepository } from '@domain/user-management/user/user.repository';
 
 export type VerifyResetPasswordInput = {
   email: string;
@@ -10,7 +10,8 @@ export type VerifyResetPasswordInput = {
   resetCode: string;
 };
 
-export class ResetPasswordUseCase {
+@UseCase()
+export class VerifyResetPasswordUseCase {
   constructor(private readonly userRepository: UserRepository, private readonly cryptoService: ICryptoService) {}
 
   async process(input: VerifyResetPasswordInput): Promise<void> {

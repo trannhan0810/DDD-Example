@@ -50,9 +50,7 @@ export class UserInMemoryRepository extends EditableInMemoryRespository<User> im
   protected _items: User[] = mockUserData.map(UserFactory.create);
   protected _userAndRoleIds: Map<EntityId, EntityId[]> = new Map();
 
-  static get providerFor() {
-    return UserRepository;
-  }
+  static readonly providerFor = UserRepository;
 
   async save(input: OptionalID<User>): Promise<EntityId> {
     const item = input.id ? await this.findById(input.id) : undefined;

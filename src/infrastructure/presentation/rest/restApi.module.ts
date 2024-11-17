@@ -1,3 +1,4 @@
+import { AuthRestApiModule } from './auth/auth.controller';
 import { UserRestApiModule } from './users/user.controller';
 
 import { Module } from '@nestjs/common';
@@ -5,9 +6,8 @@ import { Module } from '@nestjs/common';
 @Module({
   imports: [
     /* ================== */
+    AuthRestApiModule,
     UserRestApiModule,
   ],
-  controllers: [],
-  providers: [],
 })
 export class RestApiModule {}

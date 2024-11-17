@@ -1,10 +1,10 @@
+import { UseCase } from '@application/base/decorator';
 import { DomainError } from '@domain/base/base.error';
 import { UserRepository } from '@domain/user-management/user/user.repository';
-import { Injectable } from '@nestjs/common';
 
 import type { User } from '@domain/user-management/user/user.entity';
 
-@Injectable()
+@UseCase()
 export class FindOneUserUseCase {
   constructor(private readonly userRepository: UserRepository) {}
 

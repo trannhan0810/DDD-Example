@@ -1,4 +1,5 @@
-import type { IJwtService } from '@application/services/jwt';
+import { UseCase } from '@application/base/decorator';
+import { IJwtService } from '@application/services/jwt';
 
 export type GetMeInput = {
   accessToken: string;
@@ -12,6 +13,7 @@ export type GetMeResponse = {
   roles: string[];
 };
 
+@UseCase()
 export class GetMeUseCase {
   constructor(private readonly jwtService: IJwtService) {}
 
