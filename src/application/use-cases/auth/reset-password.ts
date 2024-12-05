@@ -1,44 +1,15 @@
-import { UseCase } from '@application/base/decorator';
-import { IEmailService, IEmailTemplate } from '@application/services/email';
+import { ResetPasswordInput } from '@application/dtos/auth/reset-password.dto';
+import { BaseMessageResponse } from '@application/dtos/base/message-response.dto';
+import { IEmailService } from '@application/services/common/email/email';
+import { getSendResetPasswordEmailParams } from '@application/services/common/email/templates/reset-password';
 import { DomainError } from '@domain/base/base.error';
 import { UserRepository } from '@domain/user-management/user/user.repository';
 import { UserEmailMatchedSpec, UserEmailVerifiedSpec } from '@domain/user-management/user/user.specification';
 
-export type ResetPasswordInput = {
-  email: string;
-};
-
-type ResetPasswordEmailContent = {
-  code: string;
-  email: string;
-  resetPasswordUrl: string;
-};
-
-const resetPasswordEmailTemplate: IEmailTemplate<ResetPasswordEmailContent> = {
-  subject: 'Reset Password',
-  htmlContent(data) {
-    return `
-      <h1>Reset Password</h1>
-      <p>Code: ${data.code}</p>
-      <p>Email: ${data.email}</p>
-      <p>Reset Password Url: ${data.resetPasswordUrl}</p>
-    `;
-  },
-  textContent(data) {
-    return `
-      Reset Password
-      Code: ${data.code}
-      Email: ${data.email}
-      Reset Password Url: ${data.resetPasswordUrl}
-    `;
-  },
-};
-
-@UseCase()
 export class ResetPasswordUseCase {
   constructor(private readonly userRepository: UserRepository, private readonly emailService: IEmailService) {}
 
-  async process(input: ResetPasswordInput): Promise<void> {
+  async process(input: ResetPasswordInput): Promise<BaseMessageResponse> {
     const isEmailMatchedSpec = new UserEmailMatchedSpec(input.email);
     const isEmailVerifiedSpec = new UserEmailVerifiedSpec();
 
@@ -50,16 +21,14 @@ export class ResetPasswordUseCase {
     user.resetPasswordCodeExpireTime = new Date();
     await this.userRepository.save(user);
 
-    return void this.emailService.sendMail({
-      from: 'Hh4r4@example.com',
-      to: input.email,
-      template: resetPasswordEmailTemplate,
-      data: {
+    await this.emailService.sendMail(
+      getSendResetPasswordEmailParams({
         code: user.resetPasswordCode,
-        email: input.email,
-        resetPasswordUrl: 'http://localhost:3000/reset-password',
-      },
-    });
+        email: user.email,
+      }),
+    );
+
+    return { message: 'Reset password code send!' };
   }
 
   private generateResetCode() {

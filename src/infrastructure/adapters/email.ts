@@ -1,7 +1,7 @@
-import { IEmailService } from '@application/services/email';
+import { IEmailService } from '@application/services/common/email/email';
 import { Global, Injectable, Module } from '@nestjs/common';
 
-import type { IEmailTemplate } from '@application/services/email';
+import type { IEmailTemplate } from '@application/services/common/email/email';
 
 @Injectable()
 export class EmailService implements IEmailService {

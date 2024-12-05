@@ -1,7 +1,7 @@
 import { BOOKING_CONFIRM_STATUS, BOOKING_PAYMENT_STATUS, type Booking } from './booking.entity';
 
 import type { EntityId, OptionalID } from '@domain/base/base.entity';
-import type { User } from '@domain/user-management/user/user.entity';
+import type { User } from '@domain/user-management/entities/user.entity';
 
 export type CreateBookingInput = Pick<Booking, 'startTime' | 'endTime' | 'venueId' | 'customerId'> & Partial<Booking>;
 export type UpdateUserInput = Partial<Omit<User, 'id' | 'email'>>;

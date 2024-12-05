@@ -33,6 +33,10 @@ export default tseslint.config(
     },
   },
   {
+    files: ['src/application/use-cases/**/**.ts'],
+    rules: { '@typescript-eslint/consistent-type-imports': ['error', { prefer: 'no-type-imports' }] },
+  },
+  {
     files: ['src/domain/**/**.ts'],
     rules: { 'no-restricted-imports': ['error', { patterns: [{ regex: '(@application|@infrastructure)' }] }] },
   },

@@ -1,5 +1,5 @@
-import { AuthRestApiModule } from './auth/auth.controller';
-import { UserRestApiModule } from './users/user.controller';
+import { AuthRestApiModule } from './controllers/auth.controller';
+import { UserRestApiModule } from './controllers/user.controller';
 
 import { Module } from '@nestjs/common';
 

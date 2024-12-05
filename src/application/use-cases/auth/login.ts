@@ -1,23 +1,11 @@
-import { UseCase } from '@application/base/decorator';
-import { ICryptoService } from '@application/services/cryto';
-import { JwtPayload } from '@application/services/jwt';
-import { IJwtService } from '@application/services/jwt';
+import { LoginInput, LoginResponse } from '@application/dtos/auth/login.dto';
+import { ICryptoService } from '@application/services/common/cryto';
+import { IJwtService, JwtPayload } from '@application/services/common/jwt';
 import { DomainError } from '@domain/base/base.error';
-import { User } from '@domain/user-management/user/user.entity';
+import { User } from '@domain/user-management/entities/user.entity';
 import { UserRepository } from '@domain/user-management/user/user.repository';
 import { UserEmailMatchedSpec, UserPasswordMatchedSpec } from '@domain/user-management/user/user.specification';
 
-export type LoginInput = {
-  email: string;
-  password: string;
-};
-
-export type LoginResponse = {
-  accessToken: string;
-  refreshToken: string;
-};
-
-@UseCase()
 export class LoginUseCase {
   constructor(
     private readonly userRepository: UserRepository,

@@ -1,4 +1,4 @@
-import type { User } from './user.entity';
+import type { User } from '../entities/user.entity';
 import type { OptionalID } from '@domain/base/base.entity';
 
 export type CreateUserInput = Pick<User, 'firstname' | 'lastname' | 'email' | 'hashedPassword'> & Partial<User>;

@@ -1,6 +1,6 @@
 import { BaseSpecification } from '@domain/base/base.specification';
 
-import type { User } from './user.entity';
+import type { User } from '../entities/user.entity';
 
 export class UserEmailMatchedSpec extends BaseSpecification<User> {
   constructor(public readonly email: string) {
