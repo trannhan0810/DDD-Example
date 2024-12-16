@@ -7,7 +7,7 @@
     "build": "nx build",
     "test": "nx test",
     "lint": "eslint src -c eslint.config.mjs",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "./node_modules/.bin/tsc --noEmit"
   },
   "private": true,
   "dependencies": {

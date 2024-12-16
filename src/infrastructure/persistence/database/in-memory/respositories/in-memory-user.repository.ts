@@ -1,8 +1,7 @@
 import { EditableInMemoryRespository } from './base.repository';
 
-import { EntityId, OptionalID } from '@domain/base/base.entity';
+import { OptionalID } from '@domain/base/base.entity';
 import { User } from '@domain/user-management/entities/user.entity';
-import { UserFactory } from '@domain/user-management/user/user.factory';
 import { UserRepository } from '@domain/user-management/user/user.repository';
 import { Injectable } from '@nestjs/common';
 
@@ -46,30 +45,29 @@ const mockUserData = [
 
 @Injectable()
 export class UserInMemoryRepository extends EditableInMemoryRespository<User> implements UserRepository {
-  public factory = UserFactory;
-  protected _items: User[] = mockUserData.map(UserFactory.create);
-  protected _userAndRoleIds: Map<EntityId, EntityId[]> = new Map();
+  protected _items: User[] = mockUserData.map(User.create<User>);
+  protected _userAndRoleIds: Map<Id, Id[]> = new Map();
 
   static readonly providerFor = UserRepository;
 
-  async save(input: OptionalID<User>): Promise<EntityId> {
+  async save(input: OptionalID<User>): Promise<Id> {
     const item = input.id ? await this.findById(input.id) : undefined;
     if (item) {
       Object.assign(item, input);
       return item.id;
     }
     const id = Math.max(...this._items.map(item => Number(item.id)));
-    this._items.push(UserFactory.create({ ...input, id }));
+    this._items.push(User.create<User>({ ...input, id }));
     return id;
   }
 
-  async addRoles(userId: EntityId, roleIds: EntityId[]): Promise<void> {
+  async addRoles(userId: Id, roleIds: Id[]): Promise<void> {
     const existRoleIds = this._userAndRoleIds.get(userId) ?? [];
     const newRoleIds = [...new Set([...existRoleIds, ...roleIds])];
     this._userAndRoleIds.set(userId, newRoleIds);
   }
 
-  async removeRoles(userId: EntityId, roleIds: EntityId[]): Promise<void> {
+  async removeRoles(userId: Id, roleIds: Id[]): Promise<void> {
     const existRoleIds = this._userAndRoleIds.get(userId) ?? [];
     const newRoleIds = existRoleIds.filter(id => !roleIds.includes(id));
     this._userAndRoleIds.set(userId, newRoleIds);

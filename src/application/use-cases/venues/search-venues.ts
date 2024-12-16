@@ -1,7 +1,7 @@
 import { SearchVenueInput } from '../../dtos/venues/search-venues.dto';
 
-import { Venue } from '@domain/space-management/venue/venue.entity';
-import { VenueRepository } from '@domain/space-management/venue/venue.repository';
+import { Venue } from '@domain/space-management/entities/venue.entity';
+import { VenueRepository } from '@domain/space-management/repositories/venue.repository';
 import { VenueSpecificationFactory } from '@domain/space-management/venue/venue.specification';
 
 export class SearchVenueUseCase {

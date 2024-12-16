@@ -1,13 +1,12 @@
-import { EntityId } from '@domain/base/base.entity';
 import { DomainError } from '@domain/base/base.error';
-import { BOOKING_CONFIRM_STATUS } from '@domain/booking-management/booking/booking.entity';
-import { BookingRepository } from '@domain/booking-management/booking/booking.repository';
 import { BookingSpecificationFactory } from '@domain/booking-management/booking/booking.specification';
-import { VenueRepository } from '@domain/space-management/venue/venue.repository';
+import { BOOKING_CONFIRM_STATUS } from '@domain/booking-management/entities/booking.entity';
+import { BookingRepository } from '@domain/booking-management/repositories/booking.repository';
+import { VenueRepository } from '@domain/space-management/repositories/venue.repository';
 import { VenueSpecificationFactory } from '@domain/space-management/venue/venue.specification';
 
 export type ConfirmBookingInput = {
-  bookingId: EntityId;
+  bookingId: Id;
 };
 
 export class ConfirmBookingUseCase {
@@ -21,10 +20,10 @@ export class ConfirmBookingUseCase {
   async process(input: ConfirmBookingInput): Promise<void> {
     const booking = await this.bookingRepository.findById(input.bookingId);
     if (!booking) throw new DomainError('Booking not found!');
-    const { startTime, endTime, venueId } = booking;
+    const { period: bookingPeriod, venueId } = booking;
 
     const isIDMatchedSpec = this.venueSpecFactory.isIDMatched(venueId);
-    const isVenueBooked = this.venueSpecFactory.isBookedAt(startTime, endTime, booking.id);
+    const isVenueBooked = this.venueSpecFactory.isBookedAt(bookingPeriod.start, bookingPeriod.end, booking.id);
     const isBookingConfirmable = this.bookingSpecFactory.isConfirmable();
 
     const [venue] = await this.venueRepository.findWithBookings(isIDMatchedSpec);

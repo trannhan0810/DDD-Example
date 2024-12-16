@@ -1,5 +1,4 @@
-import type { BaseEntity, EntityId } from './base.entity';
-import type { ISpecification } from './base.specification';
+import type { BaseEntity } from './base.entity';
 
 export interface Factory<T extends BaseEntity> {
   create(input: unknown): T;
@@ -8,13 +7,10 @@ export interface Factory<T extends BaseEntity> {
 
 export interface BaseRepository<T extends BaseEntity> {
   findAll(): Promise<T[]>;
-  findById(id: EntityId): Promise<T | undefined>;
-  findAllMatched(spec: ISpecification<T>): Promise<T[]>;
-  findOneMatched(spec: ISpecification<T>): Promise<T | undefined>;
-  countMatched(spec: ISpecification<T>): Promise<number>;
+  findById(id: Id): Promise<T | undefined>;
 }
 
 export interface EditableRepository<T extends BaseEntity> {
-  save(item: NullPartial<T>): Promise<EntityId>;
-  deleteById(id: EntityId): Promise<void>;
+  save(item: NullPartial<T>): Promise<Id>;
+  deleteById(id: Id): Promise<void>;
 }

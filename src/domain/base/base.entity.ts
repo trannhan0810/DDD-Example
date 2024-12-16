@@ -1,14 +1,21 @@
-export type EntityId = number | string;
+export abstract class BaseEntity {
+  abstract id: Id;
 
-export interface BaseEntity {
-  id: EntityId;
+  constructor() {
+    this.validate();
+  }
+
+  validate() {
+    return true;
+  }
 }
 
 export interface AuditableEntity extends BaseEntity {
-  createdById: EntityId;
-  updatedById: EntityId;
+  createdById: Id;
+  updatedById: Id;
   createdAt: Date;
   updatedAt: Date;
 }
 
-export type OptionalID<T extends BaseEntity> = Omit<T, 'id'> & { id?: Maybe<EntityId> };
+export type UnsavedEntity<T extends BaseEntity> = Omit<T, 'id'>;
+export type OptionalID<T extends BaseEntity> = Omit<T, 'id'> & { id?: Maybe<Id> };

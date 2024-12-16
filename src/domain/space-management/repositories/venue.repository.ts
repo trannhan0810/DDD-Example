@@ -1,11 +1,10 @@
-import type { Venue, VenueWithBookings } from './venue.entity';
-import type { EntityId } from '@domain/base/base.entity';
+import type { Venue, VenueWithBookings } from '../entities/venue.entity';
 import type { BaseRepository } from '@domain/base/base.repository';
 import type { ISpecification } from '@domain/base/base.specification';
 
 export abstract class VenueRepository implements BaseRepository<Venue> {
   abstract findAll(): Promise<Venue[]>;
-  abstract findById(id: EntityId): Promise<Venue | undefined>;
+  abstract findById(id: Id): Promise<Venue | undefined>;
   abstract findAllMatched(spec: ISpecification<Venue>): Promise<Venue[]>;
   abstract findOneMatched(spec: ISpecification<Venue>): Promise<Venue | undefined>;
   abstract countMatched(spec: ISpecification<Venue>): Promise<number>;

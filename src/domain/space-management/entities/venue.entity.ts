@@ -1,7 +1,7 @@
-import type { VenueLocation } from '../venue-location/venue-location.entity';
-import type { VenueType } from '../venue-type/venue-type.entity';
+import type { VenueLocation } from './venue-location.entity';
+import type { VenueType } from './venue-type.entity';
 import type { BaseEntity } from '@domain/base/base.entity';
-import type { Booking } from '@domain/booking-management/booking/booking.entity';
+import type { Booking } from '@domain/booking-management/entities/booking.entity';
 
 export interface Venue extends BaseEntity {
   name: string;

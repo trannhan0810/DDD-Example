@@ -2,7 +2,7 @@ import { BaseMessageResponse } from '@application/dtos/base/message-response.dto
 import { CreateUserInput } from '@application/dtos/users/create-user.dto';
 import { ICryptoService } from '@application/services/common/cryto';
 import { DomainError } from '@domain/base/base.error';
-import { UserFactory } from '@domain/user-management/user/user.factory';
+import { User } from '@domain/user-management/entities/user.entity';
 import { UserRepository } from '@domain/user-management/user/user.repository';
 import { UserEmailMatchedSpec } from '@domain/user-management/user/user.specification';
 
@@ -14,7 +14,7 @@ export class CreateUserUseCase {
     const existUser = await this.userRepository.findOneMatched(isEmailMatchedSpec);
     if (!existUser) throw new DomainError('Email is used!');
 
-    const newUser = UserFactory.create({
+    const newUser = User.create({
       email: input.email,
       firstname: input.firstname,
       lastname: input.lastname,

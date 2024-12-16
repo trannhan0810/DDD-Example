@@ -1,11 +1,10 @@
-import { EntityId } from '@domain/base/base.entity';
 import { DomainError } from '@domain/base/base.error';
-import { BOOKING_CONFIRM_STATUS } from '@domain/booking-management/booking/booking.entity';
-import { BookingRepository } from '@domain/booking-management/booking/booking.repository';
 import { BookingSpecificationFactory } from '@domain/booking-management/booking/booking.specification';
+import { BOOKING_CONFIRM_STATUS } from '@domain/booking-management/entities/booking.entity';
+import { BookingRepository } from '@domain/booking-management/repositories/booking.repository';
 
 export type CancelBookingInput = {
-  bookingId: EntityId;
+  bookingId: Id;
 };
 
 export class CreateBookingUseCase {

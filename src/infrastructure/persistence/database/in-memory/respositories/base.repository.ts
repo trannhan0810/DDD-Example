@@ -1,4 +1,4 @@
-import type { BaseEntity, EntityId } from '@domain/base/base.entity';
+import type { BaseEntity } from '@domain/base/base.entity';
 import type { BaseRepository, EditableRepository } from '@domain/base/base.repository';
 import type { ISpecification } from '@domain/base/base.specification';
 
@@ -7,7 +7,7 @@ export abstract class BaseInMemoryRepository<T extends BaseEntity> implements Ba
   async findAll() {
     return [...this._items];
   }
-  async findById(id: EntityId): Promise<T | undefined> {
+  async findById(id: Id): Promise<T | undefined> {
     return this._items.find(item => item.id === id);
   }
   async findAllMatched(spec: ISpecification<T>): Promise<T[]> {
@@ -25,9 +25,9 @@ export abstract class EditableInMemoryRespository<T extends BaseEntity>
   extends BaseInMemoryRepository<T>
   implements EditableRepository<T>
 {
-  abstract save(item: NullPartial<T>): Promise<EntityId>;
+  abstract save(item: NullPartial<T>): Promise<Id>;
 
-  async deleteById(id: EntityId): Promise<void> {
+  async deleteById(id: Id): Promise<void> {
     const index = this._items.findIndex(item => item.id === id);
     if (index > -1) this._items.splice(index, 1);
   }

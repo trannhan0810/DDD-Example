@@ -1,9 +1,9 @@
-import { ApiProperty, PickType } from '@nestjs/swagger';
+import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsLowercase, IsNumberString } from 'class-validator';
 
 export class BaseUserDto {
   @IsNumberString()
-  @ApiProperty({ type: () => String })
+  @ApiProperty({ type: String })
   id!: string | number;
 
   @ApiProperty()
@@ -20,11 +20,3 @@ export class BaseUserDto {
   @ApiProperty()
   isEmailVerified!: boolean;
 }
-
-export class BaseUserResponse extends PickType(BaseUserDto, [
-  'id',
-  'email',
-  'firstname',
-  'lastname',
-  'isEmailVerified',
-]) {}
