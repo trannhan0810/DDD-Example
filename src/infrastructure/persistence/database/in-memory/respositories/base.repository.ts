@@ -1,9 +1,12 @@
+import type { InMemoryUnitOfWork } from '../unit-of-work';
 import type { BaseEntity } from '@domain/base/base.entity';
 import type { BaseRepository, EditableRepository } from '@domain/base/base.repository';
 import type { ISpecification } from '@domain/base/base.specification';
 
-export abstract class BaseInMemoryRepository<T extends BaseEntity> implements BaseRepository<T> {
+export abstract class BaseInMemoryRepository<T extends BaseEntity> implements BaseRepository<T>, EditableRepository<T> {
   protected abstract _items: T[];
+  constructor(private uow: InMemoryUnitOfWork) {}
+
   async findAll() {
     return [...this._items];
   }
@@ -19,12 +22,7 @@ export abstract class BaseInMemoryRepository<T extends BaseEntity> implements Ba
   async countMatched(spec: ISpecification<T>): Promise<number> {
     return this._items.filter(spec.isSastifyBy).length;
   }
-}
 
-export abstract class EditableInMemoryRespository<T extends BaseEntity>
-  extends BaseInMemoryRepository<T>
-  implements EditableRepository<T>
-{
   abstract save(item: NullPartial<T>): Promise<Id>;
 
   async deleteById(id: Id): Promise<void> {

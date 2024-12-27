@@ -1,6 +1,6 @@
-import { EditableInMemoryRespository } from './base.repository';
+import { BaseInMemoryRepository } from './base.repository';
 
-import { OptionalID } from '@domain/base/base.entity';
+import { UnsavedEntity } from '@domain/base/base.entity';
 import { User } from '@domain/user-management/entities/user.entity';
 import { UserRepository } from '@domain/user-management/user/user.repository';
 import { Injectable } from '@nestjs/common';
@@ -44,13 +44,13 @@ const mockUserData = [
 ];
 
 @Injectable()
-export class UserInMemoryRepository extends EditableInMemoryRespository<User> implements UserRepository {
+export class UserInMemoryRepository extends BaseInMemoryRepository<User> implements UserRepository {
   protected _items: User[] = mockUserData.map(User.create<User>);
   protected _userAndRoleIds: Map<Id, Id[]> = new Map();
 
   static readonly providerFor = UserRepository;
 
-  async save(input: OptionalID<User>): Promise<Id> {
+  async save(input: UnsavedEntity<User> & { id?: Id }): Promise<Id> {
     const item = input.id ? await this.findById(input.id) : undefined;
     if (item) {
       Object.assign(item, input);

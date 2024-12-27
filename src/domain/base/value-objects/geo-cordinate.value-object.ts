@@ -4,7 +4,7 @@ export class GeoCoordinate {
   readonly long: number;
   readonly lat: number;
 
-  constructor(input: GeoCoordinate) {
+  constructor(input: { long: number; lat: number }) {
     this.long = input.long;
     this.lat = input.lat;
     GeoCoordinate.validate(this);

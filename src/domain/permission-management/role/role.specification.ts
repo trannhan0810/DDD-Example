@@ -1,4 +1,4 @@
-import type { Role } from './role.entity';
+import type { Role } from '../entities/role.entity';
 import type { StringFilter } from '@domain/base/base.filter';
 import type { BaseSpecification } from '@domain/base/base.specification';
 

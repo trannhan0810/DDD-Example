@@ -4,7 +4,6 @@ import { IJwtService, JwtPayload } from '@application/services/common/jwt';
 import { DomainError } from '@domain/base/base.error';
 import { User } from '@domain/user-management/entities/user.entity';
 import { UserRepository } from '@domain/user-management/user/user.repository';
-import { UserEmailMatchedSpec, UserPasswordMatchedSpec } from '@domain/user-management/user/user.specification';
 
 export class LoginUseCase {
   constructor(
@@ -15,12 +14,10 @@ export class LoginUseCase {
 
   async process(input: LoginInput): Promise<LoginResponse> {
     const hashedPassword = this.cryptoService.hash(input.password);
-
-    const isEmailMatchedSpec = new UserEmailMatchedSpec(input.email);
-    const isPasswordMatchedSpec = new UserPasswordMatchedSpec(hashedPassword);
-    const isEmailAndPasswordCorrectSpec = isEmailMatchedSpec.and(isPasswordMatchedSpec);
-
-    const user = await this.userRepository.findOneMatched(isEmailAndPasswordCorrectSpec);
+    const user = await this.userRepository.findOneMatched({
+      email: { isIn: [input.email] },
+      hashedPassword: { isIn: [hashedPassword] },
+    });
     if (!user) throw new DomainError('Email or password is incorrect');
 
     return this.generateToken(user);

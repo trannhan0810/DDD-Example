@@ -30,6 +30,28 @@ export class Booking extends BaseEntity {
     super();
   }
 
+  isConfirmable() {
+    return (
+      [BOOKING_CONFIRM_STATUS.Unconfirmed].includes(this.status) &&
+      [BOOKING_PAYMENT_STATUS.Paid, BOOKING_PAYMENT_STATUS.PartialPaid].includes(this.paymentStatus)
+    );
+  }
+
+  isCancellable() {
+    return (
+      [BOOKING_CONFIRM_STATUS.Unconfirmed].includes(this.status) &&
+      [BOOKING_PAYMENT_STATUS.Unpaid].includes(this.paymentStatus)
+    );
+  }
+
+  confirm() {
+    this.status = BOOKING_CONFIRM_STATUS.Confirmed;
+  }
+
+  cancel() {
+    this.status = BOOKING_CONFIRM_STATUS.Canceled;
+  }
+
   static create<T extends BookingCreate>(input: T): T extends Booking ? Booking : UnsavedEntity<Booking> {
     return new Booking(
       input.id ?? 0,

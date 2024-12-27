@@ -6,12 +6,12 @@ export class CordinateInput {
   @Min(-180)
   @Max(180)
   @ApiProperty()
-  longitude!: number;
+  long!: number;
 
   @Min(-90)
   @Max(90)
   @ApiProperty()
-  latitude!: number;
+  lat!: number;
 }
 
 export class SearchCordinateInput {

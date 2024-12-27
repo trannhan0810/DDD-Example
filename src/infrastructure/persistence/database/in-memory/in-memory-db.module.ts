@@ -1,4 +1,5 @@
 import { UserInMemoryRepository } from './respositories/in-memory-user.repository';
+import { InMemoryUnitOfWork } from './unit-of-work';
 
 import { Global, Module } from '@nestjs/common';
 
@@ -9,7 +10,15 @@ const repositories = [
 
 @Global()
 @Module({
-  providers: repositories.map(repo => ({ useClass: repo, provide: repo.providerFor })),
-  exports: repositories.map(repo => repo.providerFor),
+  providers: [
+    /* PROVIDER */
+    ...repositories.map(repo => ({ useClass: repo, provide: repo.providerFor })),
+    InMemoryUnitOfWork,
+  ],
+  exports: [
+    /* EXPORT */
+    ...repositories.map(repo => repo.providerFor),
+    InMemoryUnitOfWork,
+  ],
 })
 export class InMemoryDatabaseModule {}

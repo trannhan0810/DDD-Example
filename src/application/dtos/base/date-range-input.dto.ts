@@ -1,9 +1,17 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class DateRangeInput {
+export class TimeRangeInput {
   @ApiProperty()
-  startTime!: Date;
+  start!: Date;
 
   @ApiProperty()
-  endTime!: Date;
+  end!: Date;
+}
+
+export class TimeRangeResponse {
+  @ApiProperty()
+  start!: Date;
+
+  @ApiProperty()
+  end!: Date;
 }

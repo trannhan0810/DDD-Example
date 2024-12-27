@@ -4,7 +4,7 @@ export class TimeRange {
   readonly start: Date;
   readonly end: Date;
 
-  constructor(input: TimeRange) {
+  constructor(input: { start: Date; end: Date }) {
     this.start = input.start;
     this.end = input.end;
     TimeRange.validate(this);
