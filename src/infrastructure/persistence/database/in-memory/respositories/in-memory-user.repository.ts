@@ -2,7 +2,7 @@ import { BaseInMemoryRepository } from './base.repository';
 
 import { UnsavedEntity } from '@domain/base/base.entity';
 import { User } from '@domain/user-management/entities/user.entity';
-import { UserRepository } from '@domain/user-management/user/user.repository';
+import { FilterUserInput, UserRepository } from '@domain/user-management/user/user.repository';
 import { Injectable } from '@nestjs/common';
 
 const mockUserData = [
@@ -49,6 +49,29 @@ export class UserInMemoryRepository extends BaseInMemoryRepository<User> impleme
   protected _userAndRoleIds: Map<Id, Id[]> = new Map();
 
   static readonly providerFor = UserRepository;
+
+  createSpec(filter: Partial<FilterUserInput>) {
+    return {
+      isSastifyBy: (item: User) => {
+        void item;
+        void filter;
+        return true;
+      },
+    };
+  }
+
+  async findAllMatched(filter: Partial<FilterUserInput>): Promise<User[]> {
+    const spec = this.createSpec(filter);
+    return this._items.filter(spec.isSastifyBy);
+  }
+  async findOneMatched(filter: Partial<FilterUserInput>): Promise<User | undefined> {
+    const spec = this.createSpec(filter);
+    return this._items.find(spec.isSastifyBy);
+  }
+  async countMatched(filter: Partial<FilterUserInput>): Promise<number> {
+    const spec = this.createSpec(filter);
+    return this._items.filter(spec.isSastifyBy).length;
+  }
 
   async save(input: UnsavedEntity<User> & { id?: Id }): Promise<Id> {
     const item = input.id ? await this.findById(input.id) : undefined;

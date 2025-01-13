@@ -1,6 +1,6 @@
 import { TimeRangeResponse } from '../base/date-range-input.dto';
 
-import { BOOKING_CONFIRM_STATUS, BOOKING_PAYMENT_STATUS } from '@domain/booking-management/entities/booking.entity';
+import { BOOKING_CONFIRM_STATUS, BOOKING_PAYMENT_STATUS } from '@domain/booking-reservation/entities/booking.entity';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class BookingDto {

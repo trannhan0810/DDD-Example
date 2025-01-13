@@ -1,9 +1,9 @@
 import { CreateBookingInput } from '@application/dtos/booking/create-booking.dto';
 import { DomainError } from '@domain/base/base.error';
 import { TimeRange } from '@domain/base/value-objects/time-range.value-object';
-import { Booking } from '@domain/booking-management/entities/booking.entity';
-import { BookingRepository } from '@domain/booking-management/repositories/booking.repository';
-import { CheckVenueAvailableService } from '@domain/booking-management/services/check-available';
+import { Booking } from '@domain/booking-reservation/entities/booking.entity';
+import { BookingRepository } from '@domain/booking-reservation/repositories/booking.repository';
+import { CheckVenueAvailableService } from '@domain/booking-reservation/services/check-available';
 import { VenueRepository } from '@domain/space-management/repositories/venue.repository';
 
 export class CreateBookingUseCase {

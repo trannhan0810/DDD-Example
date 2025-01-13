@@ -21,8 +21,4 @@ export class ResetPasswordUseCase {
 
     return new BaseMessageResponse('Reset password code send!');
   }
-
-  private generateResetCode() {
-    return '123456';
-  }
 }

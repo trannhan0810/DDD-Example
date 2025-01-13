@@ -1,6 +1,6 @@
 import { DomainError } from '@domain/base/base.error';
-import { BookingRepository } from '@domain/booking-management/repositories/booking.repository';
-import { CheckVenueAvailableService } from '@domain/booking-management/services/check-available';
+import { BookingRepository } from '@domain/booking-reservation/repositories/booking.repository';
+import { CheckVenueAvailableService } from '@domain/booking-reservation/services/check-available';
 import { VenueRepository } from '@domain/space-management/repositories/venue.repository';
 
 export type ConfirmBookingInput = {

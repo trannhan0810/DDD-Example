@@ -1,5 +1,5 @@
+import type { Privilege } from '../entities/privilege.entity';
 import type { Role } from '../entities/role.entity';
-import type { Privilege } from '../value-objects/privilege.value-object';
 import type { IdFilter, StringFilter } from '@domain/base/base.filter';
 import type { BaseRepository } from '@domain/base/base.repository';
 

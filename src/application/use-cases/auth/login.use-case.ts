@@ -13,12 +13,13 @@ export class LoginUseCase {
   ) {}
 
   async process(input: LoginInput): Promise<LoginResponse> {
-    const hashedPassword = this.cryptoService.hash(input.password);
     const user = await this.userRepository.findOneMatched({
       email: { isIn: [input.email] },
-      hashedPassword: { isIn: [hashedPassword] },
     });
-    if (!user) throw new DomainError('Email or password is incorrect');
+    const hashedPassword = this.cryptoService.hash(input.password);
+    if (!user || user.hashedPassword !== hashedPassword) {
+      throw new DomainError('Email or password is incorrect');
+    }
 
     return this.generateToken(user);
   }

@@ -1,5 +1,5 @@
 import { DomainError } from '@domain/base/base.error';
-import { BookingRepository } from '@domain/booking-management/repositories/booking.repository';
+import { BookingRepository } from '@domain/booking-reservation/repositories/booking.repository';
 
 export type CancelBookingInput = {
   bookingId: Id;
