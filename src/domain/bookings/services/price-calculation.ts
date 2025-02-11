@@ -16,7 +16,7 @@ export class CalculateBookingPriceService {
     return sortedBookingRateConfigs.find(item => countBookingDays >= item.applyForMinUnit);
   }
 
-  async calculate(input: { booking: Booking; bookingRateConfigs: BookingRateConfig[] }) {
+  calculate(input: { booking: Booking; bookingRateConfigs: BookingRateConfig[] }) {
     const { booking, bookingRateConfigs } = input;
     const bookingRateConfig = this.getSuitableBookingRate(booking.period, bookingRateConfigs);
     if (!bookingRateConfig) {

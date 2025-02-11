@@ -5,9 +5,9 @@ export interface Factory<T extends BaseEntity> {
   merge(item: T, input: unknown): T;
 }
 
-export interface BaseRepository<T extends BaseEntity> {
-  findAll(): Promise<T[]>;
-  findById(id: Id): Promise<T | undefined>;
+export abstract class BaseRepository<T extends BaseEntity> {
+  abstract findAll(): Promise<T[]>;
+  abstract findById(id: Id): Promise<T | undefined>;
 }
 
 export interface EditableRepository<T extends BaseEntity> {

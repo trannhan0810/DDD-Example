@@ -1,21 +1,20 @@
-import type { BOOKING_CONFIRM_STATUS, BOOKING_PAYMENT_STATUS, Booking } from '../entities/booking.entity';
+import { BaseRepository } from '@domain/base/base.repository';
+
+import type { BOOKING_PAYMENT_STATUS, BOOKING_STATUS, Booking } from '../entities/booking.entity';
 import type { IdFilter, StringFilter } from '@domain/base/base.filter';
-import type { BaseRepository } from '@domain/base/base.repository';
 import type { TimeRange } from '@domain/base/value-objects/time-range.value-object';
 
 export type FilterBookingInput = {
   id: IdFilter;
   code: StringFilter;
   customerId: IdFilter;
-  venueId: IdFilter;
+  roomId: IdFilter;
   overlapWithPeriod: TimeRange;
-  status: BOOKING_CONFIRM_STATUS;
+  status: BOOKING_STATUS;
   paymentStatus: BOOKING_PAYMENT_STATUS;
 };
 
-export abstract class BookingRepository implements BaseRepository<Booking> {
-  abstract findAll(): Promise<Booking[]>;
-  abstract findById(id: Id): Promise<Booking | undefined>;
+export abstract class BookingRepository extends BaseRepository<Booking> {
   abstract findAllMatched(filter: Partial<FilterBookingInput>): Promise<Booking[]>;
   abstract findOneMatched(filter: Partial<FilterBookingInput>): Promise<Booking | undefined>;
   abstract countMatched(filter: Partial<FilterBookingInput>): Promise<number>;

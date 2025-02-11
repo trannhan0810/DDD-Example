@@ -2,7 +2,7 @@ import type { SearchCordinateInput } from '@application/dtos/base/cordinate-inpu
 import type { TimeRangeInput } from '@application/dtos/base/date-range-input.dto';
 import type { NumberFilter } from '@domain/base/base.filter';
 
-export type SearchVenueInput = {
+export type SearchRoomInput = {
   location: SearchCordinateInput;
   isAvaiable: TimeRangeInput;
   priceRange: NumberFilter;

@@ -1,7 +1,7 @@
 import { DomainError } from '@domain/base/base.error';
-import { BookingRepository } from '@domain/booking-reservation/repositories/booking.repository';
-import { CheckVenueAvailableService } from '@domain/booking-reservation/services/check-available';
-import { VenueRepository } from '@domain/space-management/repositories/venue.repository';
+import { BookingRepository } from '@domain/bookings/repositories/booking.repository';
+import { UpdateBookingService } from '@domain/bookings/services/update-booking';
+import { RoomRepository } from '@domain/property/repositories/room.repository';
 
 export type ConfirmBookingInput = {
   bookingId: Id;
@@ -10,24 +10,18 @@ export type ConfirmBookingInput = {
 export class ConfirmBookingUseCase {
   constructor(
     private readonly bookingRepository: BookingRepository,
-    private readonly venueRepository: VenueRepository,
-    private readonly chkAvailableService: CheckVenueAvailableService,
+    private readonly roomRepository: RoomRepository,
+    private readonly updateBookingService: UpdateBookingService,
   ) {}
 
   async process(input: ConfirmBookingInput): Promise<void> {
     const booking = await this.bookingRepository.findById(input.bookingId);
     if (!booking) throw new DomainError('Booking not found!');
-    const { period, venueId } = booking;
 
-    const [venue] = await this.venueRepository.findWithBookings({ id: { isIn: [venueId] } });
-    if (!venue) throw new DomainError('Venue not found!');
+    const room = await this.roomRepository.findById(booking.roomId);
+    if (!room) throw new DomainError('Room not found!');
 
-    const isAvailable = await this.chkAvailableService.check({ period, venueId });
-    if (!isAvailable) throw new DomainError('Venue not available!');
-
-    if (!booking.isConfirmable()) throw new DomainError('Booking is not confirmable!');
-
-    booking.confirm();
-    return void (await this.bookingRepository.save(booking));
+    const confirmedBooking = await this.updateBookingService.confirmBooking(booking);
+    await this.bookingRepository.save(confirmedBooking);
   }
 }

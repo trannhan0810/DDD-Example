@@ -7,7 +7,7 @@ export class CreateBookingInput {
   duration!: TimeRangeInput;
 
   @ApiProperty()
-  venueId!: string;
+  roomId!: string;
 
   @ApiProperty()
   customerId!: string;

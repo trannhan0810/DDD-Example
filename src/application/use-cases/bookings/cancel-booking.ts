@@ -1,5 +1,5 @@
 import { DomainError } from '@domain/base/base.error';
-import { BookingRepository } from '@domain/booking-reservation/repositories/booking.repository';
+import { BookingRepository } from '@domain/bookings/repositories/booking.repository';
 
 export type CancelBookingInput = {
   bookingId: Id;
@@ -13,8 +13,8 @@ export class CreateBookingUseCase {
 
     if (!booking) throw new DomainError('Booking not found!');
     if (!booking.isCancellable()) throw new DomainError('Booking is not cancelable!');
-
     booking.cancel();
-    return void (await this.bookingRepository.save(booking));
+
+    await this.bookingRepository.save(booking);
   }
 }

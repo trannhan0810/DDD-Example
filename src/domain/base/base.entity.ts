@@ -1,13 +1,5 @@
 export abstract class BaseEntity {
   abstract id: Id;
-
-  constructor() {
-    this.validate();
-  }
-
-  validate() {
-    return true;
-  }
 }
 
 export interface AuditableEntity extends BaseEntity {

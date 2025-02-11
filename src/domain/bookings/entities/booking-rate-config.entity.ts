@@ -11,7 +11,7 @@ export enum BookingRateTimeUnit {
 export class BookingRateConfig extends BaseEntity {
   constructor(
     public id: Id,
-    public venueId: Id,
+    public roomId: Id,
 
     public currency: Currency,
     public baseRate: number,

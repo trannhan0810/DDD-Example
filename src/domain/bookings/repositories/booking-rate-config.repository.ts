@@ -1,16 +1,15 @@
+import { BaseRepository } from '@domain/base/base.repository';
+
 import type { BookingRateConfig } from '../entities/booking-rate-config.entity';
 import type { Booking } from '../entities/booking.entity';
 import type { IdFilter, StringFilter } from '@domain/base/base.filter';
-import type { BaseRepository } from '@domain/base/base.repository';
 
 export type FilterBookingRateConfigInput = {
   id: IdFilter;
-  venueId: StringFilter;
+  roomId: StringFilter;
 };
 
-export abstract class BookingRepository implements BaseRepository<BookingRateConfig> {
-  abstract findAll(): Promise<BookingRateConfig[]>;
-  abstract findById(id: Id): Promise<BookingRateConfig | undefined>;
+export abstract class BookingRateRepository extends BaseRepository<BookingRateConfig> {
   abstract findAllMatched(filter: Partial<FilterBookingRateConfigInput>): Promise<BookingRateConfig[]>;
   abstract findOneMatched(filter: Partial<FilterBookingRateConfigInput>): Promise<BookingRateConfig | undefined>;
   abstract countMatched(filter: Partial<FilterBookingRateConfigInput>): Promise<number>;
