@@ -9,7 +9,7 @@ export type FilterBookingInput = {
   code: StringFilter;
   customerId: IdFilter;
   roomId: IdFilter;
-  overlapWithPeriod: TimeRange;
+  overlapWithPeriod: ObjectLike<TimeRange>;
   status: BOOKING_STATUS;
   paymentStatus: BOOKING_PAYMENT_STATUS;
 };

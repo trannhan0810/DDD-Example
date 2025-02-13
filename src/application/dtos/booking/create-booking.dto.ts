@@ -4,7 +4,7 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateBookingInput {
   @ApiProperty({ type: TimeRangeInput })
-  duration!: TimeRangeInput;
+  period!: TimeRangeInput;
 
   @ApiProperty()
   roomId!: string;
