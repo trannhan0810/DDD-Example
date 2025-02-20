@@ -2,11 +2,12 @@ import { IJwtService, JwtPayload } from '@application/services/common/jwt';
 import { Global, Injectable, Module } from '@nestjs/common';
 import jwt from 'jsonwebtoken';
 
-export const JWT_SECRET = '1234';
+export const JWT_SECRET: string = '1234';
 
 @Injectable()
 export class JwtService extends IJwtService {
-  async generateToken(payload: JwtPayload, expiresIn?: string | number): Promise<string> {
+  /** expiresIn: expire time in millisecond */
+  async generateToken(payload: JwtPayload, expiresIn?: number): Promise<string> {
     return jwt.sign(payload, JWT_SECRET, { expiresIn });
   }
 

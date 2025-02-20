@@ -9,12 +9,12 @@ export class CheckRoomAvailableService {
   async check(input: { roomId: Id; period: ObjectLike<TimeRange>; bookingId?: Id }) {
     const countConflictBooking = await this.bookingRepository.countMatched({
       roomId: { isIn: [input.roomId] },
-      overlapWithPeriod: input.period,
       id: input.bookingId ? { notIn: [input.bookingId] } : undefined,
+      overlapWithPeriod: input.period,
     });
 
     return {
-      isAvailable: countConflictBooking > 0,
+      isAvailable: countConflictBooking == 0,
       countConflictBooking,
     };
   }

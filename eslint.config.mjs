@@ -19,7 +19,7 @@ export default tseslint.config(
   },
   {
     rules: {
-      '@typescript-eslint/consistent-type-imports': 'error',
+      '@typescript-eslint/consistent-type-imports': ['error', { fixStyle: 'separate-type-imports' }],
       '@typescript-eslint/no-floating-promises': 'error',
       'import/order': [
         'error',

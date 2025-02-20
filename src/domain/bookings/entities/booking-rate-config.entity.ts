@@ -1,11 +1,11 @@
 import { BaseEntity } from '@domain/base/base.entity';
 
 import type { Currency } from '@domain/base/value-objects/currency.value-object';
+import type { WeekDays } from 'src/shared/utils/date-time.util';
 
-export enum BookingRateTimeUnit {
-  Day = 1,
-  Month = 28,
-  Year = 365,
+export enum RateType {
+  Hourly = 'Hourly',
+  Daily = 'Daily',
 }
 
 export class BookingRateConfig extends BaseEntity {
@@ -14,12 +14,14 @@ export class BookingRateConfig extends BaseEntity {
     public roomId: Id,
 
     public currency: Currency,
-    public baseRate: number,
-    public additionalFeeWeekend: number,
-    public additionalFeeLateCheckout: number,
+    public rateType: RateType,
+    public baseRate: number, //Rate by the rateType
 
-    public applyForMinDuration: number,
-    public applyForMinUnit: BookingRateTimeUnit,
+    public weeklyOffDays: WeekDays[], // Price will be 0 in offDays
+    public additionalFeeWeekend: number, // Only apply for daily rate
+    public additionalFeeLateCheckout: number, // Additional amount if checking out late
+
+    public requiredMinDurationByRateType: number = 0,
   ) {
     super();
   }

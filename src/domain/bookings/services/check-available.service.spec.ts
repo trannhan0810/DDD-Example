@@ -1,49 +1,92 @@
-import { CheckRoomAvailableService } from './check-available.service';
+import { CheckRoomAvailableService } from './check-available.service'; // Adjust path as needed
 
-import { TimeRange } from '@domain/base/value-objects/time-range.value-object';
+import { DomainError } from '@domain/base/base.error';
 
-import type { BookingRepository } from '../repositories/booking.repository';
+import type { BookingRepository } from '../repositories/booking.repository'; // Adjust path
+import type { TimeRange } from '@domain/base/value-objects/time-range.value-object'; // Adjust path
 
 describe('CheckRoomAvailableService', () => {
-  let service: CheckRoomAvailableService;
-  const bookingRepository = { countMatched: jest.fn() } as unknown as BookingRepository;
+  const bookingRepository = { countMatched: jest.fn() };
+  let checkRoomAvailableService: CheckRoomAvailableService;
 
   beforeEach(() => {
     jest.resetAllMocks();
-    service = new CheckRoomAvailableService(bookingRepository);
+    checkRoomAvailableService = new CheckRoomAvailableService(bookingRepository as unknown as BookingRepository);
   });
 
-  it('should return true if there are no overlapping bookings', async () => {
-    jest.spyOn(bookingRepository, 'countMatched').mockResolvedValueOnce(0);
+  describe('check', () => {
+    it('should return isAvailable: false and countConflictBooking when there are conflicting bookings', async () => {
+      const input = {
+        roomId: 'room1',
+        period: { start: new Date(), end: new Date() },
+      };
+      bookingRepository.countMatched.mockResolvedValue(1);
 
-    const result = await service.check({
-      roomId: 'room-123',
-      period: new TimeRange({ start: new Date('2024-07-04'), end: new Date('2024-07-06') }),
+      const result = await checkRoomAvailableService.check(input);
+
+      expect(result).toEqual({ isAvailable: false, countConflictBooking: 1 });
+      expect(bookingRepository.countMatched).toHaveBeenCalledWith({
+        roomId: { isIn: ['room1'] },
+        overlapWithPeriod: input.period,
+        id: undefined,
+      });
     });
 
-    expect(result).toBe(false);
+    it('should return isAvailable: true and countConflictBooking when there are no conflicting bookings', async () => {
+      const input = {
+        roomId: 'room1',
+        period: { start: new Date(), end: new Date() },
+      };
+      bookingRepository.countMatched.mockResolvedValue(0);
+
+      const result = await checkRoomAvailableService.check(input);
+
+      expect(result).toEqual({ isAvailable: true, countConflictBooking: 0 });
+      expect(bookingRepository.countMatched).toHaveBeenCalledWith({
+        roomId: { isIn: ['room1'] },
+        overlapWithPeriod: input.period,
+        id: undefined,
+      });
+    });
+
+    it('should exclude the bookingId when provided', async () => {
+      const input = {
+        roomId: 'room1',
+        period: { start: new Date(), end: new Date() },
+        bookingId: 'booking123',
+      };
+      bookingRepository.countMatched.mockResolvedValue(0);
+
+      await checkRoomAvailableService.check(input);
+
+      expect(bookingRepository.countMatched).toHaveBeenCalledWith({
+        roomId: { isIn: ['room1'] },
+        id: { notIn: ['booking123'] },
+        overlapWithPeriod: input.period,
+      });
+    });
   });
 
-  it('should return true if there is an overlapping booking', async () => {
-    jest.spyOn(bookingRepository, 'countMatched').mockResolvedValueOnce(1);
+  describe('validateRoomAvaiable', () => {
+    it('should not throw an error if the room is available', async () => {
+      const input = {
+        roomId: 'room1',
+        period: { start: new Date(), end: new Date() } as TimeRange, // Provide a valid TimeRange object
+      };
+      bookingRepository.countMatched.mockResolvedValue(0); // Room is available
 
-    const result = await service.check({
-      roomId: 'room-123',
-      period: new TimeRange({ start: new Date('2024-07-04'), end: new Date('2024-07-06') }),
+      await expect(checkRoomAvailableService.validateRoomAvaiable(input)).resolves.not.toThrow();
     });
 
-    expect(result).toBe(true);
-  });
+    it('should throw a DomainError if the room is not available', async () => {
+      const input = {
+        roomId: 'room1',
+        period: { start: new Date(), end: new Date() } as TimeRange, // Provide a valid TimeRange object
+      };
+      bookingRepository.countMatched.mockResolvedValue(1); // Room is not available
 
-  it('should not count the current booking as a conflict', async () => {
-    jest.spyOn(bookingRepository, 'countMatched').mockResolvedValueOnce(0);
-
-    const result = await service.check({
-      roomId: 'room-123',
-      period: new TimeRange({ start: new Date('2024-07-04'), end: new Date('2024-07-06') }),
-      bookingId: 'existing-booking-id',
+      await expect(checkRoomAvailableService.validateRoomAvaiable(input)).rejects.toThrow(DomainError);
+      await expect(checkRoomAvailableService.validateRoomAvaiable(input)).rejects.toThrow('Room not available!');
     });
-
-    expect(result).toBe(false);
   });
 });

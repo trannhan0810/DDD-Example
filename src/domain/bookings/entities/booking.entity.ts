@@ -52,7 +52,7 @@ export class Booking extends BaseBooking {
   }
 
   checkOut(): void {
-    this.status = BOOKING_STATUS.CheckedIn;
+    this.status = BOOKING_STATUS.CheckedOut;
   }
 
   cancel(): void {

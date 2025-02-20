@@ -1,32 +1,48 @@
+import { RateType } from '../entities/booking-rate-config.entity';
+
 import { DomainError } from '@domain/base/base.error';
+import { DateTimeUnit, DateTimeUtils, DurationConverter, WeekDays } from 'src/shared/utils/date-time.util';
 
 import type { BookingRateConfig } from '../entities/booking-rate-config.entity';
-import type { Booking } from '../entities/booking.entity';
-import type { TimeRange } from '@domain/base/value-objects/time-range.value-object';
+
+export type BookingRateConfigForPriceCalculation = Pick<
+  BookingRateConfig,
+  'id' | 'rateType' | 'baseRate' | 'requiredMinDurationByRateType' | 'additionalFeeWeekend' | 'weeklyOffDays'
+>;
 
 export class CalculateBookingPriceService {
-  getSuitableBookingRate(period: TimeRange, bookingRateConfigs: BookingRateConfig[]) {
-    const countBookingDays = period.countDay();
-    const sortedBookingRateConfigs = [...bookingRateConfigs].sort((item1, item2) => {
-      if (item1.applyForMinUnit !== item2.applyForMinUnit) return item1.applyForMinUnit - item2.applyForMinUnit;
-      if (item1.applyForMinDuration !== item2.applyForMinDuration)
-        return item1.applyForMinDuration - item2.applyForMinDuration;
-      return -(item1.baseRate - item2.baseRate);
-    });
-    return sortedBookingRateConfigs.find(item => countBookingDays >= item.applyForMinUnit);
-  }
-
-  calculate(input: { booking: Booking; bookingRateConfigs: BookingRateConfig[] }) {
-    const { booking, bookingRateConfigs } = input;
-    const bookingRateConfig = this.getSuitableBookingRate(booking.period, bookingRateConfigs);
-    if (!bookingRateConfig) {
-      throw new DomainError('Cannot calculate booking price: no avaible booking rate config');
+  static calculateBookingPrice(
+    startDateTime: Date,
+    endDateTime: Date,
+    bookingRateConfig: BookingRateConfigForPriceCalculation,
+  ): number {
+    if (endDateTime <= startDateTime) {
+      throw new DomainError('End date/time must be after start date/time');
     }
 
-    const basePrice = bookingRateConfig.baseRate * booking.period.countDay();
+    const bookTypeDateUnit = bookingRateConfig.rateType === RateType.Hourly ? DateTimeUnit.hour : DateTimeUnit.day;
+    const duration = DateTimeUtils.fromDate(endDateTime).diff(startDateTime);
+    const durationByBookingType = new DurationConverter(duration).toDecimal(bookTypeDateUnit);
 
-    return {
-      price: basePrice,
-    };
+    const { requiredMinDurationByRateType } = bookingRateConfig;
+    if (durationByBookingType < requiredMinDurationByRateType) {
+      throw new Error(
+        `Booking duration must be at least ${requiredMinDurationByRateType} ${bookingRateConfig.rateType.toLowerCase()}`,
+      );
+    }
+
+    let totalPrice = durationByBookingType * bookingRateConfig.baseRate;
+
+    if (bookingRateConfig.rateType === RateType.Daily) {
+      //Handle weekend
+      const weekendDays = DateTimeUtils.countWeekdays(startDateTime, endDateTime, [WeekDays.Saturday, WeekDays.Sunday]);
+      totalPrice += weekendDays * bookingRateConfig.additionalFeeWeekend;
+
+      // Handle off days
+      const offDayCount = DateTimeUtils.countWeekdays(startDateTime, endDateTime, bookingRateConfig.weeklyOffDays);
+      totalPrice -= offDayCount * bookingRateConfig.baseRate;
+    }
+
+    return totalPrice;
   }
 }
