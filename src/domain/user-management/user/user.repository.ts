@@ -1,7 +1,7 @@
 import type { User } from '../entities/user.entity';
 import type { OptionalID } from '@domain/base/base.entity';
 import type { BooleanFilter, DateFilter, IdFilter, StringFilter } from '@domain/base/base.filter';
-import type { BaseRepository, EditableRepository } from '@domain/base/base.repository';
+import type { BaseRepository } from '@domain/base/base.repository';
 
 export type FilterUserInput = {
   id: IdFilter;
@@ -16,7 +16,7 @@ export type FilterUserInput = {
   resetPasswordCodeExpireTime: DateFilter;
 };
 
-export abstract class UserRepository implements BaseRepository<User>, EditableRepository<User> {
+export abstract class UserRepository implements BaseRepository<User> {
   abstract findAll(): Promise<User[]>;
   abstract findById(userId: Id): Promise<User | undefined>;
   abstract findAllMatched(spec: Partial<FilterUserInput>): Promise<User[]>;

@@ -1,11 +1,7 @@
-import type { Privilege } from '../entities/privilege.entity';
+import { BaseRepository } from '@domain/base/base.repository';
+
 import type { Role } from '../entities/role.entity';
 import type { IdFilter, StringFilter } from '@domain/base/base.filter';
-import type { BaseRepository } from '@domain/base/base.repository';
-
-interface RoleAndPrivileges extends Role {
-  privileges: Privilege;
-}
 
 export type FilterRoleInput = {
   id: IdFilter;
@@ -14,12 +10,13 @@ export type FilterRoleInput = {
   personId: IdFilter;
 };
 
-export abstract class RoleRepository implements BaseRepository<Role> {
-  abstract findAll(): Promise<Role[]>;
-  abstract findById(id: Id): Promise<Role>;
+export abstract class RoleRepository extends BaseRepository<Role> {
   abstract findAllMatched(filter: Partial<FilterRoleInput>): Promise<Role[]>;
   abstract findOneMatched(filter: Partial<FilterRoleInput>): Promise<Role | undefined>;
   abstract countMatched(filter: Partial<FilterRoleInput>): Promise<number>;
 
-  abstract findWithPrivilege(filter: Partial<FilterRoleInput>): Promise<RoleAndPrivileges[]>;
+  abstract findWithPrivilege(filter: Partial<FilterRoleInput>): Promise<Role[]>;
+
+  abstract save(input: Role): Promise<void>;
+  abstract delete(id: Id): Promise<void>;
 }

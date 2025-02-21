@@ -1,6 +1,5 @@
+import { BaseEntity } from '@domain/base/base.entity';
 import { TimeRange } from '@domain/base/value-objects/time-range.value-object';
-
-import type { UnsavedEntity } from '@domain/base/base.entity';
 
 export enum BOOKING_STATUS {
   Unconfirmed = 'Unconfirmed',
@@ -17,9 +16,9 @@ export enum BOOKING_PAYMENT_STATUS {
   Paid = 'Paid',
 }
 
-export class BaseBooking {
+export class BaseBooking<ID extends Id | null = Id> extends BaseEntity<ID> {
   constructor(
-    public readonly id: Id,
+    public readonly id: ID,
     public readonly code: string,
     public customerId: Id,
     public roomId: Id,
@@ -27,10 +26,12 @@ export class BaseBooking {
     public status: BOOKING_STATUS,
     public paymentStatus: BOOKING_PAYMENT_STATUS,
     public totalPrice: number,
-  ) {}
+  ) {
+    super();
+  }
 }
 
-export class Booking extends BaseBooking {
+export class Booking<ID extends Id | null = Id> extends BaseBooking<ID> {
   isConfirmable(): boolean {
     if (this.status !== BOOKING_STATUS.Unconfirmed) return false;
     if (this.paymentStatus === BOOKING_PAYMENT_STATUS.Unpaid) return false;
@@ -59,9 +60,11 @@ export class Booking extends BaseBooking {
     this.status = BOOKING_STATUS.Canceled;
   }
 
-  static create<T extends BookingCreate>(input: T): T extends Booking ? Booking : UnsavedEntity<Booking> {
+  static create<T extends BookingCreate>(input: T & { id: Id }): Booking;
+  static create<T extends BookingCreate>(input: T): Booking<null>;
+  static create<T extends BookingCreate>(input: T & { id: Id }): Booking<null | Id> {
     return new Booking(
-      input.id ?? 0,
+      input.id ?? null,
       input.code ?? '#######',
       input.customerId,
       input.roomId,

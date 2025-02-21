@@ -1,14 +1,18 @@
+import { BaseEntity } from '@domain/base/base.entity';
+
 export type GeoLocation = {
   longitude: number;
   latitude: number;
 };
 
-export class Hotel {
+export class Hotel<ID extends Id | null = Id> extends BaseEntity<ID> {
   constructor(
-    public readonly id: number,
+    public readonly id: ID,
     public name: string,
     public description: string,
     public address: string,
     public geoLocation: GeoLocation,
-  ) {}
+  ) {
+    super();
+  }
 }

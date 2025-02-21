@@ -1,8 +1,12 @@
-export abstract class BaseEntity {
-  abstract id: Id;
+export abstract class BaseEntity<ID extends Id | null = Id> {
+  abstract id: ID;
+
+  hasId(): this is BaseEntity<Id> {
+    return this.id !== null;
+  }
 }
 
-export interface AuditableEntity extends BaseEntity {
+export interface AuditableEntity<ID extends Id | null> extends BaseEntity<ID> {
   createdById: Id;
   updatedById: Id;
   createdAt: Date;

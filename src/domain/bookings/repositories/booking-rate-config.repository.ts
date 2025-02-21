@@ -1,7 +1,6 @@
 import { BaseRepository } from '@domain/base/base.repository';
 
 import type { BookingRateConfig } from '../entities/booking-rate-config.entity';
-import type { Booking } from '../entities/booking.entity';
 import type { IdFilter, StringFilter } from '@domain/base/base.filter';
 
 export type FilterBookingRateConfigInput = {
@@ -14,6 +13,6 @@ export abstract class BookingRateRepository extends BaseRepository<BookingRateCo
   abstract findOneMatched(filter: Partial<FilterBookingRateConfigInput>): Promise<BookingRateConfig | undefined>;
   abstract countMatched(filter: Partial<FilterBookingRateConfigInput>): Promise<number>;
 
-  abstract save(booking: Omit<Booking, 'id'>): Promise<void>;
-  abstract delete(booking: Booking): Promise<void>;
+  abstract save(input: BookingRateConfig<Id | null>): Promise<void>;
+  abstract delete(id: Id): Promise<void>;
 }

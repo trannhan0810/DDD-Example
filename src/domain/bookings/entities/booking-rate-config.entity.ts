@@ -8,9 +8,9 @@ export enum RateType {
   Daily = 'Daily',
 }
 
-export class BookingRateConfig extends BaseEntity {
+export class BookingRateConfig<ID extends Id | null = Id> extends BaseEntity<ID> {
   constructor(
-    public id: Id,
+    public id: ID,
     public roomId: Id,
 
     public currency: Currency,

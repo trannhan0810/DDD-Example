@@ -1,6 +1,6 @@
 import { AssignRoleInput } from '@application/dtos/users/user-role.dto';
 import { DomainError } from '@domain/base/base.error';
-import { RoleRepository } from '@domain/permission-management/repositories/role.repository';
+import { RoleRepository } from '@domain/staff/repositories/role.repository';
 import { UserRepository } from '@domain/user-management/user/user.repository';
 
 export class AssignRoleUseCase {
