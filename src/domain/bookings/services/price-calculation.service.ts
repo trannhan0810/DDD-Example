@@ -21,7 +21,7 @@ export class CalculateBookingPriceService {
     }
 
     const bookTypeDateUnit = bookingRateConfig.rateType === RateType.Hourly ? DateTimeUnit.hour : DateTimeUnit.day;
-    const duration = DateTimeUtils.fromDate(endDateTime).diff(startDateTime);
+    const duration = DateTimeUtils.diff(endDateTime, startDateTime);
     const durationByBookingType = new DurationConverter(duration).toDecimal(bookTypeDateUnit);
 
     const { requiredMinDurationByRateType } = bookingRateConfig;

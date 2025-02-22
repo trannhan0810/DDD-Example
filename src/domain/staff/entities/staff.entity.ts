@@ -7,10 +7,10 @@ import type { User } from '@domain/user-management/entities/user.entity';
 export class Staff<ID extends Id | null = Id> extends BaseEntity<ID> {
   constructor(
     public readonly id: ID,
-    public readonly person: User,
 
-    public readonly roles: Promise<Role[]>,
-    public readonly hotel: Promise<Hotel[]>,
+    public readonly person: User,
+    public readonly hotel: Hotel,
+    public readonly roles: Role[],
   ) {
     super();
   }

@@ -7,7 +7,7 @@ export class Role<ID extends Id | null = Id> extends BaseEntity<ID> {
     public readonly id: ID,
     public readonly name: string,
 
-    public readonly privileges: Promise<Privilege[]>,
+    public readonly privileges: Privilege[],
   ) {
     super();
   }

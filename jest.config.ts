@@ -17,5 +17,5 @@ export default {
     '!**/dtos/**', // Exclude DTO files
     '!**/index.ts', // Exclude barel files
   ],
-  coverageReporters: ['lcov', ['text', { skipFull: true }], 'text-summary'],
+  coverageReporters: ['lcov', ['text', { skipFull: false }], 'text-summary'],
 };
