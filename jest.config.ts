@@ -9,7 +9,10 @@ export default {
   moduleFileExtensions: ['ts', 'js', 'html'],
   collectCoverage: true,
   collectCoverageFrom: [
-    'src/**/*.{ts,tsx}', // Include all JavaScript, TypeScript, and JSX files
+    'src/domain/**/*.{ts,tsx}', // Include all JavaScript, TypeScript, and JSX files
+    'src/application/**/*.{ts,tsx}', // Include all JavaScript, TypeScript, and JSX files
+    // 'src/infrastructure/**/*.{ts,tsx}', // Include all JavaScript, TypeScript, and JSX files
+    'src/shared/**/*.{ts,tsx}', // Include all JavaScript, TypeScript, and JSX files
     '!**/node_modules/**', // Exclude node_modules directory
     '!**/dist/**', // Exclude compiled files
     '!**/coverage/**', // Exclude coverage reports
