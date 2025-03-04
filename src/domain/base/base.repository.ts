@@ -8,9 +8,6 @@ export interface Factory<T extends BaseEntity> {
 export abstract class BaseRepository<T extends BaseEntity> {
   abstract findAll(): Promise<T[]>;
   abstract findById(id: Id): Promise<T | undefined>;
-}
-
-export interface EditableRepository<T extends BaseEntity> {
-  save(item: NullPartial<T>): Promise<Id>;
-  deleteById(id: Id): Promise<void>;
+  abstract save(item: NullPartial<T>): Promise<Id>;
+  abstract deleteById(id: Id): Promise<void>;
 }

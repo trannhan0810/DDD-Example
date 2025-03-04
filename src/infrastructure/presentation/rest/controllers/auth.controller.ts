@@ -1,12 +1,12 @@
+import { ForgotPasswordInput } from '@application/dtos/auth/forgot-password.dto';
 import { GetMeResponse } from '@application/dtos/auth/get-me.dto';
 import { LoginInput, LoginResponse } from '@application/dtos/auth/login.dto';
-import { ResetPasswordInput } from '@application/dtos/auth/reset-password.dto';
-import { VerifyResetPasswordInput } from '@application/dtos/auth/verify-reset-password';
+import { ResetPasswordInput } from '@application/dtos/auth/reset-password';
 import { BaseMessageResponse } from '@application/dtos/base/message-response.dto';
+import { ForgotPasswordUseCase } from '@application/use-cases/auth/forgot-password';
 import { GetMeUseCase } from '@application/use-cases/auth/get-me.use-case';
 import { LoginUseCase } from '@application/use-cases/auth/login.use-case';
-import { ResetPasswordUseCase } from '@application/use-cases/auth/reset-password';
-import { VerifyResetPasswordUseCase } from '@application/use-cases/auth/verify-reset-password';
+import { ResetPasswordUseCase } from '@application/use-cases/auth/verify-reset-password';
 import { Body, Controller, Get, Module, Post } from '@nestjs/common';
 import { ApiBody, ApiResponse } from '@nestjs/swagger';
 
@@ -14,8 +14,8 @@ import { ApiBody, ApiResponse } from '@nestjs/swagger';
 export class AuthController {
   constructor(
     private readonly loginUseCase: LoginUseCase,
-    private readonly resetPasswordUseCase: ResetPasswordUseCase,
-    private readonly verifyResetPasswordUseCase: VerifyResetPasswordUseCase,
+    private readonly resetPasswordUseCase: ForgotPasswordUseCase,
+    private readonly verifyResetPasswordUseCase: ResetPasswordUseCase,
     private readonly getMeUseCase: GetMeUseCase,
   ) {}
 
@@ -27,16 +27,16 @@ export class AuthController {
   }
 
   @Post('reset-password')
-  @ApiBody({ type: ResetPasswordInput })
+  @ApiBody({ type: ForgotPasswordInput })
   @ApiResponse({ type: BaseMessageResponse })
-  async resetPassword(@Body('input') input: ResetPasswordInput): Promise<BaseMessageResponse> {
+  async resetPassword(@Body('input') input: ForgotPasswordInput): Promise<BaseMessageResponse> {
     return this.resetPasswordUseCase.process(input);
   }
 
   @Post('verify-reset-password')
-  @ApiBody({ type: VerifyResetPasswordInput })
+  @ApiBody({ type: ResetPasswordInput })
   @ApiResponse({ type: BaseMessageResponse })
-  async verifyResetPassword(@Body('input') input: VerifyResetPasswordInput): Promise<BaseMessageResponse> {
+  async verifyResetPassword(@Body('input') input: ResetPasswordInput): Promise<BaseMessageResponse> {
     return this.verifyResetPasswordUseCase.process(input);
   }
 
@@ -50,6 +50,6 @@ export class AuthController {
 @Module({
   imports: [],
   controllers: [AuthController],
-  providers: [LoginUseCase, ResetPasswordUseCase, VerifyResetPasswordUseCase, GetMeUseCase],
+  providers: [LoginUseCase, ForgotPasswordUseCase, ResetPasswordUseCase, GetMeUseCase],
 })
 export class AuthRestApiModule {}

@@ -1,8 +1,8 @@
 import type { InMemoryUnitOfWork } from '../unit-of-work';
 import type { BaseEntity } from '@domain/base/base.entity';
-import type { BaseRepository, EditableRepository } from '@domain/base/base.repository';
+import type { BaseRepository } from '@domain/base/base.repository';
 
-export abstract class BaseInMemoryRepository<T extends BaseEntity> implements BaseRepository<T>, EditableRepository<T> {
+export abstract class BaseInMemoryRepository<T extends BaseEntity> implements BaseRepository<T> {
   protected abstract _items: T[];
   constructor(private uow: InMemoryUnitOfWork) {}
 

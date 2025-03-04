@@ -1,5 +1,7 @@
 import { BaseEntity } from '@domain/base/base.entity';
 import { DomainError } from '@domain/base/base.error';
+import { DateTimeUtils } from 'src/shared/utils/date-time.util';
+import { generateRandomString } from 'src/shared/utils/random.util';
 
 import type { UnsavedEntity } from '@domain/base/base.entity';
 
@@ -18,16 +20,16 @@ export class User extends BaseEntity {
     super();
   }
 
-  updateResetPassword() {
-    const newResetPassword = '123456';
-    const newExpireDate = new Date();
+  updateResetPasswordCode() {
+    const newResetPassword = generateRandomString({ length: 6, includeNumbers: true });
+    const newExpireDate = DateTimeUtils.fromDate(new Date()).add({ hour: 1 }).toDate();
     this.resetPasswordCode = newResetPassword;
     this.resetPasswordCodeExpireTime = newExpireDate;
 
     return { code: newResetPassword, expireDate: newExpireDate };
   }
 
-  verifyResetCode(code: string) {
+  verifyResetPasswordCode(code: string) {
     if (!this.resetPasswordCode) throw new DomainError('No reset password infomation!');
     if (!this.resetPasswordCodeExpireTime) throw new DomainError('No reset password infomation!');
     if (this.resetPasswordCode !== code) throw new DomainError('Reset code invalid!');
