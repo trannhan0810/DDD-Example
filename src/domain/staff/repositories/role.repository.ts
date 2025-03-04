@@ -17,6 +17,6 @@ export abstract class RoleRepository extends BaseRepository<Role> {
 
   abstract findWithPrivilege(filter: Partial<FilterRoleInput>): Promise<Role[]>;
 
-  abstract save(input: Role): Promise<void>;
+  abstract save(input: Role): Promise<Id>;
   abstract delete(id: Id): Promise<void>;
 }

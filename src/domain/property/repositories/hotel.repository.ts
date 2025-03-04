@@ -5,6 +5,6 @@ import type { Hotel } from '../entities/hotel.entity';
 
 @Injectable()
 export abstract class HotelRepository extends BaseRepository<Hotel> {
-  abstract save(input: Hotel): Promise<void>;
+  abstract save(input: Hotel): Promise<Id>;
   abstract delete(id: Id): Promise<void>;
 }

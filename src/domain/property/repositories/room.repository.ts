@@ -22,6 +22,6 @@ export abstract class RoomRepository extends BaseRepository<Room> {
 
   abstract findWithBookings(spec: Partial<FilterRoomInput>): Promise<RoomIncludeBookingProjection[]>;
 
-  abstract save(input: Room): Promise<void>;
+  abstract save(input: Room): Promise<Id>;
   abstract delete(id: Id): Promise<void>;
 }

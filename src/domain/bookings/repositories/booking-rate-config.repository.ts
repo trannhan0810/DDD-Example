@@ -13,6 +13,6 @@ export abstract class BookingRateRepository extends BaseRepository<BookingRateCo
   abstract findOneMatched(filter: Partial<FilterBookingRateConfigInput>): Promise<BookingRateConfig | undefined>;
   abstract countMatched(filter: Partial<FilterBookingRateConfigInput>): Promise<number>;
 
-  abstract save(input: BookingRateConfig<Id | null>): Promise<void>;
+  abstract save(input: BookingRateConfig<Id | null>): Promise<Id>;
   abstract delete(id: Id): Promise<void>;
 }

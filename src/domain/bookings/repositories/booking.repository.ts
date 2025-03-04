@@ -19,6 +19,6 @@ export abstract class BookingRepository extends BaseRepository<Booking> {
   abstract findOneMatched(filter: Partial<FilterBookingInput>): Promise<Booking | undefined>;
   abstract countMatched(filter: Partial<FilterBookingInput>): Promise<number>;
 
-  abstract save(input: Booking<Id | null>): Promise<void>;
+  abstract save(input: Booking<Id | null>): Promise<Id>;
   abstract delete(id: Id): Promise<void>;
 }
