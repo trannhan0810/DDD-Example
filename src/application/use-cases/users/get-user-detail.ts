@@ -1,4 +1,4 @@
-import { UserDetailResponse } from '@application/dtos/users/get-one-user';
+import { UserDetailResponse } from '@application/dtos/users/get-one-user.dto';
 import { DomainError } from '@domain/base/base.error';
 import { UserRepository } from '@domain/user-management/user/user.repository';
 

@@ -1,6 +1,6 @@
 import { CreateUserInput } from '@application/dtos/users/create-user.dto';
-import { FindAllUserResponse } from '@application/dtos/users/get-all-user';
-import { UserDetailResponse } from '@application/dtos/users/get-one-user';
+import { FindAllUserResponse } from '@application/dtos/users/get-all-user.dto';
+import { UserDetailResponse } from '@application/dtos/users/get-one-user.dto';
 import { CreateUserUseCase } from '@application/use-cases/users/create-user';
 import { FindAllUserUseCase } from '@application/use-cases/users/get-all-user';
 import { GetUserDetailUseCase } from '@application/use-cases/users/get-user-detail';

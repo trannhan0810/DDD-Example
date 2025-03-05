@@ -1,12 +1,12 @@
 import { ForgotPasswordInput } from '@application/dtos/auth/forgot-password.dto';
 import { GetMeResponse } from '@application/dtos/auth/get-me.dto';
 import { LoginInput, LoginResponse } from '@application/dtos/auth/login.dto';
-import { ResetPasswordInput } from '@application/dtos/auth/reset-password';
+import { ResetPasswordInput } from '@application/dtos/auth/reset-password.dto';
 import { BaseMessageResponse } from '@application/dtos/base/message-response.dto';
-import { ForgotPasswordUseCase } from '@application/use-cases/auth/forgot-password';
+import { ForgotPasswordUseCase } from '@application/use-cases/auth/forgot-password-use-case';
 import { GetMeUseCase } from '@application/use-cases/auth/get-me.use-case';
 import { LoginUseCase } from '@application/use-cases/auth/login.use-case';
-import { ResetPasswordUseCase } from '@application/use-cases/auth/verify-reset-password';
+import { ResetPasswordUseCase } from '@application/use-cases/auth/reset-password.use-case';
 import { Body, Controller, Get, Module, Post } from '@nestjs/common';
 import { ApiBody, ApiResponse } from '@nestjs/swagger';
 

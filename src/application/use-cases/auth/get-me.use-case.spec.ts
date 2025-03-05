@@ -1,7 +1,7 @@
 import { GetMeUseCase } from './get-me.use-case';
 
+import { IJwtService } from '@application/common/jwt';
 import { GetMeResponse } from '@application/dtos/auth/get-me.dto';
-import { IJwtService } from '@application/services/common/jwt';
 
 describe('GetMeUseCase', () => {
   let useCase: GetMeUseCase;

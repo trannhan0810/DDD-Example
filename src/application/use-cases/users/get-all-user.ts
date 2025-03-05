@@ -1,4 +1,4 @@
-import { FindAllUserResponse } from '@application/dtos/users/get-all-user';
+import { FindAllUserResponse } from '@application/dtos/users/get-all-user.dto';
 import { UserRepository } from '@domain/user-management/user/user.repository';
 
 export class FindAllUserUseCase {

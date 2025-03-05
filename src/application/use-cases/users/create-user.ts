@@ -1,6 +1,6 @@
+import { ICryptoService } from '@application/common/cryto';
 import { BaseMessageResponse } from '@application/dtos/base/message-response.dto';
 import { CreateUserInput } from '@application/dtos/users/create-user.dto';
-import { ICryptoService } from '@application/services/common/cryto';
 import { DomainError } from '@domain/base/base.error';
 import { User } from '@domain/user-management/entities/user.entity';
 import { UserRepository } from '@domain/user-management/user/user.repository';

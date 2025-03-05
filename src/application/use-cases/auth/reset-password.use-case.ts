@@ -1,6 +1,6 @@
-import { ResetPasswordInput } from '@application/dtos/auth/reset-password';
+import { ICryptoService } from '@application/common/cryto';
+import { ResetPasswordInput } from '@application/dtos/auth/reset-password.dto';
 import { BaseMessageResponse } from '@application/dtos/base/message-response.dto';
-import { ICryptoService } from '@application/services/common/cryto';
 import { DomainError } from '@domain/base/base.error';
 import { UserRepository } from '@domain/user-management/user/user.repository';
 

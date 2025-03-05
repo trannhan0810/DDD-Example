@@ -1,7 +1,7 @@
+import { IEmailService } from '@application/common/email/email';
+import { getSendResetPasswordEmailParams } from '@application/common/email/templates/reset-password';
 import { ForgotPasswordInput } from '@application/dtos/auth/forgot-password.dto';
 import { BaseMessageResponse } from '@application/dtos/base/message-response.dto';
-import { IEmailService } from '@application/services/common/email/email';
-import { getSendResetPasswordEmailParams } from '@application/services/common/email/templates/reset-password';
 import { DomainError } from '@domain/base/base.error';
 import { User } from '@domain/user-management/entities/user.entity';
 import { UserRepository } from '@domain/user-management/user/user.repository';

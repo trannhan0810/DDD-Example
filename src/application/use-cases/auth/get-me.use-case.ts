@@ -1,5 +1,5 @@
+import { IJwtService } from '@application/common/jwt';
 import { GetMeResponse } from '@application/dtos/auth/get-me.dto';
-import { IJwtService } from '@application/services/common/jwt';
 
 export class GetMeUseCase {
   constructor(private readonly jwtService: IJwtService) {}
