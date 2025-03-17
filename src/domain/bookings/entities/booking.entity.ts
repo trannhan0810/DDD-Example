@@ -60,9 +60,9 @@ export class Booking<ID extends Id | null = Id> extends BaseBooking<ID> {
     this.status = BOOKING_STATUS.Canceled;
   }
 
-  static create<T extends BookingCreate>(input: T & { id: Id }): Booking;
-  static create<T extends BookingCreate>(input: T): Booking<null>;
-  static create<T extends BookingCreate>(input: T & { id: Id }): Booking<null | Id> {
+  static create(input: BookingCreate & { id: Id }): Booking;
+  static create(input: BookingCreate): Booking<null>;
+  static create(input: BookingCreate & { id: Id }): Booking<null | Id> {
     return new Booking(
       input.id ?? null,
       input.code ?? '#######',

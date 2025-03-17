@@ -2,7 +2,7 @@ import { BaseMessageResponse } from '@application/dtos/base/message-response.dto
 import { RemoveRoleInput } from '@application/dtos/users/user-role.dto';
 import { DomainError } from '@domain/base/base.error';
 import { RoleRepository } from '@domain/staff/repositories/role.repository';
-import { UserRepository } from '@domain/user-management/user/user.repository';
+import { UserRepository } from '@domain/user-management/respositories/user.repository';
 
 export class RemoveRoleUseCase {
   constructor(private readonly userRepository: UserRepository, private readonly roleRepository: RoleRepository) {}

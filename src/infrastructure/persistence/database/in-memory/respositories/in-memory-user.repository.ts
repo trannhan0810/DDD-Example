@@ -1,8 +1,7 @@
 import { BaseInMemoryRepository } from './base.repository';
 
-import { UnsavedEntity } from '@domain/base/base.entity';
 import { User } from '@domain/user-management/entities/user.entity';
-import { FilterUserInput, UserRepository } from '@domain/user-management/user/user.repository';
+import { FilterUserInput, UserRepository } from '@domain/user-management/respositories/user.repository';
 import { Injectable } from '@nestjs/common';
 
 const mockUserData = [
@@ -45,7 +44,7 @@ const mockUserData = [
 
 @Injectable()
 export class UserInMemoryRepository extends BaseInMemoryRepository<User> implements UserRepository {
-  protected _items: User[] = mockUserData.map(User.create<User>);
+  protected _items: User[] = mockUserData.map(u => User.create(u));
   protected _userAndRoleIds: Map<Id, Id[]> = new Map();
 
   static readonly providerFor = UserRepository;
@@ -73,14 +72,14 @@ export class UserInMemoryRepository extends BaseInMemoryRepository<User> impleme
     return this._items.filter(spec.isSastifyBy).length;
   }
 
-  async save(input: UnsavedEntity<User> & { id?: Id }): Promise<Id> {
+  async save(input: User<Id | null>): Promise<Id> {
     const item = input.id ? await this.findById(input.id) : undefined;
     if (item) {
       Object.assign(item, input);
       return item.id;
     }
     const id = Math.max(...this._items.map(item => Number(item.id)));
-    this._items.push(User.create<User>({ ...input, id }));
+    this._items.push(User.create({ ...input, id }));
     return id;
   }
 

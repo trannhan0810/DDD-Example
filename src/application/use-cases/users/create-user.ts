@@ -3,7 +3,7 @@ import { BaseMessageResponse } from '@application/dtos/base/message-response.dto
 import { CreateUserInput } from '@application/dtos/users/create-user.dto';
 import { DomainError } from '@domain/base/base.error';
 import { User } from '@domain/user-management/entities/user.entity';
-import { UserRepository } from '@domain/user-management/user/user.repository';
+import { UserRepository } from '@domain/user-management/respositories/user.repository';
 
 export class CreateUserUseCase {
   constructor(private readonly userRepository: UserRepository, private readonly cryptoService: ICryptoService) {}

@@ -5,21 +5,42 @@ import { IJwtService } from '@application/common/jwt';
 import { LoginInput } from '@application/dtos/auth/login.dto';
 import { DomainError } from '@domain/base/base.error';
 import { User } from '@domain/user-management/entities/user.entity';
-import { UserRepository } from '@domain/user-management/user/user.repository';
+import { UserRepository } from '@domain/user-management/respositories/user.repository';
+
+const MUserRepository = UserRepository as ClassType<UserRepository>;
+new MUserRepository();
+
+class MockUserRepository extends UserRepository {
+  findAll = jest.fn();
+  findById = jest.fn();
+  findAllMatched = jest.fn();
+  findOneMatched = jest.fn();
+  countMatched = jest.fn();
+  save = jest.fn();
+  deleteById = jest.fn();
+  addRoles = jest.fn();
+  removeRoles = jest.fn();
+}
+
+class MockJwtService extends IJwtService {
+  generateToken = jest.fn();
+  verifyToken = jest.fn();
+  decodeToken = jest.fn();
+}
+
+class MockCryptoService extends ICryptoService {
+  hash = jest.fn();
+}
 
 describe('LoginUseCase', () => {
   let useCase: LoginUseCase;
-  const mockUserRepository = { findOneMatched: jest.fn() };
-  const mockCryptoService = { hash: jest.fn() };
-  const mockJwtService = { generateToken: jest.fn() };
+  const mockUserRepository = new MockUserRepository();
+  const mockCryptoService = new MockCryptoService();
+  const mockJwtService = new MockJwtService();
 
   beforeEach(() => {
     jest.resetAllMocks();
-    useCase = new LoginUseCase(
-      mockUserRepository as unknown as UserRepository,
-      mockCryptoService as unknown as ICryptoService,
-      mockJwtService as unknown as IJwtService,
-    );
+    useCase = new LoginUseCase(mockUserRepository, mockCryptoService, mockJwtService);
   });
 
   it('should successfully login a user with valid credentials', async () => {
@@ -44,10 +65,7 @@ describe('LoginUseCase', () => {
 
     const result = await useCase.process(loginInput);
 
-    expect(result).toEqual({
-      accessToken: 'access-token',
-      refreshToken: 'refresh-token',
-    });
+    expect(result).toEqual({ accessToken: 'access-token', refreshToken: 'refresh-token' });
     expect(mockUserRepository.findOneMatched).toHaveBeenCalledWith({ email: { isIn: [loginInput.email] } });
     expect(mockCryptoService.hash).toHaveBeenCalledWith(loginInput.password);
     expect(mockJwtService.generateToken).toHaveBeenCalledTimes(2);
@@ -56,12 +74,10 @@ describe('LoginUseCase', () => {
   it('should throw a DomainError for invalid credentials', async () => {
     const loginInput: LoginInput = { email: 'user@example.com', password: 'wrong-password' };
     const expectedError = new DomainError('Email or password is incorrect');
-    mockUserRepository.findOneMatched.mockResolvedValueOnce(null);
+    mockUserRepository.findOneMatched.mockResolvedValueOnce(undefined);
 
     await expect(useCase.process(loginInput)).rejects.toThrow(expectedError);
-    expect(mockUserRepository.findOneMatched).toHaveBeenCalledWith({
-      email: { isIn: [loginInput.email] },
-    });
+    expect(mockUserRepository.findOneMatched).toHaveBeenCalledWith({ email: { isIn: [loginInput.email] } });
     expect(mockCryptoService.hash).toHaveBeenCalledTimes(1);
     expect(mockJwtService.generateToken).toHaveBeenCalledTimes(0);
   });
@@ -72,9 +88,7 @@ describe('LoginUseCase', () => {
     const loginInput: LoginInput = { email: 'user@example.com', password: 'password' };
 
     await expect(useCase.process(loginInput)).rejects.toThrow(expectedError);
-    expect(mockUserRepository.findOneMatched).toHaveBeenCalledWith({
-      email: { isIn: [loginInput.email] },
-    });
+    expect(mockUserRepository.findOneMatched).toHaveBeenCalledWith({ email: { isIn: [loginInput.email] } });
     expect(mockCryptoService.hash).toHaveBeenCalledTimes(0);
     expect(mockJwtService.generateToken).toHaveBeenCalledTimes(0);
   });

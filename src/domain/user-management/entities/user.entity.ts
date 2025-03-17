@@ -3,11 +3,9 @@ import { DomainError } from '@domain/base/base.error';
 import { DateTimeUtils } from 'src/shared/utils/date-time.util';
 import { generateRandomString } from 'src/shared/utils/random.util';
 
-import type { UnsavedEntity } from '@domain/base/base.entity';
-
-export class User extends BaseEntity {
+export class User<ID extends Id | null = Id> extends BaseEntity<ID> {
   constructor(
-    public readonly id: Id,
+    public readonly id: ID,
     public readonly email: string,
     public firstname: string,
     public lastname: string,
@@ -36,9 +34,11 @@ export class User extends BaseEntity {
     if (this.resetPasswordCodeExpireTime.getTime() < Date.now()) throw new DomainError('Reset code expired!');
   }
 
-  static create<T extends UserCreate>(input: UserCreate): T extends User ? User : UnsavedEntity<User> {
+  static create(input: UserCreate & { id: Id }): User;
+  static create(input: UserCreate): User<null>;
+  static create(input: UserCreate): User<Id | null> {
     return new User(
-      input.id ?? 0,
+      input.id ?? null,
       input.email,
       input.firstname,
       input.lastname,

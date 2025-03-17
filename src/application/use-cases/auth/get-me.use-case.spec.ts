@@ -3,9 +3,15 @@ import { GetMeUseCase } from './get-me.use-case';
 import { IJwtService } from '@application/common/jwt';
 import { GetMeResponse } from '@application/dtos/auth/get-me.dto';
 
+class MockJwtService extends IJwtService {
+  generateToken = jest.fn();
+  verifyToken = jest.fn();
+  decodeToken = jest.fn();
+}
+
 describe('GetMeUseCase', () => {
   let useCase: GetMeUseCase;
-  const mockJwtService = { verifyToken: jest.fn() } as unknown as IJwtService;
+  const mockJwtService = new MockJwtService();
 
   beforeEach(() => {
     useCase = new GetMeUseCase(mockJwtService);

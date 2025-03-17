@@ -2,7 +2,7 @@ import { ICryptoService } from '@application/common/cryto';
 import { ResetPasswordInput } from '@application/dtos/auth/reset-password.dto';
 import { BaseMessageResponse } from '@application/dtos/base/message-response.dto';
 import { DomainError } from '@domain/base/base.error';
-import { UserRepository } from '@domain/user-management/user/user.repository';
+import { UserRepository } from '@domain/user-management/respositories/user.repository';
 
 export class ResetPasswordUseCase {
   constructor(private readonly userRepository: UserRepository, private readonly cryptoService: ICryptoService) {}

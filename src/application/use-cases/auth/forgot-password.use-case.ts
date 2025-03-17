@@ -4,7 +4,7 @@ import { ForgotPasswordInput } from '@application/dtos/auth/forgot-password.dto'
 import { BaseMessageResponse } from '@application/dtos/base/message-response.dto';
 import { DomainError } from '@domain/base/base.error';
 import { User } from '@domain/user-management/entities/user.entity';
-import { UserRepository } from '@domain/user-management/user/user.repository';
+import { UserRepository } from '@domain/user-management/respositories/user.repository';
 
 export class ForgotPasswordUseCase {
   constructor(private readonly userRepository: UserRepository, private readonly emailService: IEmailService) {}

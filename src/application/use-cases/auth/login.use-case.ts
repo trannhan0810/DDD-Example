@@ -3,7 +3,7 @@ import { IJwtService, JwtPayload } from '@application/common/jwt';
 import { LoginInput, LoginResponse } from '@application/dtos/auth/login.dto';
 import { DomainError } from '@domain/base/base.error';
 import { User } from '@domain/user-management/entities/user.entity';
-import { UserRepository } from '@domain/user-management/user/user.repository';
+import { UserRepository } from '@domain/user-management/respositories/user.repository';
 
 export class LoginUseCase {
   constructor(
