@@ -1,4 +1,4 @@
-import { BaseEntity } from '@domain/base/base.entity';
+import { BaseEntity } from '@domain/shared/common/base.entity';
 
 export class RoomType<ID extends Id | null = Id> extends BaseEntity<ID> {
   constructor(

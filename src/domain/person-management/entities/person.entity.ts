@@ -1,5 +1,5 @@
-import { BaseEntity } from '@domain/base/base.entity';
-import { DomainError } from '@domain/base/base.error';
+import { BaseEntity } from '@domain/shared/common/base.entity';
+import { DomainError } from '@domain/shared/common/base.error';
 import { DateTimeUtils } from 'src/shared/utils/date-time.util';
 import { generateRandomString } from 'src/shared/utils/random.util';
 

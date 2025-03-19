@@ -1,6 +1,6 @@
 import type { Person } from '../entities/person.entity';
-import type { BooleanFilter, DateFilter, IdFilter, StringFilter } from '@domain/base/base.filter';
-import type { BaseRepository } from '@domain/base/base.repository';
+import type { BooleanFilter, DateFilter, IdFilter, StringFilter } from '@domain/shared/common/base.filter';
+import type { BaseRepository } from '@domain/shared/common/base.repository';
 
 export type FilterPersonInput = {
   id: IdFilter;

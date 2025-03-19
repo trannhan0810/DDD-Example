@@ -3,9 +3,9 @@ import { LoginUseCase } from './login.use-case';
 import { ICryptoService } from '@application/common/cryto';
 import { IJwtService } from '@application/common/jwt';
 import { LoginInput } from '@application/dtos/auth/login.dto';
-import { DomainError } from '@domain/base/base.error';
 import { Person } from '@domain/person-management/entities/person.entity';
 import { PersonRepository } from '@domain/person-management/respositories/person.repository';
+import { DomainError } from '@domain/shared/common/base.error';
 
 const MPersonRepository = PersonRepository as ClassType<PersonRepository>;
 new MPersonRepository();

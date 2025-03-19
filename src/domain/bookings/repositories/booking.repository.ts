@@ -1,8 +1,8 @@
-import { BaseRepository } from '@domain/base/base.repository';
+import { BaseRepository } from '@domain/shared/common/base.repository';
 
 import type { BOOKING_PAYMENT_STATUS, BOOKING_STATUS, Booking, IBooking } from '../entities/booking.entity';
-import type { IdFilter, StringFilter } from '@domain/base/base.filter';
 import type { Person } from '@domain/person-management/entities/person.entity';
+import type { IdFilter, StringFilter } from '@domain/shared/common/base.filter';
 import type { TimeRange } from '@domain/shared/value-objects/time-range.value-object';
 
 export type FilterBookingInput = {

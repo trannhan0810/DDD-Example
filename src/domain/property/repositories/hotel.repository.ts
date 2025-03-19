@@ -1,4 +1,4 @@
-import { BaseRepository } from '@domain/base/base.repository';
+import { BaseRepository } from '@domain/shared/common/base.repository';
 import { Injectable } from '@nestjs/common';
 
 import type { Hotel } from '../entities/hotel.entity';

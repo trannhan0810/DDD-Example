@@ -1,4 +1,4 @@
-import { BaseEntity } from '@domain/base/base.entity';
+import { BaseEntity } from '@domain/shared/common/base.entity';
 
 export type GeoLocation = {
   longitude: number;

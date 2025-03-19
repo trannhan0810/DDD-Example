@@ -1,7 +1,7 @@
 import { BaseMessageResponse } from '@application/dtos/base/message-response.dto';
 import { RemoveRoleInput } from '@application/dtos/persons/person-role.dto';
-import { DomainError } from '@domain/base/base.error';
 import { PersonRepository } from '@domain/person-management/respositories/person.repository';
+import { DomainError } from '@domain/shared/common/base.error';
 import { RoleRepository } from '@domain/staff/repositories/role.repository';
 
 export class RemoveRoleUseCase {

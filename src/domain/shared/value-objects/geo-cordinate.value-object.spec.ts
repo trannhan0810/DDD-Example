@@ -1,5 +1,5 @@
 import { GeoCoordinate } from './geo-cordinate.value-object';
-import { DomainError } from '../../base/base.error';
+import { DomainError } from '../common/base.error';
 
 test('GeoCoordinate constructor throws error for invalid longitude', () => {
   const invalidInput = { long: 200, lat: 10 };

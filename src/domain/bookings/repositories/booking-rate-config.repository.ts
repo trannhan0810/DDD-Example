@@ -1,7 +1,7 @@
-import { BaseRepository } from '@domain/base/base.repository';
+import { BaseRepository } from '@domain/shared/common/base.repository';
 
 import type { BookingRateConfig } from '../entities/booking-rate-config.entity';
-import type { IdFilter, StringFilter } from '@domain/base/base.filter';
+import type { IdFilter, StringFilter } from '@domain/shared/common/base.filter';
 
 export type FilterBookingRateConfigInput = {
   id: IdFilter;

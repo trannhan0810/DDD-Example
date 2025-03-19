@@ -1,4 +1,4 @@
-import { BaseRepository } from '@domain/base/base.repository';
+import { BaseRepository } from '@domain/shared/common/base.repository';
 
 import type { Staff } from '../entities/staff.entity';
 

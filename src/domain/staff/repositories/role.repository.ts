@@ -1,7 +1,7 @@
-import { BaseRepository } from '@domain/base/base.repository';
+import { BaseRepository } from '@domain/shared/common/base.repository';
 
 import type { Role } from '../entities/role.entity';
-import type { IdFilter, StringFilter } from '@domain/base/base.filter';
+import type { IdFilter, StringFilter } from '@domain/shared/common/base.filter';
 
 export type FilterRoleInput = {
   id: IdFilter;

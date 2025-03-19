@@ -1,6 +1,6 @@
 import { CheckRoomAvailableService } from './check-available.service';
 
-import { DomainError } from '@domain/base/base.error';
+import { DomainError } from '@domain/shared/common/base.error';
 
 import type { BookingRepository } from '../repositories/booking.repository';
 

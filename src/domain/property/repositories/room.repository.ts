@@ -1,7 +1,7 @@
-import { BaseRepository } from '@domain/base/base.repository';
+import { BaseRepository } from '@domain/shared/common/base.repository';
 
 import type { Room, RoomIncludeBookingProjection } from '../entities/room.entity';
-import type { IdFilter, NumberFilter } from '@domain/base/base.filter';
+import type { IdFilter, NumberFilter } from '@domain/shared/common/base.filter';
 import type { GeoCoordinate } from '@domain/shared/value-objects/geo-cordinate.value-object';
 import type { TimeRange } from '@domain/shared/value-objects/time-range.value-object';
 

@@ -1,4 +1,4 @@
-import { BaseEntity } from '@domain/base/base.entity';
+import { BaseEntity } from '@domain/shared/common/base.entity';
 
 import type { Hotel } from './hotel.entity';
 import type { RoomType } from './room-type.entity';

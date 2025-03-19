@@ -1,4 +1,4 @@
-import { BaseEntity } from '@domain/base/base.entity';
+import { BaseEntity } from '@domain/shared/common/base.entity';
 
 import type { Currency } from '@domain/shared/value-objects/currency.value-object';
 import type { WeekDays } from 'src/shared/utils/date-time.util';

@@ -1,4 +1,4 @@
-import { BaseEntity } from '@domain/base/base.entity';
+import { BaseEntity } from '@domain/shared/common/base.entity';
 import { TimeRange } from '@domain/shared/value-objects/time-range.value-object';
 
 export enum BOOKING_STATUS {

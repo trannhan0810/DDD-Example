@@ -1,4 +1,4 @@
-import { DomainError } from '../../base/base.error';
+import { DomainError } from '../common/base.error';
 
 export abstract class IGeoCoordinate {
   constructor(

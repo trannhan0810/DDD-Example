@@ -1,6 +1,6 @@
 import { RateType } from '../entities/booking-rate-config.entity';
 
-import { DomainError } from '@domain/base/base.error';
+import { DomainError } from '@domain/shared/common/base.error';
 import { DateTimeUnit, DateTimeUtils, DurationConverter, WeekDays } from 'src/shared/utils/date-time.util';
 
 import type { BookingRateConfig } from '../entities/booking-rate-config.entity';

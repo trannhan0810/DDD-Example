@@ -1,7 +1,7 @@
 import { CalculateBookingPriceService } from './price-calculation.service';
 import { RateType } from '../entities/booking-rate-config.entity';
 
-import { DomainError } from '@domain/base/base.error';
+import { DomainError } from '@domain/shared/common/base.error';
 import { WeekDays } from 'src/shared/utils/date-time.util';
 
 import type { BookingRateConfigForPriceCalculation } from './price-calculation.service';

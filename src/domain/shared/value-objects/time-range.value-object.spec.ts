@@ -1,5 +1,5 @@
 import { TimeRange } from './time-range.value-object';
-import { DomainError } from '../../base/base.error';
+import { DomainError } from '../common/base.error';
 
 import { DateTimeUtils } from 'src/shared/utils/date-time.util';
 

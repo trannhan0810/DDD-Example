@@ -1,6 +1,6 @@
 import type { InMemoryUnitOfWork } from '../unit-of-work';
-import type { BaseEntity } from '@domain/base/base.entity';
-import type { BaseRepository } from '@domain/base/base.repository';
+import type { BaseEntity } from '@domain/shared/common/base.entity';
+import type { BaseRepository } from '@domain/shared/common/base.repository';
 
 export abstract class BaseInMemoryRepository<T extends BaseEntity> implements BaseRepository<T> {
   protected abstract _items: T[];
