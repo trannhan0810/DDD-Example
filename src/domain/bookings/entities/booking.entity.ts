@@ -16,7 +16,7 @@ export enum BOOKING_PAYMENT_STATUS {
   Paid = 'Paid',
 }
 
-export class BaseBooking<ID extends Id | null = Id> extends BaseEntity<ID> {
+export class IBooking<ID extends Id | null = Id> extends BaseEntity<ID> {
   constructor(
     public readonly id: ID,
     public readonly code: string,
@@ -31,7 +31,7 @@ export class BaseBooking<ID extends Id | null = Id> extends BaseEntity<ID> {
   }
 }
 
-export class Booking<ID extends Id | null = Id> extends BaseBooking<ID> {
+export class Booking<ID extends Id | null = Id> extends IBooking<ID> {
   isConfirmable(): boolean {
     if (this.status !== BOOKING_STATUS.Unconfirmed) return false;
     if (this.paymentStatus === BOOKING_PAYMENT_STATUS.Unpaid) return false;
@@ -76,4 +76,4 @@ export class Booking<ID extends Id | null = Id> extends BaseBooking<ID> {
   }
 }
 
-export type BookingCreate = Partial<BaseBooking> & Pick<BaseBooking, 'period' | 'customerId' | 'roomId'>;
+export type BookingCreate = Partial<IBooking> & Pick<IBooking, 'period' | 'customerId' | 'roomId'>;

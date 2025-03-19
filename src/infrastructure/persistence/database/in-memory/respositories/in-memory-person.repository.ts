@@ -1,10 +1,10 @@
 import { BaseInMemoryRepository } from './base.repository';
 
-import { User } from '@domain/user-management/entities/user.entity';
-import { FilterUserInput, UserRepository } from '@domain/user-management/respositories/user.repository';
+import { Person } from '@domain/person-management/entities/person.entity';
+import { FilterPersonInput, PersonRepository } from '@domain/person-management/respositories/person.repository';
 import { Injectable } from '@nestjs/common';
 
-const mockUserData = [
+const mockPersonData = [
   {
     id: 1,
     firstname: 'Mae',
@@ -43,15 +43,15 @@ const mockUserData = [
 ];
 
 @Injectable()
-export class UserInMemoryRepository extends BaseInMemoryRepository<User> implements UserRepository {
-  protected _items: User[] = mockUserData.map(u => User.create(u));
-  protected _userAndRoleIds: Map<Id, Id[]> = new Map();
+export class PersonInMemoryRepository extends BaseInMemoryRepository<Person> implements PersonRepository {
+  protected _items: Person[] = mockPersonData.map(u => Person.create(u));
+  protected _personAndRoleIds: Map<Id, Id[]> = new Map();
 
-  static readonly providerFor = UserRepository;
+  static readonly providerFor = PersonRepository;
 
-  createSpec(filter: Partial<FilterUserInput>) {
+  createSpec(filter: Partial<FilterPersonInput>) {
     return {
-      isSastifyBy: (item: User) => {
+      isSastifyBy: (item: Person) => {
         void item;
         void filter;
         return true;
@@ -59,39 +59,39 @@ export class UserInMemoryRepository extends BaseInMemoryRepository<User> impleme
     };
   }
 
-  async findAllMatched(filter: Partial<FilterUserInput>): Promise<User[]> {
+  async findAllMatched(filter: Partial<FilterPersonInput>): Promise<Person[]> {
     const spec = this.createSpec(filter);
     return this._items.filter(spec.isSastifyBy);
   }
-  async findOneMatched(filter: Partial<FilterUserInput>): Promise<User | undefined> {
+  async findOneMatched(filter: Partial<FilterPersonInput>): Promise<Person | undefined> {
     const spec = this.createSpec(filter);
     return this._items.find(spec.isSastifyBy);
   }
-  async countMatched(filter: Partial<FilterUserInput>): Promise<number> {
+  async countMatched(filter: Partial<FilterPersonInput>): Promise<number> {
     const spec = this.createSpec(filter);
     return this._items.filter(spec.isSastifyBy).length;
   }
 
-  async save(input: User<Id | null>): Promise<Id> {
+  async save(input: Person<Id | null>): Promise<Id> {
     const item = input.id ? await this.findById(input.id) : undefined;
     if (item) {
       Object.assign(item, input);
       return item.id;
     }
     const id = Math.max(...this._items.map(item => Number(item.id)));
-    this._items.push(User.create({ ...input, id }));
+    this._items.push(Person.create({ ...input, id }));
     return id;
   }
 
-  async addRoles(userId: Id, roleIds: Id[]): Promise<void> {
-    const existRoleIds = this._userAndRoleIds.get(userId) ?? [];
+  async addRoles(personId: Id, roleIds: Id[]): Promise<void> {
+    const existRoleIds = this._personAndRoleIds.get(personId) ?? [];
     const newRoleIds = [...new Set([...existRoleIds, ...roleIds])];
-    this._userAndRoleIds.set(userId, newRoleIds);
+    this._personAndRoleIds.set(personId, newRoleIds);
   }
 
-  async removeRoles(userId: Id, roleIds: Id[]): Promise<void> {
-    const existRoleIds = this._userAndRoleIds.get(userId) ?? [];
+  async removeRoles(personId: Id, roleIds: Id[]): Promise<void> {
+    const existRoleIds = this._personAndRoleIds.get(personId) ?? [];
     const newRoleIds = existRoleIds.filter(id => !roleIds.includes(id));
-    this._userAndRoleIds.set(userId, newRoleIds);
+    this._personAndRoleIds.set(personId, newRoleIds);
   }
 }

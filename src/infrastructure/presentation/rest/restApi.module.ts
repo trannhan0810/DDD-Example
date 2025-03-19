@@ -1,5 +1,5 @@
 import { AuthRestApiModule } from './controllers/auth.controller';
-import { UserRestApiModule } from './controllers/user.controller';
+import { PersonRestApiModule } from './controllers/person.controller';
 
 import { Module } from '@nestjs/common';
 
@@ -7,7 +7,7 @@ import { Module } from '@nestjs/common';
   imports: [
     /* ================== */
     AuthRestApiModule,
-    UserRestApiModule,
+    PersonRestApiModule,
   ],
 })
 export class RestApiModule {}

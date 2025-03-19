@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsLowercase, IsNumberString } from 'class-validator';
 
-export class BaseUserDto {
+export class BasePersonDto {
   @IsNumberString()
   @ApiProperty({ type: String })
   id!: string | number;

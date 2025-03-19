@@ -1,11 +1,11 @@
-import { UserInMemoryRepository } from './respositories/in-memory-user.repository';
+import { PersonInMemoryRepository } from './respositories/in-memory-person.repository';
 import { InMemoryUnitOfWork } from './unit-of-work';
 
 import { Global, Module } from '@nestjs/common';
 
 const repositories = [
   /* ================== */
-  UserInMemoryRepository,
+  PersonInMemoryRepository,
 ];
 
 @Global()

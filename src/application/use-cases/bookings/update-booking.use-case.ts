@@ -1,8 +1,8 @@
 import { UpdateBookingInput } from '@application/dtos/booking/update-booking.dto';
 import { DomainError } from '@domain/base/base.error';
-import { TimeRange } from '@domain/shared/value-objects/time-range.value-object';
 import { BookingRepository } from '@domain/bookings/repositories/booking.repository';
 import { CheckRoomAvailableService } from '@domain/bookings/services/check-available.service';
+import { TimeRange } from '@domain/shared/value-objects/time-range.value-object';
 
 export class UpdateBookingUseCase {
   constructor(

@@ -4,10 +4,10 @@ import { ICryptoService } from '@application/common/cryto';
 import { ResetPasswordInput } from '@application/dtos/auth/reset-password.dto';
 import { BaseMessageResponse } from '@application/dtos/base/message-response.dto';
 import { DomainError } from '@domain/base/base.error';
-import { User } from '@domain/user-management/entities/user.entity';
-import { UserRepository } from '@domain/user-management/respositories/user.repository';
+import { Person } from '@domain/person-management/entities/person.entity';
+import { PersonRepository } from '@domain/person-management/respositories/person.repository';
 
-class MockUserRepository implements UserRepository {
+class MockPersonRepository implements PersonRepository {
   findAll = jest.fn();
   findById = jest.fn();
   findAllMatched = jest.fn();
@@ -24,8 +24,8 @@ class MockCryptoService implements ICryptoService {
   compare = jest.fn();
 }
 
-function createMockUser(input?: Partial<User>) {
-  return User.create({
+function createMockPerson(input?: Partial<Person>) {
+  return Person.create({
     id: '1',
     email: 'test@email.com',
     firstname: 'firstname',
@@ -40,13 +40,13 @@ function createMockUser(input?: Partial<User>) {
 
 describe('ResetPasswordUseCase', () => {
   let useCase: ResetPasswordUseCase;
-  let mockUserRepository: MockUserRepository;
+  let mockPersonRepository: MockPersonRepository;
   let mockCryptoService: MockCryptoService;
 
   beforeEach(() => {
-    mockUserRepository = new MockUserRepository();
+    mockPersonRepository = new MockPersonRepository();
     mockCryptoService = new MockCryptoService();
-    useCase = new ResetPasswordUseCase(mockUserRepository, mockCryptoService);
+    useCase = new ResetPasswordUseCase(mockPersonRepository, mockCryptoService);
   });
 
   it('should successfully reset password', async () => {
@@ -55,35 +55,35 @@ describe('ResetPasswordUseCase', () => {
       password: 'newPassword',
       resetCode: 'validCode',
     };
-    const user = createMockUser({
+    const person = createMockPerson({
       email: 'test@email.com',
       isEmailVerified: true,
       resetPasswordCode: 'validCode',
     });
-    jest.spyOn(user, 'verifyResetPasswordCode');
-    (user.verifyResetPasswordCode as jest.Mock).mockReturnValueOnce(undefined);
-    mockUserRepository.findOneMatched.mockResolvedValueOnce(user);
+    jest.spyOn(person, 'verifyResetPasswordCode');
+    (person.verifyResetPasswordCode as jest.Mock).mockReturnValueOnce(undefined);
+    mockPersonRepository.findOneMatched.mockResolvedValueOnce(person);
     mockCryptoService.hash.mockReturnValueOnce('hashedNewPassword');
-    mockUserRepository.save.mockResolvedValueOnce(user);
+    mockPersonRepository.save.mockResolvedValueOnce(person);
 
     const result = await useCase.process(input);
 
-    expect(mockUserRepository.findOneMatched).toHaveBeenCalledWith({ email: { isIn: [input.email] } });
+    expect(mockPersonRepository.findOneMatched).toHaveBeenCalledWith({ email: { isIn: [input.email] } });
     expect(mockCryptoService.hash).toHaveBeenCalledWith(input.password);
-    expect(mockUserRepository.save).toHaveBeenCalled();
-    expect(user.hashedPassword).toBe('hashedNewPassword');
+    expect(mockPersonRepository.save).toHaveBeenCalled();
+    expect(person.hashedPassword).toBe('hashedNewPassword');
     expect(result).toEqual(new BaseMessageResponse('Password reset!'));
   });
 
-  it('should throw an error if user is not found', async () => {
+  it('should throw an error if person is not found', async () => {
     const input: ResetPasswordInput = {
       email: 'nonexistent@example.com',
       password: 'newPassword',
       resetCode: 'validCode',
     };
-    (mockUserRepository.findOneMatched as jest.Mock).mockResolvedValueOnce(null);
+    (mockPersonRepository.findOneMatched as jest.Mock).mockResolvedValueOnce(null);
 
-    await expect(useCase.process(input)).rejects.toThrow(new DomainError('User not found!'));
+    await expect(useCase.process(input)).rejects.toThrow(new DomainError('Person not found!'));
   });
 
   it('should throw an error if reset code is invalid', async () => {
@@ -92,15 +92,15 @@ describe('ResetPasswordUseCase', () => {
       password: 'newPassword',
       resetCode: 'invalidCode',
     };
-    const user = createMockUser({
+    const person = createMockPerson({
       email: 'test@email.com',
       isEmailVerified: true,
       resetPasswordCode: 'validCode',
     });
-    mockUserRepository.findOneMatched.mockResolvedValueOnce(user);
+    mockPersonRepository.findOneMatched.mockResolvedValueOnce(person);
 
-    jest.spyOn(user, 'verifyResetPasswordCode');
-    (user.verifyResetPasswordCode as jest.Mock).mockImplementationOnce(() => {
+    jest.spyOn(person, 'verifyResetPasswordCode');
+    (person.verifyResetPasswordCode as jest.Mock).mockImplementationOnce(() => {
       throw new DomainError('Invalid reset code!');
     });
 

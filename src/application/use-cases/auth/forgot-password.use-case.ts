@@ -3,28 +3,28 @@ import { getSendResetPasswordEmailParams } from '@application/common/email/templ
 import { ForgotPasswordInput } from '@application/dtos/auth/forgot-password.dto';
 import { BaseMessageResponse } from '@application/dtos/base/message-response.dto';
 import { DomainError } from '@domain/base/base.error';
-import { User } from '@domain/user-management/entities/user.entity';
-import { UserRepository } from '@domain/user-management/respositories/user.repository';
+import { Person } from '@domain/person-management/entities/person.entity';
+import { PersonRepository } from '@domain/person-management/respositories/person.repository';
 
 export class ForgotPasswordUseCase {
-  constructor(private readonly userRepository: UserRepository, private readonly emailService: IEmailService) {}
+  constructor(private readonly personRepository: PersonRepository, private readonly emailService: IEmailService) {}
 
   async process(input: ForgotPasswordInput): Promise<BaseMessageResponse> {
-    const user = await this.userRepository.findOneMatched({
+    const person = await this.personRepository.findOneMatched({
       email: { isIn: [input.email] },
     });
-    if (!user) throw new DomainError('User not found!');
-    if (!user.isEmailVerified) throw new DomainError('Email is not verified!');
+    if (!person) throw new DomainError('Person not found!');
+    if (!person.isEmailVerified) throw new DomainError('Email is not verified!');
 
-    const { code } = user.updateResetPasswordCode();
-    await this.userRepository.save(user);
-    await this.sendEmailResetPassword(user, code);
+    const { code } = person.updateResetPasswordCode();
+    await this.personRepository.save(person);
+    await this.sendEmailResetPassword(person, code);
 
     return new BaseMessageResponse('Reset password code send!');
   }
 
-  async sendEmailResetPassword(user: User, code: string) {
-    const template = getSendResetPasswordEmailParams({ code, email: user.email });
+  async sendEmailResetPassword(person: Person, code: string) {
+    const template = getSendResetPasswordEmailParams({ code, email: person.email });
     await this.emailService.sendMail(template);
   }
 }

@@ -2,30 +2,30 @@ import { ICryptoService } from '@application/common/cryto';
 import { IJwtService, JwtPayload } from '@application/common/jwt';
 import { LoginInput, LoginResponse } from '@application/dtos/auth/login.dto';
 import { DomainError } from '@domain/base/base.error';
-import { User } from '@domain/user-management/entities/user.entity';
-import { UserRepository } from '@domain/user-management/respositories/user.repository';
+import { Person } from '@domain/person-management/entities/person.entity';
+import { PersonRepository } from '@domain/person-management/respositories/person.repository';
 
 export class LoginUseCase {
   constructor(
-    private readonly userRepository: UserRepository,
+    private readonly personRepository: PersonRepository,
     private readonly cryptoService: ICryptoService,
     private readonly jwtService: IJwtService,
   ) {}
 
   async process(input: LoginInput): Promise<LoginResponse> {
-    const user = await this.userRepository.findOneMatched({
+    const person = await this.personRepository.findOneMatched({
       email: { isIn: [input.email] },
     });
     const hashedPassword = this.cryptoService.hash(input.password);
-    if (!user || user.hashedPassword !== hashedPassword) {
+    if (!person || person.hashedPassword !== hashedPassword) {
       throw new DomainError('Email or password is incorrect');
     }
 
-    return this.generateToken(user);
+    return this.generateToken(person);
   }
 
-  private async generateToken(user: User): Promise<LoginResponse> {
-    const payload = new JwtPayload(`${user.id}`, user.email, user.firstname, user.lastname, []);
+  private async generateToken(person: Person): Promise<LoginResponse> {
+    const payload = new JwtPayload(`${person.id}`, person.email, person.firstname, person.lastname, []);
     const accessToken = await this.jwtService.generateToken(payload);
     const refreshToken = await this.jwtService.generateToken(payload);
     return { accessToken, refreshToken };

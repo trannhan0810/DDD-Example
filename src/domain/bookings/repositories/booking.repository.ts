@@ -1,7 +1,8 @@
 import { BaseRepository } from '@domain/base/base.repository';
 
-import type { BOOKING_PAYMENT_STATUS, BOOKING_STATUS, Booking } from '../entities/booking.entity';
+import type { BOOKING_PAYMENT_STATUS, BOOKING_STATUS, Booking, IBooking } from '../entities/booking.entity';
 import type { IdFilter, StringFilter } from '@domain/base/base.filter';
+import type { Person } from '@domain/person-management/entities/person.entity';
 import type { TimeRange } from '@domain/shared/value-objects/time-range.value-object';
 
 export type FilterBookingInput = {
@@ -12,6 +13,10 @@ export type FilterBookingInput = {
   overlapWithPeriod: ObjectLike<TimeRange>;
   status: BOOKING_STATUS;
   paymentStatus: BOOKING_PAYMENT_STATUS;
+};
+
+export type BookingListView = IBooking & {
+  customer: Pick<Person, 'firstname' | 'lastname' | 'email'>;
 };
 
 export abstract class BookingRepository extends BaseRepository<Booking> {

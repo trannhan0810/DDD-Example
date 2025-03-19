@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class AssignRoleInput {
   @ApiProperty()
-  userId!: string;
+  personId!: string;
 
   @ApiProperty()
   roleName!: string;
@@ -10,7 +10,7 @@ export class AssignRoleInput {
 
 export class RemoveRoleInput {
   @ApiProperty()
-  userId!: string;
+  personId!: string;
 
   @ApiProperty()
   roleName!: string;

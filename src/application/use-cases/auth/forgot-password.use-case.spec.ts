@@ -5,10 +5,10 @@ import { getSendResetPasswordEmailParams } from '@application/common/email/templ
 import { ForgotPasswordInput } from '@application/dtos/auth/forgot-password.dto';
 import { BaseMessageResponse } from '@application/dtos/base/message-response.dto';
 import { DomainError } from '@domain/base/base.error';
-import { User } from '@domain/user-management/entities/user.entity';
-import { UserRepository } from '@domain/user-management/respositories/user.repository';
+import { Person } from '@domain/person-management/entities/person.entity';
+import { PersonRepository } from '@domain/person-management/respositories/person.repository';
 
-class MockUserRepository implements UserRepository {
+class MockPersonRepository implements PersonRepository {
   findAll = jest.fn();
   findById = jest.fn();
   findAllMatched = jest.fn();
@@ -24,8 +24,8 @@ class MockEmailService implements IEmailService {
   sendMail = jest.fn();
 }
 
-function createMockUser(input?: Partial<User>) {
-  return User.create({
+function createMockPerson(input?: Partial<Person>) {
+  return Person.create({
     id: '1',
     email: 'test@email.com',
     firstname: 'firstname',
@@ -40,75 +40,75 @@ function createMockUser(input?: Partial<User>) {
 
 describe('ForgotPasswordUseCase', () => {
   let useCase: ForgotPasswordUseCase;
-  let mockUserRepository: MockUserRepository;
+  let mockPersonRepository: MockPersonRepository;
   let mockEmailService: MockEmailService;
 
   beforeEach(() => {
-    mockUserRepository = new MockUserRepository();
+    mockPersonRepository = new MockPersonRepository();
     mockEmailService = new MockEmailService();
-    useCase = new ForgotPasswordUseCase(mockUserRepository, mockEmailService);
+    useCase = new ForgotPasswordUseCase(mockPersonRepository, mockEmailService);
   });
 
   it('should successfully send reset password email', async () => {
     const input: ForgotPasswordInput = { email: 'test@example.com' };
-    const user: User = createMockUser({
-      id: 'user-id',
+    const person: Person = createMockPerson({
+      id: 'person-id',
       email: 'test@example.com',
       firstname: 'Test',
-      lastname: 'User',
+      lastname: 'Person',
       hashedPassword: 'hashedPassword',
       isEmailVerified: true,
     });
-    mockUserRepository.findOneMatched.mockResolvedValueOnce(user);
-    mockUserRepository.save.mockResolvedValueOnce(user);
+    mockPersonRepository.findOneMatched.mockResolvedValueOnce(person);
+    mockPersonRepository.save.mockResolvedValueOnce(person);
 
     const result = await useCase.process(input);
 
-    expect(mockUserRepository.findOneMatched).toHaveBeenCalledWith({ email: { isIn: [input.email] } });
-    expect(mockUserRepository.save).toHaveBeenCalled();
+    expect(mockPersonRepository.findOneMatched).toHaveBeenCalledWith({ email: { isIn: [input.email] } });
+    expect(mockPersonRepository.save).toHaveBeenCalled();
     expect(mockEmailService.sendMail).toHaveBeenCalled();
     expect(result).toEqual(new BaseMessageResponse('Reset password code send!'));
   });
 
-  it('should throw an error if user is not found', async () => {
+  it('should throw an error if person is not found', async () => {
     const input: ForgotPasswordInput = { email: 'nonexistent@example.com' };
-    (mockUserRepository.findOneMatched as jest.Mock).mockResolvedValueOnce(null);
+    (mockPersonRepository.findOneMatched as jest.Mock).mockResolvedValueOnce(null);
 
-    await expect(useCase.process(input)).rejects.toThrow(new DomainError('User not found!'));
+    await expect(useCase.process(input)).rejects.toThrow(new DomainError('Person not found!'));
   });
 
   it('should throw an error if email is not verified', async () => {
     const input: ForgotPasswordInput = { email: 'unverified@example.com' };
-    const user = createMockUser({
-      id: 'user-id',
+    const person = createMockPerson({
+      id: 'person-id',
       email: 'unverified@example.com',
       firstname: 'Test',
-      lastname: 'User',
+      lastname: 'Person',
       hashedPassword: 'hashedPassword',
       isEmailVerified: false,
     });
-    (mockUserRepository.findOneMatched as jest.Mock).mockResolvedValueOnce(user);
+    (mockPersonRepository.findOneMatched as jest.Mock).mockResolvedValueOnce(person);
 
     await expect(useCase.process(input)).rejects.toThrow(new DomainError('Email is not verified!'));
   });
 
   it('should call sendEmailResetPassword with correct parameters', async () => {
     const input: ForgotPasswordInput = { email: 'test@example.com' };
-    const user = createMockUser({
-      id: 'user-id',
+    const person = createMockPerson({
+      id: 'person-id',
       email: 'test@example.com',
       firstname: 'Test',
-      lastname: 'User',
+      lastname: 'Person',
       hashedPassword: 'hashedPassword',
       isEmailVerified: true,
     });
-    (mockUserRepository.findOneMatched as jest.Mock).mockResolvedValueOnce(user);
-    (mockUserRepository.save as jest.Mock).mockResolvedValueOnce(user);
+    (mockPersonRepository.findOneMatched as jest.Mock).mockResolvedValueOnce(person);
+    (mockPersonRepository.save as jest.Mock).mockResolvedValueOnce(person);
 
     await useCase.process(input);
 
-    const code = user.resetPasswordCode;
-    const expectedTemplate = getSendResetPasswordEmailParams({ code: code!, email: user.email });
+    const code = person.resetPasswordCode;
+    const expectedTemplate = getSendResetPasswordEmailParams({ code: code!, email: person.email });
     expect(mockEmailService.sendMail).toHaveBeenCalledWith(expectedTemplate);
   });
 });

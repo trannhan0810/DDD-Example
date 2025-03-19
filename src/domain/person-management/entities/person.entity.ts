@@ -3,7 +3,7 @@ import { DomainError } from '@domain/base/base.error';
 import { DateTimeUtils } from 'src/shared/utils/date-time.util';
 import { generateRandomString } from 'src/shared/utils/random.util';
 
-export class User<ID extends Id | null = Id> extends BaseEntity<ID> {
+export class Person<ID extends Id | null = Id> extends BaseEntity<ID> {
   constructor(
     public readonly id: ID,
     public readonly email: string,
@@ -34,10 +34,10 @@ export class User<ID extends Id | null = Id> extends BaseEntity<ID> {
     if (this.resetPasswordCodeExpireTime.getTime() < Date.now()) throw new DomainError('Reset code expired!');
   }
 
-  static create(input: UserCreate & { id: Id }): User;
-  static create(input: UserCreate): User<null>;
-  static create(input: UserCreate): User<Id | null> {
-    return new User(
+  static create(input: PersonCreate & { id: Id }): Person;
+  static create(input: PersonCreate): Person<null>;
+  static create(input: PersonCreate): Person<Id | null> {
+    return new Person(
       input.id ?? null,
       input.email,
       input.firstname,
@@ -50,4 +50,4 @@ export class User<ID extends Id | null = Id> extends BaseEntity<ID> {
   }
 }
 
-export type UserCreate = Partial<User> & Pick<User, 'firstname' | 'lastname' | 'email' | 'hashedPassword'>;
+export type PersonCreate = Partial<Person> & Pick<Person, 'firstname' | 'lastname' | 'email' | 'hashedPassword'>;

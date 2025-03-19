@@ -17,20 +17,20 @@ describe('GetMeUseCase', () => {
     useCase = new GetMeUseCase(mockJwtService);
   });
 
-  it('should successfully get user data', async () => {
-    const mockUser: GetMeResponse = {
-      id: 'user-id',
-      email: 'user@example.com',
+  it('should successfully get person data', async () => {
+    const mockPerson: GetMeResponse = {
+      id: 'person-id',
+      email: 'person@example.com',
       firstname: 'Firstname',
       lastname: 'Lastname',
       roles: [],
     };
-    (mockJwtService.verifyToken as jest.Mock).mockResolvedValueOnce(mockUser);
+    (mockJwtService.verifyToken as jest.Mock).mockResolvedValueOnce(mockPerson);
     const accessToken = 'valid-token';
 
     const result = await useCase.process({ accessToken });
 
-    expect(result).toEqual(mockUser);
+    expect(result).toEqual(mockPerson);
     expect(mockJwtService.verifyToken).toHaveBeenCalledWith(accessToken);
   });
 
