@@ -1,6 +1,6 @@
 import { BaseEntity } from '@domain/base/base.entity';
 
-import type { Currency } from '@domain/base/value-objects/currency.value-object';
+import type { Currency } from '@domain/shared/value-objects/currency.value-object';
 import type { WeekDays } from 'src/shared/utils/date-time.util';
 
 export enum RateType {

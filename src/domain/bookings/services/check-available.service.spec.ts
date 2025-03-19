@@ -1,9 +1,8 @@
-import { CheckRoomAvailableService } from './check-available.service'; // Adjust path as needed
+import { CheckRoomAvailableService } from './check-available.service';
 
 import { DomainError } from '@domain/base/base.error';
 
-import type { BookingRepository } from '../repositories/booking.repository'; // Adjust path
-import type { TimeRange } from '@domain/base/value-objects/time-range.value-object'; // Adjust path
+import type { BookingRepository } from '../repositories/booking.repository';
 
 describe('CheckRoomAvailableService', () => {
   const bookingRepository = { countMatched: jest.fn() };
@@ -71,7 +70,7 @@ describe('CheckRoomAvailableService', () => {
     it('should not throw an error if the room is available', async () => {
       const input = {
         roomId: 'room1',
-        period: { start: new Date(), end: new Date() } as TimeRange, // Provide a valid TimeRange object
+        period: { start: new Date(), end: new Date() },
       };
       bookingRepository.countMatched.mockResolvedValue(0); // Room is available
 
@@ -81,7 +80,7 @@ describe('CheckRoomAvailableService', () => {
     it('should throw a DomainError if the room is not available', async () => {
       const input = {
         roomId: 'room1',
-        period: { start: new Date(), end: new Date() } as TimeRange, // Provide a valid TimeRange object
+        period: { start: new Date(), end: new Date() },
       };
       bookingRepository.countMatched.mockResolvedValue(1); // Room is not available
 

@@ -2,8 +2,8 @@ import { BaseRepository } from '@domain/base/base.repository';
 
 import type { Room, RoomIncludeBookingProjection } from '../entities/room.entity';
 import type { IdFilter, NumberFilter } from '@domain/base/base.filter';
-import type { GeoCoordinate } from '@domain/base/value-objects/geo-cordinate.value-object';
-import type { TimeRange } from '@domain/base/value-objects/time-range.value-object';
+import type { GeoCoordinate } from '@domain/shared/value-objects/geo-cordinate.value-object';
+import type { TimeRange } from '@domain/shared/value-objects/time-range.value-object';
 
 export type FilterRoomInput = {
   id: IdFilter;

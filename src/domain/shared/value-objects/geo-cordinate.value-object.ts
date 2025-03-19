@@ -1,16 +1,20 @@
-import { DomainError } from '../base.error';
+import { DomainError } from '../../base/base.error';
 
-export class GeoCoordinate {
-  readonly long: number;
-  readonly lat: number;
+export abstract class IGeoCoordinate {
+  constructor(
+    // ============== //
+    public readonly long: number,
+    public readonly lat: number,
+  ) {}
+}
 
+export class GeoCoordinate extends IGeoCoordinate {
   constructor(input: { long: number; lat: number }) {
-    this.long = input.long;
-    this.lat = input.lat;
+    super(input.long, input.lat);
     GeoCoordinate.validate(this);
   }
 
-  static validate(item: GeoCoordinate) {
+  static validate(item: IGeoCoordinate) {
     GeoCoordinate.validateLongitude(item);
     GeoCoordinate.validateLatitude(item);
   }

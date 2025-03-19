@@ -3,7 +3,7 @@ import { GetMeResponse } from '@application/dtos/auth/get-me.dto';
 import { LoginInput, LoginResponse } from '@application/dtos/auth/login.dto';
 import { ResetPasswordInput } from '@application/dtos/auth/reset-password.dto';
 import { BaseMessageResponse } from '@application/dtos/base/message-response.dto';
-import { ForgotPasswordUseCase } from '@application/use-cases/auth/forgot-password-use-case';
+import { ForgotPasswordUseCase } from '@application/use-cases/auth/forgot-password.use-case';
 import { GetMeUseCase } from '@application/use-cases/auth/get-me.use-case';
 import { LoginUseCase } from '@application/use-cases/auth/login.use-case';
 import { ResetPasswordUseCase } from '@application/use-cases/auth/reset-password.use-case';
@@ -26,14 +26,14 @@ export class AuthController {
     return this.loginUseCase.process(input);
   }
 
-  @Post('reset-password')
+  @Post('forgot-password')
   @ApiBody({ type: ForgotPasswordInput })
   @ApiResponse({ type: BaseMessageResponse })
   async resetPassword(@Body('input') input: ForgotPasswordInput): Promise<BaseMessageResponse> {
     return this.resetPasswordUseCase.process(input);
   }
 
-  @Post('verify-reset-password')
+  @Post('reset-password')
   @ApiBody({ type: ResetPasswordInput })
   @ApiResponse({ type: BaseMessageResponse })
   async verifyResetPassword(@Body('input') input: ResetPasswordInput): Promise<BaseMessageResponse> {

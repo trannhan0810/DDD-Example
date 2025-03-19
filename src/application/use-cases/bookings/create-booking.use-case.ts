@@ -1,10 +1,10 @@
 import { CreateBookingInput } from '@application/dtos/booking/create-booking.dto';
 import { DomainError } from '@domain/base/base.error';
-import { TimeRange } from '@domain/base/value-objects/time-range.value-object';
 import { Booking } from '@domain/bookings/entities/booking.entity';
 import { BookingRepository } from '@domain/bookings/repositories/booking.repository';
 import { CheckRoomAvailableService } from '@domain/bookings/services/check-available.service';
 import { RoomRepository } from '@domain/property/repositories/room.repository';
+import { TimeRange } from '@domain/shared/value-objects/time-range.value-object';
 import { generateRandomString } from 'src/shared/utils/random.util';
 
 export class CreateBookingUseCase {

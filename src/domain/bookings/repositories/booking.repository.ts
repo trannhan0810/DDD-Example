@@ -2,7 +2,7 @@ import { BaseRepository } from '@domain/base/base.repository';
 
 import type { BOOKING_PAYMENT_STATUS, BOOKING_STATUS, Booking } from '../entities/booking.entity';
 import type { IdFilter, StringFilter } from '@domain/base/base.filter';
-import type { TimeRange } from '@domain/base/value-objects/time-range.value-object';
+import type { TimeRange } from '@domain/shared/value-objects/time-range.value-object';
 
 export type FilterBookingInput = {
   id: IdFilter;

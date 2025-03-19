@@ -1,5 +1,5 @@
 import { BaseEntity } from '@domain/base/base.entity';
-import { TimeRange } from '@domain/base/value-objects/time-range.value-object';
+import { TimeRange } from '@domain/shared/value-objects/time-range.value-object';
 
 export enum BOOKING_STATUS {
   Unconfirmed = 'Unconfirmed',
