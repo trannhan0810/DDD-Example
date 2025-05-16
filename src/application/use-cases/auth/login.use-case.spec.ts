@@ -6,37 +6,13 @@ import { LoginInput } from '@application/dtos/auth/login.dto';
 import { Person } from '@domain/person-management/entities/person.entity';
 import { PersonRepository } from '@domain/person-management/respositories/person.repository';
 import { DomainError } from '@domain/shared/common/base.error';
-
-const MPersonRepository = PersonRepository as ClassType<PersonRepository>;
-new MPersonRepository();
-
-class MockPersonRepository extends PersonRepository {
-  findAll = jest.fn();
-  findById = jest.fn();
-  findAllMatched = jest.fn();
-  findOneMatched = jest.fn();
-  countMatched = jest.fn();
-  save = jest.fn();
-  deleteById = jest.fn();
-  addRoles = jest.fn();
-  removeRoles = jest.fn();
-}
-
-class MockJwtService extends IJwtService {
-  generateToken = jest.fn();
-  verifyToken = jest.fn();
-  decodeToken = jest.fn();
-}
-
-class MockCryptoService extends ICryptoService {
-  hash = jest.fn();
-}
+import { mock } from 'jest-mock-extended';
 
 describe('LoginUseCase', () => {
   let useCase: LoginUseCase;
-  const mockPersonRepository = new MockPersonRepository();
-  const mockCryptoService = new MockCryptoService();
-  const mockJwtService = new MockJwtService();
+  const mockPersonRepository = mock<PersonRepository>();
+  const mockCryptoService = mock<ICryptoService>();
+  const mockJwtService = mock<IJwtService>();
 
   beforeEach(() => {
     jest.resetAllMocks();

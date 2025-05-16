@@ -7,22 +7,8 @@ import { BaseMessageResponse } from '@application/dtos/base/message-response.dto
 import { Person } from '@domain/person-management/entities/person.entity';
 import { PersonRepository } from '@domain/person-management/respositories/person.repository';
 import { DomainError } from '@domain/shared/common/base.error';
-
-class MockPersonRepository implements PersonRepository {
-  findAll = jest.fn();
-  findById = jest.fn();
-  findAllMatched = jest.fn();
-  findOneMatched = jest.fn();
-  countMatched = jest.fn();
-  save = jest.fn();
-  deleteById = jest.fn();
-  addRoles = jest.fn();
-  removeRoles = jest.fn();
-}
-
-class MockEmailService implements IEmailService {
-  sendMail = jest.fn();
-}
+import { mock } from 'jest-mock-extended';
+import { _MockProxy } from 'jest-mock-extended/lib/Mock';
 
 function createMockPerson(input?: Partial<Person>) {
   return Person.create({
@@ -40,12 +26,12 @@ function createMockPerson(input?: Partial<Person>) {
 
 describe('ForgotPasswordUseCase', () => {
   let useCase: ForgotPasswordUseCase;
-  let mockPersonRepository: MockPersonRepository;
-  let mockEmailService: MockEmailService;
+  let mockPersonRepository: _MockProxy<PersonRepository>;
+  let mockEmailService: _MockProxy<IEmailService>;
 
   beforeEach(() => {
-    mockPersonRepository = new MockPersonRepository();
-    mockEmailService = new MockEmailService();
+    mockPersonRepository = mock<PersonRepository>();
+    mockEmailService = mock<IEmailService>();
     useCase = new ForgotPasswordUseCase(mockPersonRepository, mockEmailService);
   });
 
@@ -60,7 +46,7 @@ describe('ForgotPasswordUseCase', () => {
       isEmailVerified: true,
     });
     mockPersonRepository.findOneMatched.mockResolvedValueOnce(person);
-    mockPersonRepository.save.mockResolvedValueOnce(person);
+    mockPersonRepository.save.mockResolvedValueOnce(person.id);
 
     const result = await useCase.process(input);
 

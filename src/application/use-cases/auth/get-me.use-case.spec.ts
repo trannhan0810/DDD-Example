@@ -2,16 +2,11 @@ import { GetMeUseCase } from './get-me.use-case';
 
 import { IJwtService } from '@application/common/jwt';
 import { GetMeResponse } from '@application/dtos/auth/get-me.dto';
-
-class MockJwtService extends IJwtService {
-  generateToken = jest.fn();
-  verifyToken = jest.fn();
-  decodeToken = jest.fn();
-}
+import { mock } from 'jest-mock-extended';
 
 describe('GetMeUseCase', () => {
   let useCase: GetMeUseCase;
-  const mockJwtService = new MockJwtService();
+  const mockJwtService = mock<IJwtService>();
 
   beforeEach(() => {
     useCase = new GetMeUseCase(mockJwtService);
