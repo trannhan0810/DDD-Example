@@ -1,4 +1,4 @@
-import { TimeRangeInput } from '../base/date-range-input.dto';
+import { TimeRangeInput } from '../shared/date-range-input.dto';
 
 import { ApiProperty } from '@nestjs/swagger';
 

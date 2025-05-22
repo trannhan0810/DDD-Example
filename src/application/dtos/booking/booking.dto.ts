@@ -1,4 +1,4 @@
-import { TimeRangeResponse } from '../base/date-range-input.dto';
+import { TimeRangeResponse } from '../shared/date-range-input.dto';
 
 import { BOOKING_PAYMENT_STATUS, BOOKING_STATUS } from '@domain/bookings/entities/booking.entity';
 import { ApiProperty } from '@nestjs/swagger';

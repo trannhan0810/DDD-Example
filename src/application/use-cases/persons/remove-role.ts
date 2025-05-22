@@ -1,4 +1,4 @@
-import { BaseMessageResponse } from '@application/dtos/base/message-response.dto';
+import { BaseMessageResponse } from '@application/dtos/shared/message-response.dto';
 import { RemoveRoleInput } from '@application/dtos/persons/person-role.dto';
 import { PersonRepository } from '@domain/person-management/respositories/person.repository';
 import { DomainError } from '@domain/shared/common/base.error';
