@@ -1,8 +1,7 @@
 import { CreateBookingInput } from '@application/dtos/booking/create-booking.dto';
-import { Booking } from '@domain/bookings/entities/booking.entity';
+import { BOOKING_STATUS, Booking } from '@domain/bookings/entities/booking.entity';
 import { BookingRepository } from '@domain/bookings/repositories/booking.repository';
 import { CheckRoomAvailableService } from '@domain/bookings/services/check-available.service';
-import { RoomRepository } from '@domain/property/repositories/room.repository';
 import { DomainError } from '@domain/shared/common/base.error';
 import { TimeRange } from '@domain/shared/value-objects/time-range.value-object';
 import { generateRandomString } from 'src/shared/utils/random.util';
@@ -10,27 +9,30 @@ import { generateRandomString } from 'src/shared/utils/random.util';
 export class CreateBookingUseCase {
   constructor(
     private readonly bookingRepository: BookingRepository,
-    private readonly roomRepository: RoomRepository,
     private readonly chkRoomAvaiableService: CheckRoomAvailableService,
   ) {}
 
   async process(input: CreateBookingInput): Promise<void> {
-    const room = await this.roomRepository.findById(input.roomId);
-    if (!room) throw new DomainError('Room not found!');
-
-    await this.chkRoomAvaiableService.validateRoomAvaiable(input);
-    const bookingCode = this.generateBookingCode();
-
     const booking = Booking.create({
-      code: bookingCode,
+      code: this.generateBookingCode(),
       period: new TimeRange(input.period),
       roomId: input.roomId,
       customerId: input.customerId,
+      status: BOOKING_STATUS.Unconfirmed,
     });
+
+    if (input.status === BOOKING_STATUS.Confirmed) {
+      await this.chkRoomAvaiableService.validateRoomAvaiable(input);
+      if (!booking.isConfirmable()) {
+        throw new DomainError('Booking is not confirmable!');
+      }
+      booking.confirm();
+    }
+
     await this.bookingRepository.save(booking);
   }
 
-  private generateBookingCode() {
+  generateBookingCode() {
     return generateRandomString({ length: 12 });
   }
 }
