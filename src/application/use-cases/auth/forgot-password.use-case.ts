@@ -1,4 +1,4 @@
-import { IEmailService } from '@application/common/email/email';
+import { IEmailSender } from '@application/common/email/email-sender';
 import { getSendResetPasswordEmailParams } from '@application/common/email/templates/reset-password';
 import { ForgotPasswordInput } from '@application/dtos/auth/forgot-password.dto';
 import { BaseMessageResponse } from '@application/dtos/shared/message-response.dto';
@@ -7,7 +7,7 @@ import { PersonRepository } from '@domain/person-management/respositories/person
 import { DomainError } from '@domain/shared/common/base.error';
 
 export class ForgotPasswordUseCase {
-  constructor(private readonly personRepository: PersonRepository, private readonly emailService: IEmailService) {}
+  constructor(private readonly personRepository: PersonRepository, private readonly emailService: IEmailSender) {}
 
   async process(input: ForgotPasswordInput): Promise<BaseMessageResponse> {
     const person = await this.personRepository.findOneMatched({
@@ -25,6 +25,6 @@ export class ForgotPasswordUseCase {
 
   async sendEmailResetPassword(person: Person, code: string) {
     const template = getSendResetPasswordEmailParams({ code, email: person.email });
-    await this.emailService.sendMail(template);
+    await this.emailService.sendEmail(template);
   }
 }

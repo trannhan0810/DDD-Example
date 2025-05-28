@@ -1,4 +1,4 @@
-import type { IEmailTemplate, SendEmailParams } from '../email';
+import type { IEmailTemplate, SendEmailParams } from '../email-sender';
 
 export type ResetPasswordEmailContent = {
   code: string;

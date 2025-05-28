@@ -10,6 +10,6 @@ export abstract class IEmailTemplate<T> {
   abstract htmlContent(data: T): string;
 }
 
-export abstract class IEmailService {
-  abstract sendMail<T>(params: SendEmailParams<T>): Promise<void>;
+export abstract class IEmailSender {
+  abstract sendEmail<T>(params: SendEmailParams<T>): Promise<void>;
 }

@@ -1,6 +1,6 @@
 import { ForgotPasswordUseCase } from './forgot-password.use-case';
 
-import { IEmailService } from '@application/common/email/email';
+import { IEmailSender } from '@application/common/email/email-sender';
 import { getSendResetPasswordEmailParams } from '@application/common/email/templates/reset-password';
 import { ForgotPasswordInput } from '@application/dtos/auth/forgot-password.dto';
 import { BaseMessageResponse } from '@application/dtos/shared/message-response.dto';
@@ -27,11 +27,11 @@ function createMockPerson(input?: Partial<Person>) {
 describe('ForgotPasswordUseCase', () => {
   let useCase: ForgotPasswordUseCase;
   let mockPersonRepository: _MockProxy<PersonRepository>;
-  let mockEmailService: _MockProxy<IEmailService>;
+  let mockEmailService: _MockProxy<IEmailSender>;
 
   beforeEach(() => {
     mockPersonRepository = mock<PersonRepository>();
-    mockEmailService = mock<IEmailService>();
+    mockEmailService = mock<IEmailSender>();
     useCase = new ForgotPasswordUseCase(mockPersonRepository, mockEmailService);
   });
 
@@ -52,7 +52,7 @@ describe('ForgotPasswordUseCase', () => {
 
     expect(mockPersonRepository.findOneMatched).toHaveBeenCalledWith({ email: { isIn: [input.email] } });
     expect(mockPersonRepository.save).toHaveBeenCalled();
-    expect(mockEmailService.sendMail).toHaveBeenCalled();
+    expect(mockEmailService.sendEmail).toHaveBeenCalled();
     expect(result).toEqual(new BaseMessageResponse('Reset password code send!'));
   });
 
@@ -95,6 +95,6 @@ describe('ForgotPasswordUseCase', () => {
 
     const code = person.resetPasswordCode;
     const expectedTemplate = getSendResetPasswordEmailParams({ code: code!, email: person.email });
-    expect(mockEmailService.sendMail).toHaveBeenCalledWith(expectedTemplate);
+    expect(mockEmailService.sendEmail).toHaveBeenCalledWith(expectedTemplate);
   });
 });
