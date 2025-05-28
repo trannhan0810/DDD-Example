@@ -1,6 +1,6 @@
 import { ICryptoService } from '@application/common/cryto';
-import { BaseMessageResponse } from '@application/dtos/shared/message-response.dto';
 import { CreatePersonInput } from '@application/dtos/persons/create-person.dto';
+import { BaseMessageResponse } from '@application/dtos/shared/message-response.dto';
 import { Person } from '@domain/person-management/entities/person.entity';
 import { PersonRepository } from '@domain/person-management/respositories/person.repository';
 import { DomainError } from '@domain/shared/common/base.error';

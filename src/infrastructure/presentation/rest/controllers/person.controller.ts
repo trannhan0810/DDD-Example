@@ -1,9 +1,9 @@
 import { CreatePersonInput } from '@application/dtos/persons/create-person.dto';
 import { FindAllPersonResponse } from '@application/dtos/persons/get-all-person.dto';
 import { PersonDetailResponse } from '@application/dtos/persons/get-one-person.dto';
-import { CreatePersonUseCase } from '@application/use-cases/persons/create-person';
-import { FindAllPersonUseCase } from '@application/use-cases/persons/get-all-person';
-import { GetPersonDetailUseCase } from '@application/use-cases/persons/get-person-detail';
+import { CreatePersonUseCase } from '@application/use-cases/persons/create-person.use-case';
+import { FindAllPersonUseCase } from '@application/use-cases/persons/get-all-person.use-case';
+import { GetPersonDetailUseCase } from '@application/use-cases/persons/get-person-detail.use-case';
 import { Body, Controller, Get, Module, Param, Post } from '@nestjs/common';
 import { ApiBody, ApiResponse } from '@nestjs/swagger';
 
