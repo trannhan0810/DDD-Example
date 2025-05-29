@@ -1,6 +1,6 @@
 import { DateTimeUnit, DateTimeUtils, DurationConverter, WeekDays } from './date-time.util'; // Adjust path
 
-import type { DurationHour } from './date-time.util';
+import type { Duration } from './date-time.util';
 
 describe('DateTimeUtils', () => {
   describe('fromDate', () => {
@@ -121,31 +121,31 @@ describe('DateTimeUtils', () => {
 describe('DurationConverter', () => {
   describe('toMilliseconds', () => {
     it('should convert the duration to milliseconds', () => {
-      const duration: DurationHour = { hour: 1, minute: 30, second: 45, millis: 123 };
+      const duration: Duration = { hour: 1, minute: 30, second: 45, millis: 123 };
       const converter = new DurationConverter(duration);
       const milliseconds = converter.toMilliseconds();
       expect(milliseconds).toBe(5445123);
     });
 
     it('should handle zero duration correctly', () => {
-      const duration: DurationHour = { hour: 0, minute: 0, second: 0, millis: 0 };
+      const duration: Duration = { hour: 0, minute: 0, second: 0, millis: 0 };
       const converter = new DurationConverter(duration);
       const milliseconds = converter.toMilliseconds();
       expect(milliseconds).toBe(0);
     });
 
     it('should handle durations with only some units populated', () => {
-      const duration1: DurationHour = { hour: 2 };
+      const duration1: Duration = { hour: 2 };
       const converter1 = new DurationConverter(duration1);
       const milliseconds1 = converter1.toMilliseconds();
       expect(milliseconds1).toBe(7200000);
 
-      const duration2: DurationHour = { minute: 30, second: 15, millis: 0 };
+      const duration2: Duration = { minute: 30, second: 15, millis: 0 };
       const converter2 = new DurationConverter(duration2);
       const milliseconds2 = converter2.toMilliseconds();
       expect(milliseconds2).toBe(1815000);
 
-      const duration3: DurationHour = { millis: 500 };
+      const duration3: Duration = { millis: 500 };
       const converter3 = new DurationConverter(duration3);
       const milliseconds3 = converter3.toMilliseconds();
       expect(milliseconds3).toBe(500);
@@ -154,42 +154,42 @@ describe('DurationConverter', () => {
 
   describe('toDecimal', () => {
     it('should convert the duration to a decimal value for the specified unit (hours)', () => {
-      const duration: DurationHour = { hour: 1, minute: 30, second: 0, millis: 0 };
+      const duration: Duration = { hour: 1, minute: 30, second: 0, millis: 0 };
       const converter = new DurationConverter(duration);
       const decimalValue = converter.toDecimal(DateTimeUnit.hour);
       expect(decimalValue).toBe(1.5);
     });
 
     it('should convert the duration to a decimal value for the specified unit (minutes)', () => {
-      const duration: DurationHour = { hour: 1, minute: 30, second: 0, millis: 0 };
+      const duration: Duration = { hour: 1, minute: 30, second: 0, millis: 0 };
       const converter = new DurationConverter(duration);
       const decimalValue = converter.toDecimal(DateTimeUnit.minute);
       expect(decimalValue).toBe(90);
     });
 
     it('should convert the duration to a decimal value for the specified unit (seconds)', () => {
-      const duration: DurationHour = { hour: 0, minute: 2, second: 30, millis: 0 };
+      const duration: Duration = { hour: 0, minute: 2, second: 30, millis: 0 };
       const converter = new DurationConverter(duration);
       const decimalValue = converter.toDecimal(DateTimeUnit.second);
       expect(decimalValue).toBe(150);
     });
 
     it('should convert the duration to a decimal value for the specified unit (days)', () => {
-      const duration: DurationHour = { hour: 24, minute: 0, second: 0, millis: 0 };
+      const duration: Duration = { hour: 24, minute: 0, second: 0, millis: 0 };
       const converter = new DurationConverter(duration);
       const decimalValue = converter.toDecimal(DateTimeUnit.day);
       expect(decimalValue).toBe(1);
     });
 
     it('should convert the duration to a decimal value for the specified unit (milliseconds)', () => {
-      const duration: DurationHour = { hour: 0, minute: 0, second: 0, millis: 500 };
+      const duration: Duration = { hour: 0, minute: 0, second: 0, millis: 500 };
       const converter = new DurationConverter(duration);
       const decimalValue = converter.toDecimal(DateTimeUnit.millis);
       expect(decimalValue).toBe(500);
     });
 
     it('should handle zero duration correctly', () => {
-      const duration: DurationHour = { hour: 0, minute: 0, second: 0, millis: 0 };
+      const duration: Duration = { hour: 0, minute: 0, second: 0, millis: 0 };
       const converter = new DurationConverter(duration);
       const decimalValue = converter.toDecimal(DateTimeUnit.hour);
       expect(decimalValue).toBe(0);

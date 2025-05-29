@@ -20,9 +20,17 @@ export enum WeekDays {
   Saturday = 6,
 }
 
+const MILLS_PER_UNIT = {
+  [DateTimeUnit.day]: 86400000, // 24 * 60 * 60 * 1000
+  [DateTimeUnit.hour]: 3600000, // 60 * 60 * 1000
+  [DateTimeUnit.minute]: 60000, // 60 * 1000
+  [DateTimeUnit.second]: 1000,
+  [DateTimeUnit.millis]: 1,
+};
+
 type IANATimeZone = `${string}/${string}` | 'UTC';
 
-type Duration = {
+type DurationInput = {
   year?: number;
   month?: number;
   day?: number;
@@ -32,7 +40,7 @@ type Duration = {
   millis?: number;
 };
 
-export type DurationHour = Pick<Duration, 'hour' | 'minute' | 'second' | 'millis'>;
+export type Duration = Pick<DurationInput, 'day' | 'hour' | 'minute' | 'second' | 'millis'>;
 
 export type DurationUnit =
   | DateTimeUnit.day
@@ -57,7 +65,7 @@ export class DateTimeUtils {
   }
 
   /** Return the duration need to add to make current datetime become other */
-  static diff(endDate: Date, startDate: Date, truncate: DateTimeUnit = DateTimeUnit.millis): DurationHour {
+  static diff(endDate: Date, startDate: Date, truncate: DateTimeUnit = DateTimeUnit.millis): Duration {
     const end = DateTimeUtils.fromDate(endDate).truncate(truncate).dateTime;
     const start = DateTimeUtils.fromDate(startDate).truncate(truncate).dateTime;
     const luxonDuration = end.diff(start, ['hours', 'minutes', 'seconds', 'milliseconds']);
@@ -78,7 +86,7 @@ export class DateTimeUtils {
     return new DateTimeUtils(this.dateTime);
   }
 
-  add(duration: Duration): this {
+  add(duration: DurationInput): this {
     const luxonDuration = LuxonDuration.fromObject({
       years: duration.year,
       months: duration.month,
@@ -157,30 +165,19 @@ export class DateTimeUtils {
 }
 
 export class DurationConverter {
-  millisPerUnit = {
-    [DateTimeUnit.day]: 86400000, // 24 * 60 * 60 * 1000
-    [DateTimeUnit.hour]: 3600000, // 60 * 60 * 1000
-    [DateTimeUnit.minute]: 60000, // 60 * 1000
-    [DateTimeUnit.second]: 1000,
-    [DateTimeUnit.millis]: 1,
-  };
-
-  private duration: DurationHour;
-
-  constructor(duration: DurationHour) {
-    this.duration = duration;
-  }
+  constructor(private duration: Duration) {}
 
   toMilliseconds(): number {
     return (
-      (this.duration.hour ?? 0) * this.millisPerUnit[DateTimeUnit.hour] +
-      (this.duration.minute ?? 0) * this.millisPerUnit[DateTimeUnit.minute] +
-      (this.duration.second ?? 0) * this.millisPerUnit[DateTimeUnit.second] +
+      (this.duration.day ?? 0) * MILLS_PER_UNIT[DateTimeUnit.day] +
+      (this.duration.hour ?? 0) * MILLS_PER_UNIT[DateTimeUnit.hour] +
+      (this.duration.minute ?? 0) * MILLS_PER_UNIT[DateTimeUnit.minute] +
+      (this.duration.second ?? 0) * MILLS_PER_UNIT[DateTimeUnit.second] +
       (this.duration.millis ?? 0)
     );
   }
 
   toDecimal(unit: DurationUnit): number {
-    return this.toMilliseconds() / this.millisPerUnit[unit];
+    return this.toMilliseconds() / MILLS_PER_UNIT[unit];
   }
 }
