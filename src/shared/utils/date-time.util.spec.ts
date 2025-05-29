@@ -140,10 +140,10 @@ describe('DurationConverter', () => {
       const milliseconds1 = converter1.toMilliseconds();
       expect(milliseconds1).toBe(7200000);
 
-      const duration2: Duration = { minute: 30, second: 15, millis: 0 };
+      const duration2: Duration = { day: 1, minute: 30, second: 15, millis: 0 };
       const converter2 = new DurationConverter(duration2);
       const milliseconds2 = converter2.toMilliseconds();
-      expect(milliseconds2).toBe(1815000);
+      expect(milliseconds2).toBe(88215000);
 
       const duration3: Duration = { millis: 500 };
       const converter3 = new DurationConverter(duration3);
