@@ -1,4 +1,4 @@
-export type SendEmailParams<T> = {
+export type SendEmailInput<T> = {
   from?: string;
   to: string;
   template: IEmailTemplate<T>;
@@ -11,5 +11,5 @@ export abstract class IEmailTemplate<T> {
 }
 
 export abstract class IEmailSender {
-  abstract sendEmail<T>(params: SendEmailParams<T>): Promise<void>;
+  abstract sendEmail<T>(params: SendEmailInput<T>): Promise<void>;
 }

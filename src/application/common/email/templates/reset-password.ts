@@ -1,4 +1,4 @@
-import type { IEmailTemplate, SendEmailParams } from '../email-sender';
+import type { IEmailTemplate, SendEmailInput } from '../email-sender';
 
 export type ResetPasswordEmailContent = {
   code: string;
@@ -19,7 +19,7 @@ const resetPasswordEmailTemplate: IEmailTemplate<ResetPasswordEmailContent> = {
 
 export const getSendResetPasswordEmailParams = (
   data: ResetPasswordEmailContent,
-): SendEmailParams<ResetPasswordEmailContent> => ({
+): SendEmailInput<ResetPasswordEmailContent> => ({
   from: 'Hh4r4@example.com',
   to: data.email,
   template: resetPasswordEmailTemplate,
