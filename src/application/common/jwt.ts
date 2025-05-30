@@ -7,7 +7,6 @@ export class JwtPayload {
     public readonly roles: string[],
   ) {}
   iat: number = Date.now() / 1000;
-  exp: number = 0;
 
   organization?: string;
   department?: string;

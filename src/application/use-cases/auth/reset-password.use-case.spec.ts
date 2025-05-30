@@ -48,13 +48,13 @@ describe('ResetPasswordUseCase', () => {
     jest.spyOn(person, 'verifyResetPasswordCode');
     (person.verifyResetPasswordCode as jest.Mock).mockReturnValueOnce(undefined);
     mockPersonRepository.findOneMatched.mockResolvedValueOnce(person);
-    mockCryptoService.hash.mockReturnValueOnce('hashedNewPassword');
+    mockCryptoService.hashPassword.mockResolvedValueOnce('hashedNewPassword');
     mockPersonRepository.save.mockResolvedValueOnce(person.id);
 
     const result = await useCase.process(input);
 
     expect(mockPersonRepository.findOneMatched).toHaveBeenCalledWith({ email: { isIn: [input.email] } });
-    expect(mockCryptoService.hash).toHaveBeenCalledWith(input.password);
+    expect(mockCryptoService.hashPassword).toHaveBeenCalledWith(input.password);
     expect(mockPersonRepository.save).toHaveBeenCalled();
     expect(person.hashedPassword).toBe('hashedNewPassword');
     expect(result).toEqual(new BaseMessageResponse('Password reset!'));

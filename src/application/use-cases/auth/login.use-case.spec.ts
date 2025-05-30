@@ -35,7 +35,7 @@ describe('LoginUseCase', () => {
     const loginInput: LoginInput = { email: mockPerson.email, password: password };
 
     mockPersonRepository.findOneMatched.mockResolvedValueOnce(mockPerson);
-    mockCryptoService.hash.mockReturnValueOnce(hashedPassword);
+    mockCryptoService.hashPassword.mockResolvedValueOnce(hashedPassword);
     mockJwtService.generateToken.mockResolvedValueOnce('access-token');
     mockJwtService.generateToken.mockResolvedValueOnce('refresh-token');
 
@@ -43,7 +43,7 @@ describe('LoginUseCase', () => {
 
     expect(result).toEqual({ accessToken: 'access-token', refreshToken: 'refresh-token' });
     expect(mockPersonRepository.findOneMatched).toHaveBeenCalledWith({ email: { isIn: [loginInput.email] } });
-    expect(mockCryptoService.hash).toHaveBeenCalledWith(loginInput.password);
+    expect(mockCryptoService.hashPassword).toHaveBeenCalledWith(loginInput.password);
     expect(mockJwtService.generateToken).toHaveBeenCalledTimes(2);
   });
 
@@ -54,7 +54,7 @@ describe('LoginUseCase', () => {
 
     await expect(useCase.process(loginInput)).rejects.toThrow(expectedError);
     expect(mockPersonRepository.findOneMatched).toHaveBeenCalledWith({ email: { isIn: [loginInput.email] } });
-    expect(mockCryptoService.hash).toHaveBeenCalledTimes(1);
+    expect(mockCryptoService.hashPassword).toHaveBeenCalledTimes(1);
     expect(mockJwtService.generateToken).toHaveBeenCalledTimes(0);
   });
 
@@ -65,7 +65,7 @@ describe('LoginUseCase', () => {
 
     await expect(useCase.process(loginInput)).rejects.toThrow(expectedError);
     expect(mockPersonRepository.findOneMatched).toHaveBeenCalledWith({ email: { isIn: [loginInput.email] } });
-    expect(mockCryptoService.hash).toHaveBeenCalledTimes(0);
+    expect(mockCryptoService.hashPassword).toHaveBeenCalledTimes(0);
     expect(mockJwtService.generateToken).toHaveBeenCalledTimes(0);
   });
 });

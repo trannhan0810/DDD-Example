@@ -3,12 +3,13 @@ import { Global, Injectable, Module } from '@nestjs/common';
 import jwt from 'jsonwebtoken';
 
 export const JWT_SECRET: string = '1234';
+export const MILLS_PER_MINUTE: number = 60 * 1000;
 
 @Injectable()
 export class JwtService extends IJwtService {
   /** expiresIn: expire time in millisecond */
-  async generateToken(payload: JwtPayload, expiresIn?: number): Promise<string> {
-    return jwt.sign(payload, JWT_SECRET, { expiresIn });
+  async generateToken(payload: JwtPayload, expiresIn: number = 5 * MILLS_PER_MINUTE): Promise<string> {
+    return jwt.sign(JSON.parse(JSON.stringify(payload)), JWT_SECRET, { expiresIn });
   }
 
   async verifyToken(token: string): Promise<JwtPayload> {

@@ -4,7 +4,9 @@ import { LoginInput, LoginResponse } from '@application/dtos/auth/login.dto';
 import { Person } from '@domain/person-management/entities/person.entity';
 import { PersonRepository } from '@domain/person-management/respositories/person.repository';
 import { DomainError } from '@domain/shared/common/base.error';
+import { UseCase } from 'src/shared/decorators';
 
+@UseCase()
 export class LoginUseCase {
   constructor(
     private readonly personRepository: PersonRepository,
@@ -16,7 +18,7 @@ export class LoginUseCase {
     const person = await this.personRepository.findOneMatched({
       email: { isIn: [input.email] },
     });
-    const hashedPassword = this.cryptoService.hash(input.password);
+    const hashedPassword = await this.cryptoService.hashPassword(input.password);
     if (!person || person.hashedPassword !== hashedPassword) {
       throw new DomainError('Email or password is incorrect');
     }
@@ -26,6 +28,7 @@ export class LoginUseCase {
 
   private async generateToken(person: Person): Promise<LoginResponse> {
     const payload = new JwtPayload(`${person.id}`, person.email, person.firstname, person.lastname, []);
+
     const accessToken = await this.jwtService.generateToken(payload);
     const refreshToken = await this.jwtService.generateToken(payload);
     return { accessToken, refreshToken };

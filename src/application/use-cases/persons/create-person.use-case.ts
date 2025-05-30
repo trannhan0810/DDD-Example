@@ -16,7 +16,7 @@ export class CreatePersonUseCase {
       email: input.email,
       firstname: input.firstname,
       lastname: input.lastname,
-      hashedPassword: this.cryptoService.hash(input.password),
+      hashedPassword: await this.cryptoService.hashPassword(input.password),
     });
     await this.personRepository.save(newPerson);
     return new BaseMessageResponse('Create person successfully');

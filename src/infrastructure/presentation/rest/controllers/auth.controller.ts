@@ -22,21 +22,21 @@ export class AuthController {
   @Post('login')
   @ApiBody({ type: LoginInput })
   @ApiResponse({ type: LoginResponse })
-  async login(@Body('input') input: LoginInput): Promise<LoginResponse> {
+  async login(@Body() input: LoginInput): Promise<LoginResponse> {
     return this.loginUseCase.process(input);
   }
 
   @Post('forgot-password')
   @ApiBody({ type: ForgotPasswordInput })
   @ApiResponse({ type: BaseMessageResponse })
-  async resetPassword(@Body('input') input: ForgotPasswordInput): Promise<BaseMessageResponse> {
+  async resetPassword(@Body() input: ForgotPasswordInput): Promise<BaseMessageResponse> {
     return this.resetPasswordUseCase.process(input);
   }
 
   @Post('reset-password')
   @ApiBody({ type: ResetPasswordInput })
   @ApiResponse({ type: BaseMessageResponse })
-  async verifyResetPassword(@Body('input') input: ResetPasswordInput): Promise<BaseMessageResponse> {
+  async verifyResetPassword(@Body() input: ResetPasswordInput): Promise<BaseMessageResponse> {
     return this.verifyResetPasswordUseCase.process(input);
   }
 

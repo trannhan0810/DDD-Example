@@ -5,7 +5,9 @@ import { BaseMessageResponse } from '@application/dtos/shared/message-response.d
 import { Person } from '@domain/person-management/entities/person.entity';
 import { PersonRepository } from '@domain/person-management/respositories/person.repository';
 import { DomainError } from '@domain/shared/common/base.error';
+import { UseCase } from 'src/shared/decorators';
 
+@UseCase()
 export class ForgotPasswordUseCase {
   constructor(private readonly personRepository: PersonRepository, private readonly emailService: IEmailSender) {}
 
