@@ -1,5 +1,5 @@
 import { PersonDetailResponse } from '@application/dtos/persons/get-one-person.dto';
-import { PersonRepository } from '@domain/person-management/respositories/person.repository';
+import { PersonRepository } from '@domain/person-management/repositories/person.repository';
 import { DomainError } from '@domain/shared/common/base.error';
 
 export class GetPersonDetailUseCase {

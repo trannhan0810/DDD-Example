@@ -2,7 +2,7 @@ import { BaseInMemoryRepository } from './base.repository';
 import { mockPersonData } from '../data/person.data';
 
 import { Person } from '@domain/person-management/entities/person.entity';
-import { FilterPersonInput, PersonRepository } from '@domain/person-management/respositories/person.repository';
+import { FilterPersonInput, PersonRepository } from '@domain/person-management/repositories/person.repository';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()

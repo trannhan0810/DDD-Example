@@ -3,7 +3,7 @@ import { getSendResetPasswordEmailParams } from '@application/common/email/templ
 import { ForgotPasswordInput } from '@application/dtos/auth/forgot-password.dto';
 import { BaseMessageResponse } from '@application/dtos/shared/message-response.dto';
 import { Person } from '@domain/person-management/entities/person.entity';
-import { PersonRepository } from '@domain/person-management/respositories/person.repository';
+import { PersonRepository } from '@domain/person-management/repositories/person.repository';
 import { DomainError } from '@domain/shared/common/base.error';
 import { UseCase } from 'src/shared/decorators';
 

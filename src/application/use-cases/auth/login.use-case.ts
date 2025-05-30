@@ -2,7 +2,7 @@ import { ICryptoService } from '@application/common/cryto';
 import { IJwtService, JwtPayload } from '@application/common/jwt';
 import { LoginInput, LoginResponse } from '@application/dtos/auth/login.dto';
 import { Person } from '@domain/person-management/entities/person.entity';
-import { PersonRepository } from '@domain/person-management/respositories/person.repository';
+import { PersonRepository } from '@domain/person-management/repositories/person.repository';
 import { DomainError } from '@domain/shared/common/base.error';
 import { UseCase } from 'src/shared/decorators';
 

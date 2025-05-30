@@ -4,7 +4,7 @@ import { ICryptoService } from '@application/common/cryto';
 import { IJwtService } from '@application/common/jwt';
 import { LoginInput } from '@application/dtos/auth/login.dto';
 import { Person } from '@domain/person-management/entities/person.entity';
-import { PersonRepository } from '@domain/person-management/respositories/person.repository';
+import { PersonRepository } from '@domain/person-management/repositories/person.repository';
 import { DomainError } from '@domain/shared/common/base.error';
 import { mock } from 'jest-mock-extended';
 
