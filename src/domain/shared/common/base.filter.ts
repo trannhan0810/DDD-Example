@@ -10,20 +10,25 @@ type CommonFilter<T extends FilterableType> = {
   $lte: Extract<number | Date, T>;
 };
 
-export function isSastifyFilter<T extends FilterableType>(value: T, filter: Partial<CommonFilter<T>> = {}) {
+export function isSastifyFilter<T extends FilterableType>(
+  value: Maybe<T>,
+  filter: Partial<CommonFilter<T>> | T[] | T = {},
+) {
+  if (Array.isArray(filter)) return filter.some(item => item === value);
+  if (typeof filter !== 'object' || filter instanceof Date) return filter === value;
   return (
-    (filter.$in ? filter.$in.some(item => item == value) : true) &&
-    (filter.$nin ? !filter.$nin.some(item => item == value) : true) &&
+    (filter.$in ? filter.$in.some(item => item === value) : true) &&
+    (filter.$nin ? !filter.$nin.some(item => item === value) : true) &&
     (filter.$like ? typeof value === 'string' && value.includes(filter.$like) : true) &&
-    (filter.$gt ? value > filter.$gt : true) &&
-    (filter.$lt ? value < filter.$lt : true) &&
-    (filter.$gte ? value >= filter.$gte : true) &&
-    (filter.$lte ? value <= filter.$lte : true)
+    (filter.$gt ? value != null && value > filter.$gt : true) &&
+    (filter.$lt ? value != null && value < filter.$lt : true) &&
+    (filter.$gte ? value != null && value >= filter.$gte : true) &&
+    (filter.$lte ? value != null && value <= filter.$lte : true)
   );
 }
 
-export type IdFilter = Partial<Pick<CommonFilter<Id>, '$in' | '$nin'>>;
-export type BooleanFilter = Partial<CompactObj<CommonFilter<boolean>>>;
-export type StringFilter = Partial<CompactObj<CommonFilter<string>>>;
-export type NumberFilter = Partial<CompactObj<CommonFilter<number>>>;
-export type DateFilter = Partial<CompactObj<CommonFilter<Date>>>;
+export type IdFilter = Partial<Pick<CommonFilter<Id>, '$in' | '$nin'>> | Id[] | Id;
+export type BooleanFilter = Partial<CompactObj<CommonFilter<boolean>>> | boolean[] | boolean;
+export type StringFilter = Partial<CompactObj<CommonFilter<string>>> | string[] | string;
+export type NumberFilter = Partial<CompactObj<CommonFilter<number>>> | number[] | number;
+export type DateFilter = Partial<CompactObj<CommonFilter<Date>>> | Date[] | Date;

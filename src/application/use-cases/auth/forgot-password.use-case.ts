@@ -12,9 +12,8 @@ export class ForgotPasswordUseCase {
   constructor(private readonly personRepository: PersonRepository, private readonly emailService: IEmailSender) {}
 
   async process(input: ForgotPasswordInput): Promise<BaseMessageResponse> {
-    const person = await this.personRepository.findOneMatched({
-      email: { $in: [input.email] },
-    });
+    const { email } = input;
+    const person = await this.personRepository.findOneMatched({ email });
     if (!person) throw new DomainError('Person not found!');
     if (!person.isEmailVerified) throw new DomainError('Email is not verified!');
 

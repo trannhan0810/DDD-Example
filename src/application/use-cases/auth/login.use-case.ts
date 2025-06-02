@@ -15,9 +15,8 @@ export class LoginUseCase {
   ) {}
 
   async process(input: LoginInput): Promise<LoginResponse> {
-    const person = await this.personRepository.findOneMatched({
-      email: { $in: [input.email] },
-    });
+    const { email } = input;
+    const person = await this.personRepository.findOneMatched({ email });
     const hashedPassword = await this.cryptoService.hashPassword(input.password);
     if (!person || person.hashedPassword !== hashedPassword) {
       throw new DomainError('Email or password is incorrect');

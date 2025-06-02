@@ -50,7 +50,7 @@ describe('ForgotPasswordUseCase', () => {
 
     const result = await useCase.process(input);
 
-    expect(mockPersonRepository.findOneMatched).toHaveBeenCalledWith({ email: { $in: [input.email] } });
+    expect(mockPersonRepository.findOneMatched).toHaveBeenCalledWith({ email: input.email });
     expect(mockPersonRepository.save).toHaveBeenCalled();
     expect(mockEmailService.sendEmail).toHaveBeenCalled();
     expect(result).toEqual(new BaseMessageResponse('Reset password code send!'));
