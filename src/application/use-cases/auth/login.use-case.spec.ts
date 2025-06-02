@@ -42,7 +42,7 @@ describe('LoginUseCase', () => {
     const result = await useCase.process(loginInput);
 
     expect(result).toEqual({ accessToken: 'access-token', refreshToken: 'refresh-token' });
-    expect(mockPersonRepository.findOneMatched).toHaveBeenCalledWith({ email: { isIn: [loginInput.email] } });
+    expect(mockPersonRepository.findOneMatched).toHaveBeenCalledWith({ email: { $in: [loginInput.email] } });
     expect(mockCryptoService.hashPassword).toHaveBeenCalledWith(loginInput.password);
     expect(mockJwtService.generateToken).toHaveBeenCalledTimes(2);
   });
@@ -53,7 +53,7 @@ describe('LoginUseCase', () => {
     mockPersonRepository.findOneMatched.mockResolvedValueOnce(undefined);
 
     await expect(useCase.process(loginInput)).rejects.toThrow(expectedError);
-    expect(mockPersonRepository.findOneMatched).toHaveBeenCalledWith({ email: { isIn: [loginInput.email] } });
+    expect(mockPersonRepository.findOneMatched).toHaveBeenCalledWith({ email: { $in: [loginInput.email] } });
     expect(mockCryptoService.hashPassword).toHaveBeenCalledTimes(1);
     expect(mockJwtService.generateToken).toHaveBeenCalledTimes(0);
   });
@@ -64,7 +64,7 @@ describe('LoginUseCase', () => {
     const loginInput: LoginInput = { email: 'person@example.com', password: 'password' };
 
     await expect(useCase.process(loginInput)).rejects.toThrow(expectedError);
-    expect(mockPersonRepository.findOneMatched).toHaveBeenCalledWith({ email: { isIn: [loginInput.email] } });
+    expect(mockPersonRepository.findOneMatched).toHaveBeenCalledWith({ email: { $in: [loginInput.email] } });
     expect(mockCryptoService.hashPassword).toHaveBeenCalledTimes(0);
     expect(mockJwtService.generateToken).toHaveBeenCalledTimes(0);
   });

@@ -53,7 +53,7 @@ describe('ResetPasswordUseCase', () => {
 
     const result = await useCase.process(input);
 
-    expect(mockPersonRepository.findOneMatched).toHaveBeenCalledWith({ email: { isIn: [input.email] } });
+    expect(mockPersonRepository.findOneMatched).toHaveBeenCalledWith({ email: { $in: [input.email] } });
     expect(mockCryptoService.hashPassword).toHaveBeenCalledWith(input.password);
     expect(mockPersonRepository.save).toHaveBeenCalled();
     expect(person.hashedPassword).toBe('hashedNewPassword');

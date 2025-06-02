@@ -3,6 +3,7 @@ import { mockPersonData } from '../data/person.data';
 
 import { Person } from '@domain/person-management/entities/person.entity';
 import { FilterPersonInput, PersonRepository } from '@domain/person-management/repositories/person.repository';
+import { isSastifyFilter } from '@domain/shared/common/base.filter';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
@@ -13,13 +14,18 @@ export class PersonInMemoryRepository extends BaseInMemoryRepository<Person> imp
   static readonly providerFor = PersonRepository;
 
   createSpec(filter: Partial<FilterPersonInput>) {
-    return {
-      isSastifyBy: (item: Person) => {
-        void item;
-        void filter;
-        return true;
-      },
+    const filterMap: Record<keyof FilterPersonInput, (item: Person) => boolean> = {
+      firstname: item => isSastifyFilter(item.firstname, filter.firstname),
+      lastname: item => isSastifyFilter(item.lastname, filter.lastname),
+      email: item => isSastifyFilter(item.email, filter.email),
+      hashedPassword: item => isSastifyFilter(item.hashedPassword, filter.hashedPassword),
+      id: item => isSastifyFilter(item.id, filter.id),
+      isEmailVerified: item => isSastifyFilter(item.isEmailVerified, filter.isEmailVerified),
+      resetPasswordCode: item => isSastifyFilter(item.resetPasswordCode, filter.resetPasswordCode),
+      resetPasswordCodeExpireTime: item =>
+        isSastifyFilter(item.resetPasswordCodeExpireTime, filter.resetPasswordCodeExpireTime),
     };
+    return { isSastifyBy: (item: Person) => Object.values(filterMap).every(checkSastify => checkSastify(item)) };
   }
 
   async findAllMatched(filter: Partial<FilterPersonInput>): Promise<Person[]> {

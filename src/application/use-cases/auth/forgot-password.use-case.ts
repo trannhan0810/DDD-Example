@@ -13,7 +13,7 @@ export class ForgotPasswordUseCase {
 
   async process(input: ForgotPasswordInput): Promise<BaseMessageResponse> {
     const person = await this.personRepository.findOneMatched({
-      email: { isIn: [input.email] },
+      email: { $in: [input.email] },
     });
     if (!person) throw new DomainError('Person not found!');
     if (!person.isEmailVerified) throw new DomainError('Email is not verified!');

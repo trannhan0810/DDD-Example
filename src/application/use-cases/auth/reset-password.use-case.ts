@@ -10,7 +10,7 @@ export class ResetPasswordUseCase {
   constructor(private readonly personRepository: PersonRepository, private readonly cryptoService: ICryptoService) {}
 
   async process(input: ResetPasswordInput): Promise<BaseMessageResponse> {
-    const person = await this.personRepository.findOneMatched({ email: { isIn: [input.email] } });
+    const person = await this.personRepository.findOneMatched({ email: { $in: [input.email] } });
     if (!person) throw new DomainError('Person not found!');
     person.verifyResetPasswordCode(input.resetCode);
 

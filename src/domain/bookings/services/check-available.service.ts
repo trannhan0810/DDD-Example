@@ -8,8 +8,8 @@ export class CheckRoomAvailableService {
 
   async check(input: { roomId: Id; period: ITimeRange; bookingId?: Id }) {
     const countConflictBooking = await this.bookingRepository.countMatched({
-      roomId: { isIn: [input.roomId] },
-      id: input.bookingId ? { notIn: [input.bookingId] } : undefined,
+      roomId: { $in: [input.roomId] },
+      id: input.bookingId ? { $nin: [input.bookingId] } : undefined,
       overlapWithPeriod: input.period,
     });
 

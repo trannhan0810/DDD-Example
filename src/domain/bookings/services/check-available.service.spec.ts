@@ -25,7 +25,7 @@ describe('CheckRoomAvailableService', () => {
 
       expect(result).toEqual({ isAvailable: false, countConflictBooking: 1 });
       expect(bookingRepository.countMatched).toHaveBeenCalledWith({
-        roomId: { isIn: ['room1'] },
+        roomId: { $in: ['room1'] },
         overlapWithPeriod: input.period,
         id: undefined,
       });
@@ -42,7 +42,7 @@ describe('CheckRoomAvailableService', () => {
 
       expect(result).toEqual({ isAvailable: true, countConflictBooking: 0 });
       expect(bookingRepository.countMatched).toHaveBeenCalledWith({
-        roomId: { isIn: ['room1'] },
+        roomId: { $in: ['room1'] },
         overlapWithPeriod: input.period,
         id: undefined,
       });
@@ -59,8 +59,8 @@ describe('CheckRoomAvailableService', () => {
       await checkRoomAvailableService.check(input);
 
       expect(bookingRepository.countMatched).toHaveBeenCalledWith({
-        roomId: { isIn: ['room1'] },
-        id: { notIn: ['booking123'] },
+        roomId: { $in: ['room1'] },
+        id: { $nin: ['booking123'] },
         overlapWithPeriod: input.period,
       });
     });

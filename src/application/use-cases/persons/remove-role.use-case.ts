@@ -12,7 +12,7 @@ export class RemoveRoleUseCase {
     const person = await this.personRepository.findById(input.personId);
     if (!person) throw new DomainError(`Person ${input.personId} not found!`);
 
-    const role = await this.roleRepository.findOneMatched({ personId: { isIn: [personId] } });
+    const role = await this.roleRepository.findOneMatched({ personId: { $in: [personId] } });
     if (!role) return new BaseMessageResponse('Role not assigned to this person', false);
 
     await this.personRepository.removeRoles(person.id, [role.id]);

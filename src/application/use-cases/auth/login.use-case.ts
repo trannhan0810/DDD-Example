@@ -16,7 +16,7 @@ export class LoginUseCase {
 
   async process(input: LoginInput): Promise<LoginResponse> {
     const person = await this.personRepository.findOneMatched({
-      email: { isIn: [input.email] },
+      email: { $in: [input.email] },
     });
     const hashedPassword = await this.cryptoService.hashPassword(input.password);
     if (!person || person.hashedPassword !== hashedPassword) {

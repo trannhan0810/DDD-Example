@@ -8,7 +8,7 @@ export class AssignRoleUseCase {
 
   async process(input: AssignRoleInput): Promise<void> {
     const personId = input.personId;
-    const role = await this.roleRepository.findOneMatched({ personId: { isIn: [personId] } });
+    const role = await this.roleRepository.findOneMatched({ personId: { $in: [personId] } });
     if (!role) throw new DomainError(`Role ${input.roleName} not found!`);
 
     const person = await this.personRepository.findById(input.personId);
