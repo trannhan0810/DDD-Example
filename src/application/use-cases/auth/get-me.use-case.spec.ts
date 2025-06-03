@@ -1,39 +1,42 @@
 import { GetMeUseCase } from './get-me.use-case';
 
-import { IJwtService } from '@application/common/jwt';
-import { GetMeResponse } from '@application/dtos/auth/get-me.dto';
+import { Person } from '@domain/person-management/entities/person.entity';
+import { PersonRepository } from '@domain/person-management/repositories/person.repository';
+import { DomainError } from '@domain/shared/common/base.error';
 import { mock } from 'jest-mock-extended';
 
 describe('GetMeUseCase', () => {
   let useCase: GetMeUseCase;
-  const mockJwtService = mock<IJwtService>();
+  const mockPersonRepository = mock<PersonRepository>();
 
   beforeEach(() => {
-    useCase = new GetMeUseCase(mockJwtService);
+    jest.resetAllMocks();
+    useCase = new GetMeUseCase(mockPersonRepository);
   });
 
-  it('should successfully get person data', async () => {
-    const mockPerson: GetMeResponse = {
+  it('should return person data with roles if found', async () => {
+    const mockPerson = {
       id: 'person-id',
       email: 'person@example.com',
       firstname: 'Firstname',
       lastname: 'Lastname',
-      roles: [],
-    };
-    (mockJwtService.verifyToken as jest.Mock).mockResolvedValueOnce(mockPerson);
-    const accessToken = 'valid-token';
+      isEmailVerified: true,
+      hashedPassword: 'hashed-password',
+      resetPasswordCode: null,
+      resetPasswordCodeExpireTime: null,
+    } as Person;
+    mockPersonRepository.findById.mockResolvedValueOnce(mockPerson);
 
-    const result = await useCase.process({ accessToken });
+    const result = await useCase.process({ id: 'person-id' });
 
-    expect(result).toEqual(mockPerson);
-    expect(mockJwtService.verifyToken).toHaveBeenCalledWith(accessToken);
+    expect(result).toEqual({ ...mockPerson, roles: [] });
+    expect(mockPersonRepository.findById).toHaveBeenCalledWith('person-id');
   });
 
-  it('should throw an error if jwtService.verifyToken throws an error', async () => {
-    const expectedError = new Error('Invalid token');
-    (mockJwtService.verifyToken as jest.Mock).mockRejectedValueOnce(expectedError);
-    const accessToken = 'invalid-token';
+  it('should throw DomainError if person not found', async () => {
+    mockPersonRepository.findById.mockResolvedValueOnce(undefined);
 
-    await expect(useCase.process({ accessToken })).rejects.toThrow(expectedError);
+    await expect(useCase.process({ id: 'not-found-id' })).rejects.toThrow(new DomainError('Person not found!'));
+    expect(mockPersonRepository.findById).toHaveBeenCalledWith('not-found-id');
   });
 });

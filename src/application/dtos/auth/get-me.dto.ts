@@ -1,8 +1,9 @@
 import { BasePersonDto } from '../persons/person.dto';
 
-import { ApiProperty, PickType } from '@nestjs/swagger';
+import { PickType } from '@nestjs/swagger';
+import { Expose } from 'class-transformer';
 
 export class GetMeResponse extends PickType(BasePersonDto, ['id', 'email', 'firstname', 'lastname']) {
-  @ApiProperty()
+  @Expose()
   roles!: string[];
 }

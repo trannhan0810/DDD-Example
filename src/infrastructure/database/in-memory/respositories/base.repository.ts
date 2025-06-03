@@ -10,7 +10,7 @@ export abstract class BaseInMemoryRepository<T extends BaseEntity> implements Ba
     return [...this._items];
   }
   async findById(id: Id): Promise<T | undefined> {
-    return this._items.find(item => item.id === id);
+    return this._items.find(item => item.id == id);
   }
 
   abstract save(item: NullPartial<T>): Promise<Id>;

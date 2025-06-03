@@ -20,15 +20,6 @@ export class JwtService extends IJwtService {
       throw new Error('Verify token fail');
     }
   }
-
-  decodeToken(token: string): JwtPayload | null {
-    try {
-      const decoded = jwt.decode(token, { complete: true }) as jwt.JwtPayload;
-      return decoded.payload as JwtPayload;
-    } catch {
-      throw new Error('Decode token fail');
-    }
-  }
 }
 
 @Global()

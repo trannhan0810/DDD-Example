@@ -1,3 +1,5 @@
+import { CurrentUser, PublicAPI, UserCtx } from '../guards/auth.guard';
+
 import { ForgotPasswordInput } from '@application/dtos/auth/forgot-password.dto';
 import { GetMeResponse } from '@application/dtos/auth/get-me.dto';
 import { LoginInput, LoginResponse } from '@application/dtos/auth/login.dto';
@@ -7,8 +9,9 @@ import { ForgotPasswordUseCase } from '@application/use-cases/auth/forgot-passwo
 import { GetMeUseCase } from '@application/use-cases/auth/get-me.use-case';
 import { LoginUseCase } from '@application/use-cases/auth/login.use-case';
 import { ResetPasswordUseCase } from '@application/use-cases/auth/reset-password.use-case';
-import { Body, Controller, Get, Module, Post } from '@nestjs/common';
+import { Body, Controller, Module, Post } from '@nestjs/common';
 import { ApiBody, ApiResponse } from '@nestjs/swagger';
+import { GetAPI } from 'src/shared/decorators/api';
 
 @Controller('')
 export class AuthController {
@@ -19,6 +22,7 @@ export class AuthController {
     private readonly getMeUseCase: GetMeUseCase,
   ) {}
 
+  @PublicAPI()
   @Post('login')
   @ApiBody({ type: LoginInput })
   @ApiResponse({ type: LoginResponse })
@@ -40,10 +44,9 @@ export class AuthController {
     return this.verifyResetPasswordUseCase.process(input);
   }
 
-  @Get('me')
-  @ApiResponse({ type: GetMeResponse })
-  async getMe(): Promise<GetMeResponse> {
-    return this.getMeUseCase.process({ accessToken: '' });
+  @GetAPI('/me', { res: GetMeResponse })
+  async getMe(@UserCtx() currentUser: CurrentUser): Promise<GetMeResponse> {
+    return this.getMeUseCase.process({ id: currentUser.id });
   }
 }
 

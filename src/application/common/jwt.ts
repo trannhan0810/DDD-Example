@@ -16,5 +16,4 @@ export class JwtPayload {
 export abstract class IJwtService {
   abstract generateToken(payload: JwtPayload, expiresIn?: string | number): Promise<string>;
   abstract verifyToken(token: string): Promise<JwtPayload>;
-  abstract decodeToken(token: string): JwtPayload | null;
 }

@@ -2,15 +2,20 @@ import { CryptoModule } from './adapters/cryto';
 import { EmailModule } from './adapters/email';
 import { JwtModule } from './adapters/jwt';
 import { InMemoryDatabaseModule } from './database/in-memory/in-memory-db.module';
+import { AuthGuard } from './presentation/rest/guards/auth.guard';
 import { HttpExceptionFilter } from './presentation/rest/middleware/exception-filter.middleware';
 import { RestApiModule } from './presentation/rest/restApi.module';
 
-import { Module } from '@nestjs/common';
-import { APP_FILTER } from '@nestjs/core';
+import { ClassSerializerInterceptor, Module } from '@nestjs/common';
+import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 
 @Module({
   imports: [InMemoryDatabaseModule, RestApiModule, CryptoModule, EmailModule, JwtModule],
   controllers: [],
-  providers: [{ provide: APP_FILTER, useClass: HttpExceptionFilter }],
+  providers: [
+    { provide: APP_GUARD, useClass: AuthGuard },
+    { provide: APP_INTERCEPTOR, useClass: ClassSerializerInterceptor },
+    { provide: APP_FILTER, useClass: HttpExceptionFilter },
+  ],
 })
 export class AppModule {}

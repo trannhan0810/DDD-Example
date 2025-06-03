@@ -7,26 +7,28 @@ export class HttpExceptionFilter implements ExceptionFilter {
   constructor(private readonly httpAdapterHost: HttpAdapterHost) {}
 
   catch(exception: unknown, host: ArgumentsHost): void {
-    // In certain situations `httpAdapter` might not be available in the
-    // constructor method, thus we should resolve it here.
     const { httpAdapter } = this.httpAdapterHost;
 
     const ctx = host.switchToHttp();
+    const [request, response] = [ctx.getRequest(), ctx.getResponse()];
 
-    const responseBody = {
-      ...this.getBody(exception),
-      path: httpAdapter.getRequestUrl(ctx.getRequest()),
-    };
-
-    httpAdapter.reply(ctx.getResponse(), responseBody, responseBody.statusCode);
+    const responseBody = this.handleException(exception);
+    const apiPath = httpAdapter.getRequestUrl(request);
+    httpAdapter.reply(response, { ...responseBody, path: apiPath }, responseBody.statusCode);
   }
 
-  getBody(exception: unknown) {
+  handleException(exception: unknown) {
     if (exception instanceof DomainError) {
-      return { statusCode: 400, message: exception.message };
+      return {
+        statusCode: 400,
+        message: exception.message,
+      };
     }
     if (exception instanceof HttpException) {
-      return { statusCode: exception.getStatus(), message: exception.message };
+      return {
+        statusCode: exception.getStatus(),
+        message: exception.message,
+      };
     }
     return {
       statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
