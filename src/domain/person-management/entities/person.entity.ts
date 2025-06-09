@@ -20,7 +20,7 @@ export class Person<ID extends Id | null = Id> extends BaseEntity<ID> {
 
   updateResetPasswordCode() {
     const newResetPassword = generateRandomString({ length: 6, includeNumbers: true });
-    const newExpireDate = DateTimeUtils.fromDate(new Date()).add({ hour: 1 }).toDate();
+    const newExpireDate = DateTimeUtils.fromDate(new Date()).add({ hours: 1 }).toDate();
     this.resetPasswordCode = newResetPassword;
     this.resetPasswordCodeExpireTime = newExpireDate;
 

@@ -1,4 +1,4 @@
-import { DateTime, Duration as LuxonDuration } from 'luxon';
+import { DateTime as LuxonDateTime, Duration as LuxonDuration } from 'luxon';
 
 export enum DateTimeUnit {
   year = 'Y',
@@ -20,6 +20,16 @@ export enum WeekDays {
   Saturday = 6,
 }
 
+const ALL_WEEK_DAYS = [
+  WeekDays.Monday,
+  WeekDays.Tuesday,
+  WeekDays.Wednesday,
+  WeekDays.Thursday,
+  WeekDays.Friday,
+  WeekDays.Saturday,
+  WeekDays.Sunday,
+];
+
 const MILLS_PER_UNIT = {
   [DateTimeUnit.day]: 86400000, // 24 * 60 * 60 * 1000
   [DateTimeUnit.hour]: 3600000, // 60 * 60 * 1000
@@ -30,17 +40,17 @@ const MILLS_PER_UNIT = {
 
 type IANATimeZone = `${string}/${string}` | 'UTC';
 
-type DurationInput = {
-  year?: number;
-  month?: number;
-  day?: number;
-  hour?: number;
-  minute?: number;
-  second?: number;
+export interface DurationInput {
+  years?: number;
+  months?: number;
+  days?: number;
+  hours?: number;
+  minutes?: number;
+  seconds?: number;
   millis?: number;
-};
+}
 
-export type Duration = Pick<DurationInput, 'day' | 'hour' | 'minute' | 'second' | 'millis'>;
+export type Duration = Pick<DurationInput, 'days' | 'hours' | 'minutes' | 'seconds' | 'millis'>;
 
 export type DurationUnit =
   | DateTimeUnit.day
@@ -50,59 +60,51 @@ export type DurationUnit =
   | DateTimeUnit.millis;
 
 export class DateTimeUtils {
-  private dateTime: DateTime;
+  private luxonDate: LuxonDateTime;
 
-  private constructor(dateTime: DateTime) {
-    this.dateTime = dateTime;
+  private constructor(dateTime: LuxonDateTime) {
+    this.luxonDate = dateTime;
   }
 
   static fromDate(date: Date): DateTimeUtils {
-    return new DateTimeUtils(DateTime.fromJSDate(date));
+    return new DateTimeUtils(LuxonDateTime.fromJSDate(date));
   }
 
   static parse(dateStr: string, tz: IANATimeZone = 'UTC'): DateTimeUtils {
-    return new DateTimeUtils(DateTime.fromISO(dateStr, { zone: tz }));
+    return new DateTimeUtils(LuxonDateTime.fromISO(dateStr, { zone: tz }));
   }
 
   /** Return the duration need to add to make current datetime become other */
   static diff(endDate: Date, startDate: Date, truncate: DateTimeUnit = DateTimeUnit.millis): Duration {
-    const end = DateTimeUtils.fromDate(endDate).truncate(truncate).dateTime;
-    const start = DateTimeUtils.fromDate(startDate).truncate(truncate).dateTime;
+    const end = DateTimeUtils.fromDate(endDate).truncate(truncate).luxonDate;
+    const start = DateTimeUtils.fromDate(startDate).truncate(truncate).luxonDate;
     const luxonDuration = end.diff(start, ['hours', 'minutes', 'seconds', 'milliseconds']);
 
     return {
-      hour: luxonDuration.hours,
-      minute: luxonDuration.minutes,
-      second: luxonDuration.seconds,
+      hours: luxonDuration.hours,
+      minutes: luxonDuration.minutes,
+      seconds: luxonDuration.seconds,
       millis: luxonDuration.milliseconds,
     };
   }
 
   toDate(): Date {
-    return this.dateTime.toJSDate();
+    return this.luxonDate.toJSDate();
   }
 
   clone(): DateTimeUtils {
-    return new DateTimeUtils(this.dateTime);
+    return new DateTimeUtils(this.luxonDate);
   }
 
   add(duration: DurationInput): this {
-    const luxonDuration = LuxonDuration.fromObject({
-      years: duration.year,
-      months: duration.month,
-      days: duration.day,
-      hours: duration.hour,
-      minutes: duration.minute,
-      seconds: duration.second,
-      milliseconds: duration.millis,
-    });
-
-    this.dateTime = this.dateTime.plus(luxonDuration);
+    const { years, months, days, hours, minutes, seconds, millis: milliseconds } = duration;
+    const luxonDuration = LuxonDuration.fromObject({ years, months, days, hours, minutes, seconds, milliseconds });
+    this.luxonDate = this.luxonDate.plus(luxonDuration);
     return this;
   }
 
   truncate(unit: DateTimeUnit): this {
-    this.dateTime = this.dateTime.startOf(this.getLuxonUnit(unit));
+    this.luxonDate = this.luxonDate.startOf(this.getLuxonUnit(unit));
     return this;
   }
 
@@ -120,44 +122,26 @@ export class DateTimeUtils {
   }
 
   format(tz: IANATimeZone = 'UTC'): string {
-    return this.dateTime.setZone(tz).toISO() ?? 'Invalid Date';
+    return this.luxonDate.setZone(tz).toISO() ?? 'Invalid Date';
   }
 
-  static countWeekdays(startDate: Date, endDate: Date, countedWeekdays?: WeekDays[]): number {
-    const startDateTime = DateTime.fromJSDate(startDate).startOf('day');
-    const endDateTime = DateTime.fromJSDate(endDate).startOf('day');
+  static countWeekdays(startDate: Date, endDate: Date, countedWeekdays: WeekDays[] = ALL_WEEK_DAYS): number {
+    const startDateTime = LuxonDateTime.fromJSDate(startDate).startOf('day');
+    const endDateTime = LuxonDateTime.fromJSDate(endDate).startOf('day');
+    const countedWeekdaysSet = new Set(countedWeekdays);
 
-    if (endDateTime < startDateTime) {
+    if (!(startDateTime <= endDateTime)) {
       throw new Error('Invalid Date range');
     }
-
-    if (countedWeekdays == null) {
-      countedWeekdays = [
-        WeekDays.Monday,
-        WeekDays.Tuesday,
-        WeekDays.Wednesday,
-        WeekDays.Thursday,
-        WeekDays.Friday,
-        WeekDays.Saturday,
-        WeekDays.Sunday,
-      ];
-    }
-
-    const countedWeekdaysSet = new Set(countedWeekdays);
-    let count = 0;
 
     // Calculate the number of full weeks
     const daysDifference = endDateTime.diff(startDateTime, 'days').days;
     const fullWeeks = Math.floor(daysDifference / 7);
-
-    // Count weekdays in full weeks
-    countedWeekdaysSet.forEach(() => (count += fullWeeks));
+    let count = fullWeeks * countedWeekdaysSet.size;
 
     // Count weekdays in the remaining days
-    let remainingDate = startDateTime.plus({ days: fullWeeks * 7 });
-    while (remainingDate <= endDateTime) {
-      if (countedWeekdaysSet.has(remainingDate.weekday % 7)) count++;
-      remainingDate = remainingDate.plus({ days: 1 });
+    for (let day = startDateTime.plus({ days: fullWeeks * 7 }); day <= endDateTime; day = day.plus({ days: 1 })) {
+      count += countedWeekdaysSet.has(day.weekday % 7) ? 1 : 0;
     }
 
     return count;
@@ -169,10 +153,10 @@ export class DurationConverter {
 
   toMilliseconds(): number {
     return (
-      (this.duration.day ?? 0) * MILLS_PER_UNIT[DateTimeUnit.day] +
-      (this.duration.hour ?? 0) * MILLS_PER_UNIT[DateTimeUnit.hour] +
-      (this.duration.minute ?? 0) * MILLS_PER_UNIT[DateTimeUnit.minute] +
-      (this.duration.second ?? 0) * MILLS_PER_UNIT[DateTimeUnit.second] +
+      (this.duration.days ?? 0) * MILLS_PER_UNIT[DateTimeUnit.day] +
+      (this.duration.hours ?? 0) * MILLS_PER_UNIT[DateTimeUnit.hour] +
+      (this.duration.minutes ?? 0) * MILLS_PER_UNIT[DateTimeUnit.minute] +
+      (this.duration.seconds ?? 0) * MILLS_PER_UNIT[DateTimeUnit.second] +
       (this.duration.millis ?? 0)
     );
   }

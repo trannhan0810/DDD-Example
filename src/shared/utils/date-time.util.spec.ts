@@ -1,6 +1,6 @@
 import { DateTimeUnit, DateTimeUtils, DurationConverter, WeekDays } from './date-time.util'; // Adjust path
 
-import type { Duration } from './date-time.util';
+import type { Duration, DurationInput } from './date-time.util';
 
 describe('DateTimeUtils', () => {
   describe('fromDate', () => {
@@ -34,6 +34,7 @@ describe('DateTimeUtils', () => {
     it('should create a new DateTimeUtils instance with the same date and time', () => {
       const dateTimeUtils = DateTimeUtils.parse('2024-03-15T10:00:00.000Z', 'UTC');
       const clonedDateTimeUtils = dateTimeUtils.clone();
+
       expect(clonedDateTimeUtils).toBeInstanceOf(DateTimeUtils);
       expect(clonedDateTimeUtils.toDate()).toEqual(dateTimeUtils.toDate());
     });
@@ -42,7 +43,7 @@ describe('DateTimeUtils', () => {
   describe('add', () => {
     it('should add the duration to the DateTimeUtils instance', () => {
       const dateTimeUtils = DateTimeUtils.parse('2024-03-15T10:00:00.000Z', 'UTC');
-      const duration = { year: 1, month: 2, day: 3, hour: 4, minute: 5, second: 6, millis: 7 };
+      const duration: DurationInput = { years: 1, months: 2, days: 3, hours: 4, minutes: 5, seconds: 6, millis: 7 };
       const newDateTimeUtils = dateTimeUtils.add(duration);
       expect(newDateTimeUtils).toBe(dateTimeUtils); // Should return the same instance
       expect(newDateTimeUtils.format()).toEqual('2025-05-18T14:05:06.007Z');
@@ -62,14 +63,16 @@ describe('DateTimeUtils', () => {
       const date1 = new Date('2024-03-15T10:00:00.000Z');
       const date2 = new Date('2024-03-15T12:30:45.123Z');
       const diff = DateTimeUtils.diff(date2, date1);
-      expect(diff).toEqual({ hour: 2, minute: 30, second: 45, millis: 123 });
+      const expectResult: Duration = { hours: 2, minutes: 30, seconds: 45, millis: 123 };
+      expect(diff).toEqual(expectResult);
     });
 
     it('should return the difference between two dates truncated to the specified unit', () => {
       const date1 = new Date('2024-03-15T10:00:00.000Z');
       const date2 = new Date('2024-03-15T12:30:45.123Z');
       const diff = DateTimeUtils.diff(date2, date1, DateTimeUnit.minute);
-      expect(diff).toEqual({ hour: 2, minute: 30, second: 0, millis: 0 });
+      const expectResult: Duration = { hours: 2, minutes: 30, seconds: 0, millis: 0 };
+      expect(diff).toEqual(expectResult);
     });
   });
 
@@ -121,26 +124,26 @@ describe('DateTimeUtils', () => {
 describe('DurationConverter', () => {
   describe('toMilliseconds', () => {
     it('should convert the duration to milliseconds', () => {
-      const duration: Duration = { hour: 1, minute: 30, second: 45, millis: 123 };
+      const duration: Duration = { hours: 1, minutes: 30, seconds: 45, millis: 123 };
       const converter = new DurationConverter(duration);
       const milliseconds = converter.toMilliseconds();
       expect(milliseconds).toBe(5445123);
     });
 
     it('should handle zero duration correctly', () => {
-      const duration: Duration = { hour: 0, minute: 0, second: 0, millis: 0 };
+      const duration: Duration = { hours: 0, minutes: 0, seconds: 0, millis: 0 };
       const converter = new DurationConverter(duration);
       const milliseconds = converter.toMilliseconds();
       expect(milliseconds).toBe(0);
     });
 
     it('should handle durations with only some units populated', () => {
-      const duration1: Duration = { hour: 2 };
+      const duration1: Duration = { hours: 2 };
       const converter1 = new DurationConverter(duration1);
       const milliseconds1 = converter1.toMilliseconds();
       expect(milliseconds1).toBe(7200000);
 
-      const duration2: Duration = { day: 1, minute: 30, second: 15, millis: 0 };
+      const duration2: Duration = { days: 1, minutes: 30, seconds: 15, millis: 0 };
       const converter2 = new DurationConverter(duration2);
       const milliseconds2 = converter2.toMilliseconds();
       expect(milliseconds2).toBe(88215000);
@@ -154,42 +157,42 @@ describe('DurationConverter', () => {
 
   describe('toDecimal', () => {
     it('should convert the duration to a decimal value for the specified unit (hours)', () => {
-      const duration: Duration = { hour: 1, minute: 30, second: 0, millis: 0 };
+      const duration: Duration = { hours: 1, minutes: 30, seconds: 0, millis: 0 };
       const converter = new DurationConverter(duration);
       const decimalValue = converter.toDecimal(DateTimeUnit.hour);
       expect(decimalValue).toBe(1.5);
     });
 
     it('should convert the duration to a decimal value for the specified unit (minutes)', () => {
-      const duration: Duration = { hour: 1, minute: 30, second: 0, millis: 0 };
+      const duration: Duration = { hours: 1, minutes: 30, seconds: 0, millis: 0 };
       const converter = new DurationConverter(duration);
       const decimalValue = converter.toDecimal(DateTimeUnit.minute);
       expect(decimalValue).toBe(90);
     });
 
     it('should convert the duration to a decimal value for the specified unit (seconds)', () => {
-      const duration: Duration = { hour: 0, minute: 2, second: 30, millis: 0 };
+      const duration: Duration = { hours: 0, minutes: 2, seconds: 30, millis: 0 };
       const converter = new DurationConverter(duration);
       const decimalValue = converter.toDecimal(DateTimeUnit.second);
       expect(decimalValue).toBe(150);
     });
 
     it('should convert the duration to a decimal value for the specified unit (days)', () => {
-      const duration: Duration = { hour: 24, minute: 0, second: 0, millis: 0 };
+      const duration: Duration = { hours: 24, minutes: 0, seconds: 0, millis: 0 };
       const converter = new DurationConverter(duration);
       const decimalValue = converter.toDecimal(DateTimeUnit.day);
       expect(decimalValue).toBe(1);
     });
 
     it('should convert the duration to a decimal value for the specified unit (milliseconds)', () => {
-      const duration: Duration = { hour: 0, minute: 0, second: 0, millis: 500 };
+      const duration: Duration = { hours: 0, minutes: 0, seconds: 0, millis: 500 };
       const converter = new DurationConverter(duration);
       const decimalValue = converter.toDecimal(DateTimeUnit.millis);
       expect(decimalValue).toBe(500);
     });
 
     it('should handle zero duration correctly', () => {
-      const duration: Duration = { hour: 0, minute: 0, second: 0, millis: 0 };
+      const duration: Duration = { hours: 0, minutes: 0, seconds: 0, millis: 0 };
       const converter = new DurationConverter(duration);
       const decimalValue = converter.toDecimal(DateTimeUnit.hour);
       expect(decimalValue).toBe(0);

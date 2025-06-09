@@ -1,6 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+declare const type: unique symbol;
+
 type Id = number | string;
 type ObjectLiteral = Record<string, any>;
+type BrandType<U, T> = U & { [type]?: T };
 
 /** Maping types */
 type Maybe<T> = T | null | undefined;
