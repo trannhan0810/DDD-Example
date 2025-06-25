@@ -35,18 +35,19 @@ describe('ResetPasswordUseCase', () => {
   });
 
   it('should successfully reset password', async () => {
+    const validResetCode = 'validCode';
     const input: ResetPasswordInput = {
       email: 'test@email.com',
       password: 'newPassword',
-      resetCode: 'validCode',
+      resetCode: validResetCode,
     };
     const person = createMockPerson({
       email: 'test@email.com',
       isEmailVerified: true,
-      resetPasswordCode: 'validCode',
+      resetPasswordCode: validResetCode,
+      resetPasswordCodeExpireTime: new Date(Date.now() + 1000),
     });
-    jest.spyOn(person, 'verifyResetPasswordCode');
-    (person.verifyResetPasswordCode as jest.Mock).mockReturnValueOnce(undefined);
+    jest.spyOn(person, 'resetPassword');
     mockPersonRepository.findOneMatched.mockResolvedValueOnce(person);
     mockCryptoService.hashPassword.mockResolvedValueOnce('hashedNewPassword');
     mockPersonRepository.save.mockResolvedValueOnce(person.id);
@@ -56,7 +57,7 @@ describe('ResetPasswordUseCase', () => {
     expect(mockPersonRepository.findOneMatched).toHaveBeenCalledWith({ email: input.email });
     expect(mockCryptoService.hashPassword).toHaveBeenCalledWith(input.password);
     expect(mockPersonRepository.save).toHaveBeenCalled();
-    expect(person.hashedPassword).toBe('hashedNewPassword');
+    expect(person.resetPassword).toHaveBeenCalledWith(validResetCode, 'hashedNewPassword');
     expect(result).toEqual(new BaseMessageResponse('Password reset!'));
   });
 
@@ -66,7 +67,7 @@ describe('ResetPasswordUseCase', () => {
       password: 'newPassword',
       resetCode: 'validCode',
     };
-    (mockPersonRepository.findOneMatched as jest.Mock).mockResolvedValueOnce(null);
+    mockPersonRepository.findOneMatched.mockResolvedValueOnce(undefined);
 
     await expect(useCase.process(input)).rejects.toThrow(new DomainError('Person not found!'));
   });
@@ -84,8 +85,8 @@ describe('ResetPasswordUseCase', () => {
     });
     mockPersonRepository.findOneMatched.mockResolvedValueOnce(person);
 
-    jest.spyOn(person, 'verifyResetPasswordCode');
-    (person.verifyResetPasswordCode as jest.Mock).mockImplementationOnce(() => {
+    jest.spyOn(person, 'resetPassword');
+    (person.resetPassword as jest.Mock).mockImplementationOnce(() => {
       throw new DomainError('Invalid reset code!');
     });
 

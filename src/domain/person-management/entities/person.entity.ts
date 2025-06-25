@@ -18,7 +18,7 @@ export class Person<ID extends Id | null = Id> extends BaseEntity<ID> {
     super();
   }
 
-  updateResetPasswordCode() {
+  forgotPassword() {
     const newResetPassword = generateRandomString({ length: 6, includeNumbers: true });
     const newExpireDate = DateTimeUtils.fromDate(new Date()).add({ hours: 1 }).toDate();
     this.resetPasswordCode = newResetPassword;
@@ -27,11 +27,13 @@ export class Person<ID extends Id | null = Id> extends BaseEntity<ID> {
     return { code: newResetPassword, expireDate: newExpireDate };
   }
 
-  verifyResetPasswordCode(code: string) {
+  resetPassword(code: string, newHashedPassword: string, curentTime = new Date()) {
     if (!this.resetPasswordCode) throw new DomainError('No reset password infomation!');
     if (!this.resetPasswordCodeExpireTime) throw new DomainError('No reset password infomation!');
     if (this.resetPasswordCode !== code) throw new DomainError('Reset code invalid!');
-    if (this.resetPasswordCodeExpireTime.getTime() < Date.now()) throw new DomainError('Reset code expired!');
+    if (this.resetPasswordCodeExpireTime.getTime() < curentTime.getTime()) throw new DomainError('Reset code expired!');
+
+    this.hashedPassword = newHashedPassword;
   }
 
   static create(input: PersonCreate & { id: Id }): Person;

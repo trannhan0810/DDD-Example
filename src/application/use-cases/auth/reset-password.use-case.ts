@@ -13,9 +13,10 @@ export class ResetPasswordUseCase {
     const { email } = input;
     const person = await this.personRepository.findOneMatched({ email });
     if (!person) throw new DomainError('Person not found!');
-    person.verifyResetPasswordCode(input.resetCode);
 
-    person.hashedPassword = await this.cryptoService.hashPassword(input.password);
+    const newHashedPassword = await this.cryptoService.hashPassword(input.password);
+    person.resetPassword(input.resetCode, newHashedPassword);
+
     await this.personRepository.save(person);
 
     return new BaseMessageResponse('Password reset!');

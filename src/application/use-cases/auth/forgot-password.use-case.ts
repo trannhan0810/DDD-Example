@@ -17,7 +17,7 @@ export class ForgotPasswordUseCase {
     if (!person) throw new DomainError('Person not found!');
     if (!person.isEmailVerified) throw new DomainError('Email is not verified!');
 
-    const { code } = person.updateResetPasswordCode();
+    const { code } = person.forgotPassword();
     await this.personRepository.save(person);
     await this.sendEmailResetPassword(person, code);
 
