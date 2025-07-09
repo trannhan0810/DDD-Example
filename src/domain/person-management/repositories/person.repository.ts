@@ -1,5 +1,3 @@
-import { UseCase } from 'src/shared/decorators';
-
 import type { Person } from '../entities/person.entity';
 import type { BooleanFilter, DateFilter, IdFilter, StringFilter } from '@domain/shared/common/base.filter';
 import type { BaseRepository } from '@domain/shared/common/base.repository';
@@ -17,7 +15,6 @@ export type FilterPersonInput = {
   resetPasswordCodeExpireTime: DateFilter;
 };
 
-@UseCase()
 export abstract class PersonRepository implements BaseRepository<Person> {
   abstract findAll(): Promise<Person[]>;
   abstract findById(personId: Id): Promise<Person | undefined>;
