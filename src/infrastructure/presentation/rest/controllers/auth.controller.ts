@@ -9,9 +9,10 @@ import { ForgotPasswordUseCase } from '@application/use-cases/auth/forgot-passwo
 import { GetMeUseCase } from '@application/use-cases/auth/get-me.use-case';
 import { LoginUseCase } from '@application/use-cases/auth/login.use-case';
 import { ResetPasswordUseCase } from '@application/use-cases/auth/reset-password.use-case';
+import { GetAPI } from 'src/shared/decorators/api';
+
 import { Body, Controller, Module, Post } from '@nestjs/common';
 import { ApiBody, ApiResponse } from '@nestjs/swagger';
-import { GetAPI } from 'src/shared/decorators/api';
 
 @Controller('')
 export class AuthController {

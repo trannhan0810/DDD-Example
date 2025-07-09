@@ -16,6 +16,9 @@ export default tseslint.config(
         tsconfigRootDir: import.meta.dirname,
       },
     },
+    settings: {
+      'import/resolver': { typescript: true, node: true },
+    },
   },
   {
     rules: {
@@ -31,18 +34,17 @@ export default tseslint.config(
           groups: ['builtin', ['sibling', 'parent'], 'index', 'object', 'internal', 'external', 'type'],
         },
       ],
+      'import/no-restricted-paths': [
+        'error',
+        {
+          basePath: './',
+          zones: [
+            { target: './src/domain/', from: ['./src/application/', './src/infrastructure/'] },
+            { target: './src/application/', from: './src/infrastructure/' },
+            { target: './src/shared/', from: './src/!(shared)/**/*' },
+          ],
+        },
+      ],
     },
-  },
-  {
-    files: ['src/application/use-cases/**/**.ts'],
-    rules: { '@typescript-eslint/consistent-type-imports': ['error', { prefer: 'no-type-imports' }] },
-  },
-  {
-    files: ['src/domain/**/**.ts'],
-    rules: { 'no-restricted-imports': ['error', { patterns: [{ regex: '(@application|@infrastructure)' }] }] },
-  },
-  {
-    files: ['src/application/**/**.ts'],
-    rules: { 'no-restricted-imports': ['error', { patterns: [{ regex: '@infrastructure' }] }] },
   },
 );

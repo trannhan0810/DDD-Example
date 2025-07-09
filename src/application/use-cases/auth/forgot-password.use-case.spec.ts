@@ -1,14 +1,16 @@
 import { ForgotPasswordUseCase } from './forgot-password.use-case';
 
-import { IEmailSender } from '@application/common/email/email-sender';
 import { getSendResetPasswordEmailParams } from '@application/common/email/templates/reset-password';
-import { ForgotPasswordInput } from '@application/dtos/auth/forgot-password.dto';
 import { BaseMessageResponse } from '@application/dtos/shared/message-response.dto';
 import { Person } from '@domain/person-management/entities/person.entity';
-import { PersonRepository } from '@domain/person-management/repositories/person.repository';
 import { DomainError } from '@domain/shared/common/base.error';
+
 import { mock } from 'jest-mock-extended';
-import { _MockProxy } from 'jest-mock-extended/lib/Mock';
+
+import type { IEmailSender } from '@application/common/email/email-sender';
+import type { ForgotPasswordInput } from '@application/dtos/auth/forgot-password.dto';
+import type { PersonRepository } from '@domain/person-management/repositories/person.repository';
+import type { _MockProxy } from 'jest-mock-extended/lib/Mock';
 
 function createMockPerson(input?: Partial<Person>) {
   return Person.create({

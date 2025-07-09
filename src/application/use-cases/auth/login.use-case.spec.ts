@@ -1,12 +1,14 @@
 import { LoginUseCase } from './login.use-case';
 
-import { ICryptoService } from '@application/common/cryto';
-import { IJwtService } from '@application/common/jwt';
-import { LoginInput } from '@application/dtos/auth/login.dto';
-import { Person } from '@domain/person-management/entities/person.entity';
-import { PersonRepository } from '@domain/person-management/repositories/person.repository';
 import { DomainError } from '@domain/shared/common/base.error';
+
 import { mock } from 'jest-mock-extended';
+
+import type { ICryptoService } from '@application/common/cryto';
+import type { IJwtService } from '@application/common/jwt';
+import type { LoginInput } from '@application/dtos/auth/login.dto';
+import type { Person } from '@domain/person-management/entities/person.entity';
+import type { PersonRepository } from '@domain/person-management/repositories/person.repository';
 
 describe('LoginUseCase', () => {
   let useCase: LoginUseCase;

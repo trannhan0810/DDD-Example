@@ -1,6 +1,7 @@
 import { TimeRangeInput } from '../shared/date-range-input.dto';
 
 import { BOOKING_STATUS } from '@domain/bookings/entities/booking.entity';
+
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateBookingInput {

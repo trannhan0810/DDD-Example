@@ -1,5 +1,6 @@
-import { BookingRepository } from '@domain/bookings/repositories/booking.repository';
 import { DomainError } from '@domain/shared/common/base.error';
+
+import type { BookingRepository } from '@domain/bookings/repositories/booking.repository';
 
 export type ConfirmBookingInput = {
   bookingId: Id;

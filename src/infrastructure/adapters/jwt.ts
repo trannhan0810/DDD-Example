@@ -1,4 +1,5 @@
 import { IJwtService, JwtPayload } from '@application/common/jwt';
+
 import { Global, Injectable, Module } from '@nestjs/common';
 import jwt from 'jsonwebtoken';
 

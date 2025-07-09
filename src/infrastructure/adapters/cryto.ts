@@ -1,6 +1,7 @@
 import { scryptSync } from 'crypto';
 
 import { ICryptoService } from '@application/common/cryto';
+
 import { Global, Injectable, Module } from '@nestjs/common';
 
 @Injectable()

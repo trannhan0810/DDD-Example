@@ -1,4 +1,5 @@
 import { IEmailSender } from '@application/common/email/email-sender';
+
 import { Global, Injectable, Module } from '@nestjs/common';
 
 import type { IEmailTemplate } from '@application/common/email/email-sender';

@@ -1,8 +1,9 @@
-import { RemoveRoleInput } from '@application/dtos/persons/person-role.dto';
 import { BaseMessageResponse } from '@application/dtos/shared/message-response.dto';
-import { PersonRepository } from '@domain/person-management/repositories/person.repository';
 import { DomainError } from '@domain/shared/common/base.error';
-import { RoleRepository } from '@domain/staff/repositories/role.repository';
+
+import type { RemoveRoleInput } from '@application/dtos/persons/person-role.dto';
+import type { PersonRepository } from '@domain/person-management/repositories/person.repository';
+import type { RoleRepository } from '@domain/staff/repositories/role.repository';
 
 export class RemoveRoleUseCase {
   constructor(private readonly personRepository: PersonRepository, private readonly roleRepository: RoleRepository) {}

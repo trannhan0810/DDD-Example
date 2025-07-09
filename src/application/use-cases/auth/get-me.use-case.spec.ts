@@ -1,9 +1,11 @@
 import { GetMeUseCase } from './get-me.use-case';
 
-import { Person } from '@domain/person-management/entities/person.entity';
-import { PersonRepository } from '@domain/person-management/repositories/person.repository';
 import { DomainError } from '@domain/shared/common/base.error';
+
 import { mock } from 'jest-mock-extended';
+
+import type { Person } from '@domain/person-management/entities/person.entity';
+import type { PersonRepository } from '@domain/person-management/repositories/person.repository';
 
 describe('GetMeUseCase', () => {
   let useCase: GetMeUseCase;

@@ -4,6 +4,7 @@
  */
 
 import { AppModule } from '@infrastructure/app.module';
+
 import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';

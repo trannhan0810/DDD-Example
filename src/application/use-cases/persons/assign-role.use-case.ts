@@ -1,7 +1,8 @@
-import { AssignRoleInput } from '@application/dtos/persons/person-role.dto';
-import { PersonRepository } from '@domain/person-management/repositories/person.repository';
 import { DomainError } from '@domain/shared/common/base.error';
-import { RoleRepository } from '@domain/staff/repositories/role.repository';
+
+import type { AssignRoleInput } from '@application/dtos/persons/person-role.dto';
+import type { PersonRepository } from '@domain/person-management/repositories/person.repository';
+import type { RoleRepository } from '@domain/staff/repositories/role.repository';
 
 export class AssignRoleUseCase {
   constructor(private readonly roleRepository: RoleRepository, private readonly personRepository: PersonRepository) {}

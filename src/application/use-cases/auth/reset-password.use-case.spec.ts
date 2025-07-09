@@ -1,13 +1,15 @@
 import { ResetPasswordUseCase } from './reset-password.use-case';
 
-import { ICryptoService } from '@application/common/cryto';
-import { ResetPasswordInput } from '@application/dtos/auth/reset-password.dto';
 import { BaseMessageResponse } from '@application/dtos/shared/message-response.dto';
 import { Person } from '@domain/person-management/entities/person.entity';
-import { PersonRepository } from '@domain/person-management/repositories/person.repository';
 import { DomainError } from '@domain/shared/common/base.error';
+
 import { mock } from 'jest-mock-extended';
-import { _MockProxy } from 'jest-mock-extended/lib/Mock';
+
+import type { ICryptoService } from '@application/common/cryto';
+import type { ResetPasswordInput } from '@application/dtos/auth/reset-password.dto';
+import type { PersonRepository } from '@domain/person-management/repositories/person.repository';
+import type { _MockProxy } from 'jest-mock-extended/lib/Mock';
 
 function createMockPerson(input?: Partial<Person>) {
   return Person.create({
