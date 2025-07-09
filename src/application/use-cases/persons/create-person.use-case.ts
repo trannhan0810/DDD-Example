@@ -1,10 +1,10 @@
+import { ICryptoService } from '@application/common/cryto';
+import { CreatePersonInput } from '@application/dtos/persons/create-person.dto';
 import { BaseMessageResponse } from '@application/dtos/shared/message-response.dto';
 import { Person } from '@domain/person-management/entities/person.entity';
+import { PersonRepository } from '@domain/person-management/repositories/person.repository';
 import { DomainError } from '@domain/shared/common/base.error';
 
-import type { ICryptoService } from '@application/common/cryto';
-import type { CreatePersonInput } from '@application/dtos/persons/create-person.dto';
-import type { PersonRepository } from '@domain/person-management/repositories/person.repository';
 
 export class CreatePersonUseCase {
   constructor(private readonly personRepository: PersonRepository, private readonly cryptoService: ICryptoService) {}

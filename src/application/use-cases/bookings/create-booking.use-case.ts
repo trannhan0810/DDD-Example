@@ -1,11 +1,10 @@
+import { CreateBookingInput } from '@application/dtos/booking/create-booking.dto';
 import { BOOKING_STATUS, Booking } from '@domain/bookings/entities/booking.entity';
+import { BookingRepository } from '@domain/bookings/repositories/booking.repository';
+import { CheckRoomAvailableService } from '@domain/bookings/services/check-available.service';
 import { DomainError } from '@domain/shared/common/base.error';
 import { TimeRange } from '@domain/shared/value-objects/time-range.value-object';
 import { generateRandomString } from 'src/shared/utils/random.util';
-
-import type { CreateBookingInput } from '@application/dtos/booking/create-booking.dto';
-import type { BookingRepository } from '@domain/bookings/repositories/booking.repository';
-import type { CheckRoomAvailableService } from '@domain/bookings/services/check-available.service';
 
 export class CreateBookingUseCase {
   constructor(

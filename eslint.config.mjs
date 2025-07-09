@@ -47,4 +47,8 @@ export default tseslint.config(
       ],
     },
   },
+  {
+    files: ['**/**.use-case.ts'],
+    rules: { '@typescript-eslint/consistent-type-imports': ['error', { prefer: 'no-type-imports' }] },
+  },
 );

@@ -1,9 +1,10 @@
+
+import { SearchRoomInput } from '../../dtos/rooms/search-rooms.dto';
+
+import { Room } from '@domain/property/entities/room.entity';
+import { RoomRepository } from '@domain/property/repositories/room.repository';
 import { GeoCoordinate } from '@domain/shared/value-objects/geo-cordinate.value-object';
 import { TimeRange } from '@domain/shared/value-objects/time-range.value-object';
-
-import type { SearchRoomInput } from '../../dtos/rooms/search-rooms.dto';
-import type { Room } from '@domain/property/entities/room.entity';
-import type { RoomRepository } from '@domain/property/repositories/room.repository';
 
 export class SearchRoomUseCase {
   constructor(private readonly roomRepository: RoomRepository) {}
